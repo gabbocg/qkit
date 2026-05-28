@@ -1,13 +1,13 @@
-title: qbeamer
+title: qkit
 author: Gabriel Cabrera Guzmán
 version: 0.1.0
 contributes:
   formats:
     beamer:
       include-in-header:
-        - preamble.tex
+        - beamer/preamble.tex
       template-partials:
-        - title.tex
+        - beamer/title.tex
       pdf-engine: xelatex
       navigation: horizontal
       theme: default

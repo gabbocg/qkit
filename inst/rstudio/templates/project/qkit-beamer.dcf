@@ -1,8 +1,16 @@
 Binding: create_project
-Title: Quarto Beamer Presentation (qbeamer)
-OpenFiles: skeleton.qmd
+Title: qkit Beamer Presentation
+OpenFiles: index.qmd
+Subtitle: Create a new Beamer presentation from the qkit template.
 
 Parameter: title
 Widget: TextInput
-Label: Presentation Title
+Label: Presentation title
 Default: Untitled Presentation
+Position: left
+
+Parameter: type
+Widget: TextInput
+Label: (do not edit) format type
+Default: beamer
+Position: left

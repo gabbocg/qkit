@@ -2,5 +2,5 @@
 
 export(create_project)
 export(install_extension)
-export(qbeamer_preview)
-export(qbeamer_render)
+export(qkit_preview)
+export(qkit_render)

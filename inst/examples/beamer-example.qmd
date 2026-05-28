@@ -1,7 +1,7 @@
 ---
 title: "Tips + Tricks with Beamer"
 subtitle: "A Quarto Perspective"
-thanks: "gcabrerag.rbind.io"
+thanks: "GabboCg.rbind.io"
 
 author:
     - name: Gabriel Cabrera
@@ -39,7 +39,7 @@ date-format: long
 fontfamily: lato
 
 format:
-  qbeamer-beamer: default
+  qkit-beamer: default
 ---
 
 ## Acknowledgment {#sec-intro}

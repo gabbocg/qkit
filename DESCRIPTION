@@ -1,13 +1,13 @@
-Package: qbeamer
-Title: Custom Quarto Beamer Presentation Template
+Package: qkit
+Title: A Small Set of Useful Quarto Templates
 Version: 0.1.0
 Authors@R:
     person("Gabriel", "Cabrera Guzmán",
            email = "gc@abrerag.rbind.io",
            role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Provides a Quarto extension and RStudio integration for creating
-    professional Beamer presentations. Includes custom styling, enhanced
+Description: Provides Quarto extensions and RStudio integration for creating
+    Beamer presentations and academic CVs. Includes custom styling, enhanced
     author/affiliation support with ORCID, and helper functions for rendering
     and previewing presentations.
 License: MIT + file LICENSE
@@ -15,6 +15,6 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports: fs
 Suggests: quarto
-URL: https://github.com/gcabrerag/qbeamer
-BugReports: https://github.com/gcabrerag/qbeamer/issues
+URL: https://github.com/GabboCg/qkit
+BugReports: https://github.com/GabboCg/qkit/issues
 RoxygenNote: 7.3.2

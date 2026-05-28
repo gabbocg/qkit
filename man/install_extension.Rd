@@ -2,7 +2,7 @@
 % Please edit documentation in R/install_extension.R
 \name{install_extension}
 \alias{install_extension}
-\title{Install the qbeamer Quarto extension}
+\title{Install the qkit Quarto extension}
 \usage{
 install_extension(path = ".", overwrite = FALSE)
 }
@@ -10,13 +10,13 @@ install_extension(path = ".", overwrite = FALSE)
 \item{path}{Path to the project directory. Defaults to the current
 working directory.}
 
-\item{overwrite}{If \code{TRUE}, overwrite existing extension files.
+\item{overwrite}{If \code{TRUE}, overwrite the existing extension.
 Defaults to \code{FALSE}.}
 }
 \value{
-Invisibly returns the path to the installed extension directory.
+Invisibly returns the installed target directory.
 }
 \description{
-Copies the qbeamer Quarto extension files into a project directory,
-making the \code{qbeamer-beamer} format available for use.
+Copies the qkit Quarto extension files into a project directory,
+making the \code{qkit-beamer} and \code{qkit-pdf} formats available.
 }

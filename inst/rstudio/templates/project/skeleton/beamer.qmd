@@ -30,12 +30,12 @@ date-format: long
 fontfamily: lato
 
 format:
-  qbeamer-beamer: default
+  qkit-beamer: default
 ---
 
 ## Outline {#sec-outline}
 
-This skeleton demonstrates the main features of **qbeamer**:
+This skeleton demonstrates the main features of **qkit-beamer**:
 
 1. Text formatting and Markdown basics
 2. Custom color palette
@@ -73,7 +73,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
 ## Color Palette
 
-qbeamer defines four custom colors you can use with La\TeX\ commands:
+qkit-beamer defines four custom colors you can use with La\TeX\ commands:
 
 - \textcolor{blue}{Blue (0, 114, 178)} --- titles, items, links
 - \textcolor{red}{Red (213, 94, 0)} --- warnings, emphasis
@@ -224,5 +224,5 @@ These are useful for adjusting layout within slides.
 
 - **Quarto documentation**: [https://quarto.org](https://quarto.org)
 - **Beamer user guide**: [https://ctan.org/pkg/beamer](https://ctan.org/pkg/beamer)
-- **qbeamer source**: [https://github.com/GabboCg/qbeamer](https://github.com/GabboCg/qbeamer)
+- **qkit source**: [https://github.com/GabboCg/qkit](https://github.com/GabboCg/qkit)
 - **Inspired by**: [beamer-tips](https://github.com/paulgp/beamer-tips)

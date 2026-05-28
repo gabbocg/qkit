@@ -2,14 +2,24 @@
 % Please edit documentation in R/create_project.R
 \name{create_project}
 \alias{create_project}
-\title{Create a new qbeamer presentation project}
+\title{Create a new qkit project}
 \usage{
-create_project(path, title = "Untitled Presentation", ...)
+create_project(
+  path,
+  type = "beamer",
+  title = "Untitled Presentation",
+  author = "Your Name",
+  ...
+)
 }
 \arguments{
 \item{path}{Path to the new project directory.}
 
-\item{title}{Presentation title. Used by RStudio project wizard.}
+\item{type}{Either \code{"beamer"} or \code{"cv"}. Defaults to \code{"beamer"}.}
+
+\item{title}{Presentation title (used when \code{type = "beamer"}).}
+
+\item{author}{Author name (used when \code{type = "cv"}).}
 
 \item{...}{Additional arguments passed by RStudio (ignored).}
 }
@@ -17,6 +27,7 @@ create_project(path, title = "Untitled Presentation", ...)
 Invisibly returns the project path.
 }
 \description{
-RStudio project template binding. Called by RStudio when a user creates
-a new project from the qbeamer template. Can also be called directly.
+Scaffolds a Quarto project of the requested type (Beamer presentation
+or CV), drops the appropriate skeleton document, and installs the
+matching qkit extension.
 }

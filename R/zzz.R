@@ -1,3 +1,3 @@
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("qbeamer v", utils::packageVersion("qbeamer"))
+  packageStartupMessage("qkit v", utils::packageVersion("qkit"))
 }

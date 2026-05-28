@@ -1,43 +1,43 @@
-# qbeamer <a href="https://github.com/GabboCg/qbeamer"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# qkit <a href="https://github.com/GabboCg/qkit"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
-qbeamer is an R package that provides a custom [Quarto](https://quarto.org) Beamer presentation format with professional styling, enhanced author/affiliation support (including ORCID), and RStudio integration. Inspired by [beamer-tips](https://github.com/paulgp/beamer-tips), adapted for a Quarto-based workflow.
+qkit is an R package that provides a small set of useful [Quarto](https://quarto.org) templates, currently shipping a Beamer presentation format and an academic CV format. It includes professional styling, enhanced author/affiliation support (including ORCID), and RStudio integration. Inspired by [beamer-tips](https://github.com/paulgp/beamer-tips), adapted for a Quarto-based workflow.
 
 ## Installation
 
 ```r
 # Install from GitHub
 # install.packages("remotes")
-remotes::install_github("GabboCg/qbeamer")
+remotes::install_github("GabboCg/qkit")
 ```
 
 ## Usage
 
 ### From RStudio
 
-File > New Project > New Directory > **Quarto Beamer Presentation (qbeamer)**
+File > New Project > New Directory > **qkit Beamer Presentation**
 
 This creates a `.qmd` file with a full skeleton and installs the extension automatically.
 
 ### From R
 
 ```r
-# Render a presentation (auto-installs extension if needed)
-qbeamer::qbeamer_render("slides.qmd")
+# Render a Quarto document (auto-installs the relevant qkit extension if needed)
+qkit::qkit_render("slides.qmd")
 
 # Preview with live reload
-qbeamer::qbeamer_preview("slides.qmd")
+qkit::qkit_preview("slides.qmd")
 
-# Or install the extension manually in any project
-qbeamer::install_extension()
+# Or install an extension manually in any project
+qkit::install_extension(type = "beamer")
 ```
 
-### QMD format
+### Beamer format
 
-Use `qbeamer-beamer` as the format in your YAML front matter:
+Use `qkit-beamer` as the format in your YAML front matter:
 
 ```yaml
 ---
@@ -54,8 +54,27 @@ affiliations:
     department: Department Name
 
 format:
-  qbeamer-beamer: default
+  qkit-beamer: default
 ---
+```
+
+### CV format
+
+Use `qkit-cv` for an academic CV:
+
+```yaml
+---
+title: "CV"
+author: "Your Name"
+format:
+  qkit-cv: default
+---
+```
+
+Scaffold a new CV project with:
+
+```r
+qkit::create_project("my-cv", type = "cv")
 ```
 
 ## Features

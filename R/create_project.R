@@ -1,26 +1,37 @@
-#' Create a new qbeamer presentation project
+#' Create a new qkit project
 #'
-#' RStudio project template binding. Called by RStudio when a user creates
-#' a new project from the qbeamer template. Can also be called directly.
+#' Scaffolds a Quarto project of the requested type (Beamer presentation
+#' or CV), drops the appropriate skeleton document, and installs the
+#' matching qkit extension.
 #'
 #' @param path Path to the new project directory.
-#' @param title Presentation title. Used by RStudio project wizard.
+#' @param type Either `"beamer"` or `"cv"`. Defaults to `"beamer"`.
+#' @param title Presentation title (used when `type = "beamer"`).
+#' @param author Author name (used when `type = "cv"`).
 #' @param ... Additional arguments passed by RStudio (ignored).
 #'
 #' @return Invisibly returns the project path.
 #' @export
-create_project <- function(path, title = "Untitled Presentation", ...) {
+create_project <- function(path,
+                           type = "beamer",
+                           title = "Untitled Presentation",
+                           author = "Your Name",
+                           ...) {
+  type <- match.arg(type, choices = c("beamer", "cv"))
   fs::dir_create(path)
 
-  # Copy skeleton QMD and substitute title
+  skeleton_name <- paste0(type, ".qmd")
   skeleton <- system.file("rstudio", "templates", "project", "skeleton",
-                           "skeleton.qmd", package = "qbeamer", mustWork = TRUE)
+                          skeleton_name, package = "qkit", mustWork = TRUE)
   content <- readLines(skeleton, encoding = "UTF-8")
-  content <- gsub("Untitled Presentation", title, content, fixed = TRUE)
-  writeLines(content, fs::path(path, "skeleton.qmd"), useBytes = TRUE)
 
-  # Install the Quarto extension
+  if (type == "beamer") {
+    content <- gsub("Untitled Presentation", title, content, fixed = TRUE)
+  } else {
+    content <- gsub("Your Name", author, content, fixed = TRUE)
+  }
+
+  writeLines(content, fs::path(path, "index.qmd"), useBytes = TRUE)
   install_extension(path = path)
-
   invisible(path)
 }
