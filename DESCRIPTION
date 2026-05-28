@@ -3,9 +3,9 @@ Title: A Small Set of Useful Quarto Templates
 Version: 0.1.0
 Authors@R:
     person("Gabriel", "Cabrera Guzmán",
-           email = "gc@abrerag.rbind.io",
+           email = "gabriel.cabrera.guz@gmail.com",
            role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0000-0001-8803-2338"))
 Description: Provides Quarto extensions and RStudio integration for creating
     Beamer presentations and academic CVs. Includes custom styling, enhanced
     author/affiliation support with ORCID, and helper functions for rendering
