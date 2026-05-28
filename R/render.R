@@ -53,7 +53,17 @@ detect_qkit_formats <- function(input) {
   if (is.null(meta) || is.null(meta$format)) return(character(0))
 
   fmt <- meta$format
-  keys <- if (is.character(fmt)) fmt else names(fmt)
+  keys <- if (is.character(fmt)) {
+    fmt
+  } else if (is.list(fmt)) {
+    # YAML map: format: { qkit-beamer: default, ... } → take names.
+    # YAML sequence: format: [qkit-beamer, html] parses as an unnamed list of
+    # character entries → take values too. Cover both shapes.
+    c(names(fmt), unlist(fmt[vapply(fmt, is.character, logical(1))],
+                         use.names = FALSE))
+  } else {
+    character(0)
+  }
   keys <- keys[!is.na(keys) & nzchar(keys)]
 
   prefix <- "qkit-"

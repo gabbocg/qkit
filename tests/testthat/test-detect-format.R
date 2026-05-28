@@ -28,6 +28,14 @@ test_that("detect_qkit_formats returns multiple types when multiple listed", {
   expect_setequal(qkit:::detect_qkit_formats(tmp), c("beamer", "pdf"))
 })
 
+test_that("detect_qkit_formats reads a sequence (YAML list) format key", {
+  tmp <- tempfile(fileext = ".qmd")
+  on.exit(unlink(tmp))
+  writeLines(c("---", "title: x", "format:", "  - qkit-beamer", "  - html",
+               "---", "body"), tmp)
+  expect_equal(qkit:::detect_qkit_formats(tmp), "beamer")
+})
+
 test_that("detect_qkit_formats returns empty for non-qkit format", {
   tmp <- tempfile(fileext = ".qmd")
   on.exit(unlink(tmp))

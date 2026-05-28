@@ -18,9 +18,9 @@ remotes::install_github("GabboCg/qkit")
 
 ### From RStudio
 
-File > New Project > New Directory > **qkit Beamer Presentation**
+File > New Project > New Directory > **qkit Beamer Presentation** (or **qkit CV**)
 
-This creates a `.qmd` file with a full skeleton and installs the extension automatically.
+Either entry creates an `index.qmd` with a full skeleton and installs the extension automatically.
 
 ### From R
 
@@ -79,6 +79,8 @@ qkit::create_project("my-cv", type = "cv")
 
 ## Features
 
+### Beamer format (`qkit-beamer`)
+
 - Custom color palette (blue, red, yellow, green)
 - Modified bullet styling and itemize/enumerate spacing
 - Custom footline with frame numbers and navigation buttons
@@ -88,3 +90,14 @@ qkit::create_project("my-cv", type = "cv")
 - Short title and short author support
 - Callout styling (note, warning)
 - Text justification across all frames
+
+### CV format (`qkit-pdf`)
+
+- LuaLaTeX engine with `mathpazo` font
+- Custom `L | R` tabulars with a thin gray vertical rule for date / description rows
+- Hanging-indent numbered lists for Publications and Working Papers
+- Two-column References section via `multicols`
+- Fontawesome contact-row icons in the title header (email, phone, GitHub, web)
+- Optional ORCID link via `orcidlink`
+- Page footer with author/title on the center and `page/total` on the right
+- All header metadata (`jobtitle`, `address`, `email`, `phone`, `github`, `web`, `orcid`, `fontawesome`, `updated`) read from YAML
