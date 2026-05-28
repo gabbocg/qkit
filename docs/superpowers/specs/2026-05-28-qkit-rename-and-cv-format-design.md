@@ -173,7 +173,7 @@ Ports the "stuff I added" block from the user's existing `latex-cv.tex`, strippe
 - `\sectionfont{\rmfamily\mdseries\large\bf}` and `\subsectionfont{\rmfamily\mdseries\normalsize\itshape}`.
 - `\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}` and same for `\subsection`.
 - Itemize redefinition: `\renewenvironment{itemize}{...}{...}` to remove bullets and set `\leftmargin{1.5em}`.
-- `\pagestyle{fancy}`, `\renewcommand{\headrulewidth}{0pt}`, `\renewcommand{\footrulewidth}{0pt}`, blank `\lhead/\chead/\rhead/\lfoot`, `\cfoot{\scriptsize \theauthor\ - \thetitle}` (or equivalent — Quarto exposes `\@author` and `\@title` via Pandoc's default template; the planner verifies the exact macro names during implementation), `\rfoot{\scriptsize \thepage/\pageref{LastPage}}` with `\hypersetup{linkcolor=black}` locally so the page count isn't colored.
+- `\pagestyle{fancy}`, `\renewcommand{\headrulewidth}{0pt}`, `\renewcommand{\footrulewidth}{0pt}`, blank `\lhead/\chead/\rhead/\lfoot`. The footer left/center text uses Pandoc partial variables: `\cfoot{\scriptsize $author$ - $title$}` written directly into `preamble.tex`. Because `include-in-header` is itself a Pandoc partial pass, the `$author$` and `$title$` variables are interpolated from YAML at template-render time, before LaTeX ever runs. `\rfoot{\scriptsize \thepage/{\hypersetup{linkcolor=black}\pageref{LastPage}}}` so the page count isn't colored.
 - `\urlstyle{same}` — prevent monospace URLs.
 - The `pdftitle` "(Curriculum Vitae)" suffix that the user's existing template appended is dropped (Quarto handles `pdftitle` via the document title; the suffix is cosmetic and adds a Pandoc-template conditional we don't want to reintroduce).
 
