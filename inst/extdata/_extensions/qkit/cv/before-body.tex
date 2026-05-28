@@ -1,0 +1,24 @@
+% qkit-cv before-body partial — renders the title header block.
+% Reads YAML metadata: author (required), jobtitle, address, email,
+% phone, github, web, orcid, fontawesome (bool, default true), updated
+% (bool, default false).
+
+\centerline{\huge \bf $author$}
+
+\vspace{2 mm}
+
+$if(jobtitle)$\moveleft.5\hoffset\centerline{$jobtitle$}$endif$
+$if(address)$\moveleft.5\hoffset\centerline{$address$}$endif$
+
+\vspace{1 mm}
+
+\moveleft.5\hoffset\centerline{%
+$if(email)$$if(fontawesome)$\faEnvelopeO \hspace{1 mm}$else$\emph{E-mail:}\hspace{1 mm}$endif$\href{mailto:$email$}{\tt $email$} \hspace{2 mm}$endif$%
+$if(phone)$$if(fontawesome)$\faPhone \hspace{1 mm}$else$\emph{Phone:}\hspace{1 mm}$endif$$phone$ \hspace{2 mm}$endif$%
+$if(github)$$if(fontawesome)$\faGithub \hspace{1 mm}$else$\emph{Github:}\hspace{1 mm}$endif$\href{https://github.com/$github$}{\tt $github$} \hspace{2 mm}$endif$%
+$if(web)$$if(fontawesome)$\faGlobe \hspace{1 mm}$else$\emph{Web:}\hspace{1 mm}$endif$\href{https://$web$}{\tt $web$}$endif$%
+$if(orcid)$ \hspace{2 mm} \orcidlink{$orcid$} {\tt $orcid$}$endif$%
+$if(updated)$ \hspace{2 mm} \emph{Updated:} \today$endif$%
+}
+
+\vspace{4 mm}

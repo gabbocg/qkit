@@ -14,3 +14,19 @@ contributes:
       colortheme: default
       aspectratio: 43
       keep-tex: true
+    pdf:
+      include-in-header:
+        - cv/preamble.tex
+      template-partials:
+        - cv/before-body.tex
+      pdf-engine: lualatex
+      geometry:
+        - margin=0.70in
+      fontfamily: mathpazo
+      fontfamilyoptions:
+        - sc
+        - osf
+      fontsize: 10pt
+      linkcolor: blue
+      urlcolor: blue
+      keep-tex: true

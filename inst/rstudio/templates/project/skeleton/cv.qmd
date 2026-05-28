@@ -1,0 +1,156 @@
+---
+title: "CV"
+author: "Your Name"
+jobtitle: ""
+address: "Department, Institution, City, Country"
+email: "you@example.org"
+phone: ""
+github: "your-github-handle"
+web: "your-website.example.org"
+orcid: ""
+fontawesome: true
+updated: true
+keywords:
+  - academic CV
+  - Quarto
+  - LaTeX
+
+format:
+  qkit-pdf: default
+---
+
+\vspace{5pt}
+# Education
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{tabular}{L!{\VRule width 1pt}R}
+\textit{2022 - Current}&{\textbf{Your Department}, Your University, Country \newline Ph.D. in Your Field}\\[15pt]
+\textit{2017 - 2019}&{\textbf{Your Department}, Earlier University, Country \newline M.Sc. in Your Field}\\[15pt]
+\textit{2012 - 2017}&{\textbf{Your Department}, Earlier University, Country \newline B.A. in Your Field}
+\end{tabular}
+
+# Publications
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
+\item Title of Your First Published Paper, 2026, with Co-Author A and Co-Author B. \textbf{Journal Name}, vol. X, p. 1-20. [\href{https://example.org/paper1}{Link}]
+\item Title of Your Second Published Paper, 2025, with Co-Author C. \textbf{Another Journal}, vol. Y, p. 100-150. [\href{https://example.org/paper2}{Link}]
+\end{enumerate}
+
+# Working Papers
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
+\item Title of Your First Working Paper, 2026, with Co-Author A.
+\item Title of Your Second Working Paper, 2026. Available at \href{https://example.org/ssrn}{SSRN}.
+\end{enumerate}
+
+# Work-in-Progress
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
+\item Title of an In-Progress Project, with Co-Author A.
+\item Another In-Progress Project.
+\end{enumerate}
+
+# Statistical Software Packages
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
+\item yourpackage: One-line Description, 2026. \textit{R package version 0.1.0}. [\href{https://example.org/yourpackage}{Link}]
+\end{enumerate}
+
+# Conferences and Workshops
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{itemize}
+\item Conference Name A (City, Year), Conference Name B (City, Year), Workshop C* (City, Year).
+\item \hspace{1em} *\textit{Presentations by co-authors}
+\end{itemize}
+
+# Research Experience
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+- **Your University**, Country
+
+    \begin{tabular}{L!{\VRule width 1pt}R}
+    \textit{2022 - Current}&{Postgraduate Researcher}\\[2.5pt]
+    \end{tabular}
+
+# Teaching Experience
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+- **Undergraduate** \textbf{\small as Teaching Assistant}
+
+    \begin{tabular}{L!{\VRule width 1pt}R}
+    \textit{Fall 2025}&{\textbf{Course Name} \newline Your Department, Your University}
+    \end{tabular}
+
+# Grants and Scholarships
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{tabular}{L!{\VRule width 1pt}R}
+\textit{2022 - Current}&{Name of Your Scholarship.}
+\end{tabular}
+
+# Other Academic Services
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{tabular}{L!{\VRule width 1pt}R}
+\textbf{Referee}&{Journal A, Journal B, Journal C.}
+\end{tabular}
+
+# Languages
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{tabular}{L!{\VRule width 1pt}R}
+\textbf{Language A}&{Native}\\[2.5pt]
+\textbf{Language B}&{Fluent}
+\end{tabular}
+
+# Research Interests
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+List your research interests here as a comma-separated paragraph.
+
+# References
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{multicols}{2}
+
+    \textbf{\href{https://example.org/referee-a}{Referee A, Ph.D.}}\\
+    Department \\
+    University \\
+    Address \\
+    \Letter\ \href{mailto:a@example.org}{a@example.org}
+
+\vfill\columnbreak
+
+    \textbf{\href{https://example.org/referee-b}{Referee B, Ph.D.}}\\
+    Department \\
+    University \\
+    Address \\
+    \Letter\ \href{mailto:b@example.org}{b@example.org}
+
+\end{multicols}
+
+# Other
+\vspace{-15pt}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{tabular}{L!{\VRule width 1pt}R}
+\textbf{Nationality}&{Your Nationality}\\
+\end{tabular}
