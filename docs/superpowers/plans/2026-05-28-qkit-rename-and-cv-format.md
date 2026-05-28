@@ -304,7 +304,7 @@ Position: left
 
 Parameter: type
 Widget: TextInput
-Label: format type (do not edit)
+Label: (do not edit) format type
 Default: beamer
 Position: left
 ```
