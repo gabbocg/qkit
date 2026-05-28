@@ -1,7 +1,7 @@
 ---
 title: "Tips + Tricks with Beamer"
 subtitle: "A Quarto Perspective"
-thanks: "gcabrerag.rbind.io"
+thanks: "yourwebsite.com"
 
 author:
     - name: Gabriel Cabrera
