@@ -68,8 +68,11 @@ The goal of this phase: at the end, `library(qbeamer)` no longer works, `library
 Change line 1 from `Package: qbeamer` to `Package: qkit`.
 Change line 2 from `Title: Custom Quarto Beamer Presentation Template` to `Title: A Small Set of Useful Quarto Templates`.
 Change line 9 description first sentence from `Provides a Quarto extension and RStudio integration for creating professional Beamer presentations.` to `Provides Quarto extensions and RStudio integration for creating Beamer presentations and academic CVs.`.
-Update `URL:` from `https://github.com/gcabrerag/qbeamer` to `https://github.com/gcabrerag/qkit`.
-Update `BugReports:` accordingly.
+**Important — GitHub handle correction:** the existing `DESCRIPTION` has `URL: https://github.com/gcabrerag/qbeamer` and `BugReports: https://github.com/gcabrerag/qbeamer/issues`, **but the actual repo handle is `GabboCg`** (verified via `git remote -v` → `https://github.com/GabboCg/qbeamer`). Update to:
+- `URL: https://github.com/GabboCg/qkit`
+- `BugReports: https://github.com/GabboCg/qkit/issues`
+
+Use `GabboCg` (capital G, capital C) consistently across every renamed file in this plan — never `gcabrerag`.
 
 - [ ] **Step 2: Verify**
 
@@ -301,20 +304,27 @@ Position: left
 
 Parameter: type
 Widget: TextInput
-Label: (do not edit) format type
+Label: format type (do not edit)
 Default: beamer
 Position: left
 ```
 
-Note the hidden `type` parameter — RStudio passes all `.dcf` parameters as arguments to the binding function, so this is how `create_project()` receives `type = "beamer"`.
+**Note on the `type` parameter UX**: RStudio's project-template `.dcf` widgets do not include a hidden type; the available options are `TextInput`, `CheckboxInput`, `SelectInput`, `FileInput`. We use `TextInput` with a clear "(do not edit)" label, and `create_project()` validates the value via `match.arg()`, so an invalid edit fails fast with a readable error instead of silently producing the wrong skeleton. This is intentional and acceptable. Programmatic callers (`qkit::create_project(path, type = "beamer")`) bypass this widget entirely.
 
 - [ ] **Step 3: Update beamer.qmd skeleton**
 
-In `inst/rstudio/templates/project/skeleton/beamer.qmd`, replace the format line `qbeamer-beamer: default` with `qkit-beamer: default`. Verify with:
+In `inst/rstudio/templates/project/skeleton/beamer.qmd`, replace **every** `qbeamer` reference (there are four: the format key on line 33, the prose "**qbeamer**" on line 38, the prose "qbeamer defines four custom colors" on line 76, and the URL/label pair on line 227). Specific replacements:
+
+- Line 33: `qbeamer-beamer: default` → `qkit-beamer: default`
+- Line 38: `This skeleton demonstrates the main features of **qbeamer**` → `This skeleton demonstrates the main features of **qkit-beamer**`
+- Line 76: `qbeamer defines four custom colors` → `qkit-beamer defines four custom colors`
+- Line 227: `- **qbeamer source**: [https://github.com/GabboCg/qbeamer](https://github.com/GabboCg/qbeamer)` → `- **qkit source**: [https://github.com/GabboCg/qkit](https://github.com/GabboCg/qkit)`
+
+Verify with:
 ```bash
-grep -n "qbeamer\|qkit-beamer" inst/rstudio/templates/project/skeleton/beamer.qmd
+grep -n "qbeamer" inst/rstudio/templates/project/skeleton/beamer.qmd
 ```
-Expected: only `qkit-beamer: default` matches.
+Expected: no matches.
 
 ### Task 1.8: Rename example file
 
@@ -328,14 +338,14 @@ Expected: only `qkit-beamer: default` matches.
 git mv inst/examples/example.qmd inst/examples/beamer-example.qmd
 ```
 
-- [ ] **Step 2: Update format key**
+- [ ] **Step 2: Update qbeamer references**
 
-In `inst/examples/beamer-example.qmd`, replace `qbeamer-beamer: default` with `qkit-beamer: default`.
+In `inst/examples/beamer-example.qmd`, replace **every** `qbeamer` reference (mirroring the skeleton — same file structure). At minimum the format key on line ~42 needs updating. Use the same find/replace mapping as Task 1.7 Step 3.
 
 ```bash
-grep -n "qbeamer\|qkit-beamer" inst/examples/beamer-example.qmd
+grep -n "qbeamer" inst/examples/beamer-example.qmd
 ```
-Expected: only `qkit-beamer: default` matches.
+Expected: no matches.
 
 ### Task 1.9: Rename .Rproj file
 
@@ -369,7 +379,18 @@ cat README.md
 
 - [ ] **Step 2: Replace `qbeamer` references**
 
-In `README.md`: replace every literal `qbeamer` with `qkit` where it refers to the package name, and `qbeamer-beamer` with `qkit-beamer` where it refers to the format key. Update install instructions (`remotes::install_github("gcabrerag/qbeamer")` → `remotes::install_github("gcabrerag/qkit")`).
+In `README.md`: replace every literal `qbeamer` with `qkit` where it refers to the package name, and `qbeamer-beamer` with `qkit-beamer` where it refers to the format key.
+
+Specific replacements based on the current README:
+- Heading `# qbeamer` → `# qkit`
+- Logo link `<a href="https://github.com/GabboCg/qbeamer">` → `<a href="https://github.com/GabboCg/qkit">`
+- Overview paragraph: `qbeamer is an R package that provides…` → `qkit is an R package that provides…`. Expand the description to acknowledge it now ships multiple formats (Beamer presentations and academic CVs).
+- Install instruction `remotes::install_github("GabboCg/qbeamer")` → `remotes::install_github("GabboCg/qkit")` (use `GabboCg`, not `gcabrerag`).
+- RStudio entry name `Quarto Beamer Presentation (qbeamer)` → `qkit Beamer Presentation`.
+- Function call `qbeamer::qbeamer_render` → `qkit::qkit_render` (and same for preview / install_extension).
+- Format key example `qbeamer-beamer: default` → `qkit-beamer: default`.
+
+Add a brief "CV format" section after the Beamer section showing the equivalent `format: qkit-cv: default` YAML stub and a one-line `qkit::create_project("my-cv", type = "cv")` example.
 
 - [ ] **Step 3: Update CLAUDE.md**
 
@@ -598,7 +619,8 @@ test_that("detect_qkit_formats returns empty for non-qkit format", {
 test_that("detect_qkit_formats returns empty when YAML parse fails", {
   tmp <- tempfile(fileext = ".qmd")
   on.exit(unlink(tmp))
-  writeLines(c("---", "title: [unclosed", "---", "body"), tmp)
+  # Unterminated single-quoted string is a guaranteed yaml.load parse error.
+  writeLines(c("---", "key: 'unterminated", "---", "body"), tmp)
   expect_equal(qkit:::detect_qkit_formats(tmp), character(0))
 })
 
@@ -1261,6 +1283,10 @@ ls /tmp/qkit-beamer-project/index.pdf
 ```
 Expected: PDF exists. Regression check that the beamer scaffold flow still works.
 
+- [ ] **Step 5: Manual RStudio GUI smoke test (optional but recommended)**
+
+Open RStudio with the package installed (`devtools::install()` already done). Use *File > New Project > New Directory* and confirm both **qkit Beamer Presentation** and **qkit CV** appear as options. Create one of each into temporary directories and confirm the `index.qmd` opens with the substituted `title`/`author`. This can't be automated from a Bash script; it's a one-time eyeball check.
+
 ### Task 4.3: Commit Phase 4
 
 - [ ] **Step 1: Commit**
@@ -1323,9 +1349,15 @@ Expected: both PDFs exist with nonzero size.
 - [ ] **Step 4: Verify no stray qbeamer references**
 
 ```bash
-grep -rn "qbeamer" R/ inst/ DESCRIPTION NAMESPACE CLAUDE.md README.md man/ 2>/dev/null
+grep -rn --include="*.R" --include="*.Rd" --include="*.qmd" --include="*.tex" --include="*.yml" --include="*.dcf" --include="*.md" "qbeamer" R/ inst/ DESCRIPTION NAMESPACE CLAUDE.md README.md man/ 2>/dev/null
 ```
-Expected: no matches. If anything appears, fix it before moving on.
+Expected: no matches. The `--include` filters skip binary files (e.g., `man/figures/logo.png`) which would otherwise produce noisy "binary file matches" lines.
+
+Also confirm GitHub handle consistency:
+```bash
+grep -rn --include="*.R" --include="*.Rd" --include="*.qmd" --include="*.tex" --include="*.yml" --include="*.dcf" --include="*.md" "gcabrerag" R/ inst/ DESCRIPTION NAMESPACE CLAUDE.md README.md man/ 2>/dev/null
+```
+Expected: no matches (the canonical handle is `GabboCg`, never `gcabrerag`).
 
 ### Task 5.2: Manual visual review (CV)
 
