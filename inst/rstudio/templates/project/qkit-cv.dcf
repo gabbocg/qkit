@@ -1,0 +1,16 @@
+Binding: create_project
+Title: qkit CV
+OpenFiles: index.qmd
+Subtitle: Create a new academic CV from the qkit template.
+
+Parameter: author
+Widget: TextInput
+Label: Your name
+Default: Your Name
+Position: left
+
+Parameter: type
+Widget: TextInput
+Label: (do not edit) format type
+Default: cv
+Position: left
