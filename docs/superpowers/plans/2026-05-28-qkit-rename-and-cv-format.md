@@ -2,15 +2,19 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rename the R package `qbeamer` to `qkit`, generalize its install/scaffold API for multiple Quarto formats, migrate the existing Beamer extension to `qkit-beamer`, and add a new `qkit-cv` LuaLaTeX CV extension with a feature-demo skeleton.
+**Goal:** Rename the R package `qbeamer` to `qkit`, generalize its scaffold API for multiple Quarto formats, migrate the existing Beamer extension into a `beamer/` subdirectory of the new single `qkit` extension, and add a CV (`pdf` format) under the same extension with a feature-demo skeleton.
 
-**Architecture:** The package ships one Quarto extension per format under `inst/extdata/_extensions/qkit-<type>/`. A single `install_extension(type = ...)` function copies the chosen extension(s) into a project. `create_project(type = ...)` scaffolds a new project with the matching skeleton (always written as `index.qmd`). `qkit_render()` / `qkit_preview()` are format-agnostic wrappers around `quarto::quarto_render/preview` that call an internal `ensure_extension()` which scans the YAML front matter to auto-install whichever `qkit-*` extension the document references.
+**Architecture:** The package ships ONE Quarto extension at `inst/extdata/_extensions/qkit/` that contributes two formats (`beamer` and `pdf`). Format-specific LaTeX assets live in `beamer/` and `cv/` subdirectories. `install_extension()` (no `type` arg) copies the single extension into a project. `create_project(type = ...)` scaffolds a new project with the matching skeleton (always written as `index.qmd`). `qkit_render()` / `qkit_preview()` are format-agnostic wrappers around `quarto::quarto_render/preview` that call an internal `ensure_extension()` which scans the YAML for any `qkit-*` reference and auto-installs the extension if absent.
 
 **Tech Stack:** R (S3-style functions, `fs` for filesystem ops, `yaml` for front-matter parsing, `testthat` for tests, `devtools`/`roxygen2` for package management), Quarto extensions (YAML config + Pandoc partials), LuaLaTeX (CV), XeLaTeX (Beamer).
 
 **Spec reference:** `docs/superpowers/specs/2026-05-28-qkit-rename-and-cv-format-design.md`
 
-**Working location:** main branch in `/Users/gabbocg/Dropbox (Personal)/Documentos/AI/qbeamer/`. No worktree was created during brainstorming; the user opted to work directly on main. The rename is a hard cut — there is no rollback path other than `git revert`, so commit frequently.
+**Working location:** `/Users/gabbocg/Dropbox (Personal)/Documentos/AI/qbeamer/.worktrees/qkit-rename/` on branch `feature/qkit-rename`. All commits land on the feature branch; the worktree merges back to `main` at the end via `superpowers:finishing-a-development-branch`. The rename is a hard cut.
+
+**Plan revision history**:
+- **2026-05-28 initial**: planned two extensions `qkit-beamer/` and `qkit-cv/` with YAML keys `qkit-beamer` / `qkit-cv`.
+- **2026-05-28 pivot (during Phase 1 execution)**: discovered Quarto resolves `format: <ext>-<fmt>` by splitting at the last hyphen, so `format: qkit-beamer` referenced a non-existent extension `qkit`. Pivoted to ONE extension `qkit/` contributing both formats, with subdirectories. Clean YAML keys (`qkit-beamer`, `qkit-pdf`) and matches Quarto ecosystem conventions. Plan tasks below reflect the revised design.
 
 **Out of scope (deferred to Spec B):** `qkit-manuscript` format, GitHub repo rename, pkgdown site, CI, NEWS.md, `qbeamer` deprecation shims.
 
@@ -118,9 +122,9 @@ In `R/render.R`:
 ```r
 ensure_extension <- function(input) {
   project_dir <- fs::path_dir(fs::path_abs(input))
-  ext_dir <- fs::path(project_dir, "_extensions", "qkit-beamer")
+  ext_dir <- fs::path(project_dir, "_extensions", "qkit")
   if (!fs::dir_exists(ext_dir)) {
-    install_extension(path = project_dir, type = "beamer")
+    install_extension(path = project_dir)
   }
   invisible(TRUE)
 }
@@ -135,76 +139,92 @@ grep -n "qbeamer_" R/render.R
 ```
 Expected: no matches.
 
-### Task 1.4: Rename extension directory and contents
+### Task 1.4: Reorganize extension directory into the single `qkit/` layout
 
 **Files:**
-- Rename: `inst/extdata/_extensions/qbeamer/` → `inst/extdata/_extensions/qkit-beamer/`
-- Modify: `inst/extdata/_extensions/qkit-beamer/_extension.yml`
+- Restructure: `inst/extdata/_extensions/qbeamer/` → `inst/extdata/_extensions/qkit/beamer/` (preamble.tex, title.tex move into the `beamer/` subdirectory)
+- Replace: `inst/extdata/_extensions/qkit/_extension.yml` (new content; old `qbeamer/_extension.yml` removed)
 
-- [ ] **Step 1: Rename the directory**
+- [ ] **Step 1: Move the LaTeX assets into the beamer/ subdirectory**
 
 ```bash
-git mv inst/extdata/_extensions/qbeamer inst/extdata/_extensions/qkit-beamer
+mkdir -p inst/extdata/_extensions/qkit/beamer
+git mv inst/extdata/_extensions/qbeamer/preamble.tex inst/extdata/_extensions/qkit/beamer/preamble.tex
+git mv inst/extdata/_extensions/qbeamer/title.tex inst/extdata/_extensions/qkit/beamer/title.tex
+git rm inst/extdata/_extensions/qbeamer/_extension.yml
+rmdir inst/extdata/_extensions/qbeamer 2>/dev/null || true
 ```
 
-- [ ] **Step 2: Update `_extension.yml`**
+- [ ] **Step 2: Write the new `_extension.yml`**
 
-In `inst/extdata/_extensions/qkit-beamer/_extension.yml`, change line 1 from `title: qbeamer` to `title: qkit-beamer`.
+Create `inst/extdata/_extensions/qkit/_extension.yml` with the following content (declares only the `beamer` format for now; the `pdf` format is added in Phase 3):
+
+```yaml
+title: qkit
+author: Gabriel Cabrera Guzmán
+version: 0.1.0
+contributes:
+  formats:
+    beamer:
+      include-in-header:
+        - beamer/preamble.tex
+      template-partials:
+        - beamer/title.tex
+      pdf-engine: xelatex
+      navigation: horizontal
+      theme: default
+      colortheme: default
+      aspectratio: 43
+      keep-tex: true
+```
+
+Note the subdirectory paths `beamer/preamble.tex` and `beamer/title.tex` — Quarto resolves these relative to the extension folder.
 
 - [ ] **Step 3: Verify**
 
 ```bash
 ls inst/extdata/_extensions/
-grep title inst/extdata/_extensions/qkit-beamer/_extension.yml
+ls inst/extdata/_extensions/qkit/
+ls inst/extdata/_extensions/qkit/beamer/
+grep title inst/extdata/_extensions/qkit/_extension.yml
 ```
-Expected: only `qkit-beamer/` listed; title line reads `title: qkit-beamer`.
+Expected: only `qkit/` listed at the extensions root; `_extension.yml` and `beamer/` directory inside `qkit/`; `preamble.tex` and `title.tex` inside `qkit/beamer/`; the title line reads `title: qkit`.
 
-### Task 1.5: Refactor install_extension to take type argument
+### Task 1.5: Rewrite install_extension (no type arg)
 
 **Files:**
 - Modify: `R/install_extension.R`
 
 - [ ] **Step 1: Rewrite the function**
 
-Final contents of `R/install_extension.R`:
+Under the single-extension design, `install_extension()` takes no `type` argument — there's only one extension to install. Final contents of `R/install_extension.R`:
 
 ```r
-#' Install one or more qkit Quarto extensions
+#' Install the qkit Quarto extension
 #'
-#' Copies the requested qkit Quarto extension files into a project
-#' directory, making the corresponding format(s) available for use.
+#' Copies the qkit Quarto extension files into a project directory,
+#' making the `qkit-beamer` and `qkit-pdf` formats available.
 #'
 #' @param path Path to the project directory. Defaults to the current
 #'   working directory.
-#' @param type Character vector of format types to install. Currently
-#'   supported: `"beamer"` and `"cv"`. Defaults to `"beamer"`.
-#' @param overwrite If `TRUE`, overwrite existing extension files.
+#' @param overwrite If `TRUE`, overwrite the existing extension.
 #'   Defaults to `FALSE`.
 #'
-#' @return Invisibly returns a character vector of installed target
-#'   directories, one per `type`.
+#' @return Invisibly returns the installed target directory.
 #' @export
-install_extension <- function(path = ".", type = "beamer", overwrite = FALSE) {
-  type <- match.arg(type, choices = c("beamer", "cv"), several.ok = TRUE)
-  fs::dir_create(fs::path(path, "_extensions"))
-  targets <- character(length(type))
-  for (i in seq_along(type)) {
-    t <- type[[i]]
-    ext_name <- paste0("qkit-", t)
-    target <- fs::path(path, "_extensions", ext_name)
-    if (fs::dir_exists(target) && !overwrite) {
-      message("qkit extension '", ext_name, "' already installed at '",
-              target, "'. Use overwrite = TRUE to reinstall.")
-      targets[[i]] <- target
-      next
-    }
-    source <- system.file("extdata", "_extensions", ext_name,
-                          package = "qkit", mustWork = TRUE)
-    fs::dir_copy(source, target, overwrite = overwrite)
-    message("qkit extension '", ext_name, "' installed to '", target, "'.")
-    targets[[i]] <- target
+install_extension <- function(path = ".", overwrite = FALSE) {
+  target <- fs::path(path, "_extensions", "qkit")
+  if (fs::dir_exists(target) && !overwrite) {
+    message("qkit extension already installed at '", target,
+            "'. Use overwrite = TRUE to reinstall.")
+    return(invisible(target))
   }
-  invisible(targets)
+  fs::dir_create(fs::path(path, "_extensions"))
+  source <- system.file("extdata", "_extensions", "qkit",
+                        package = "qkit", mustWork = TRUE)
+  fs::dir_copy(source, target, overwrite = overwrite)
+  message("qkit extension installed to '", target, "'.")
+  invisible(target)
 }
 ```
 
@@ -259,7 +279,7 @@ create_project <- function(path,
   }
 
   writeLines(content, fs::path(path, "index.qmd"), useBytes = TRUE)
-  install_extension(path = path, type = type)
+  install_extension(path = path)
   invisible(path)
 }
 ```
@@ -390,16 +410,23 @@ Specific replacements based on the current README:
 - Function call `qbeamer::qbeamer_render` → `qkit::qkit_render` (and same for preview / install_extension).
 - Format key example `qbeamer-beamer: default` → `qkit-beamer: default`.
 
-Add a brief "CV format" section after the Beamer section showing the equivalent `format: qkit-cv: default` YAML stub and a one-line `qkit::create_project("my-cv", type = "cv")` example.
+Add a brief "CV format" section after the Beamer section showing the equivalent `format: qkit-pdf: default` YAML stub and a one-line `qkit::create_project("my-cv", type = "cv")` example.
 
-- [ ] **Step 3: Update CLAUDE.md**
+- [ ] **Step 3: Update CLAUDE.md (if it exists)**
 
-In `CLAUDE.md`:
+`CLAUDE.md` may or may not be present in the working tree (it has been deleted in past commits and is gitignored). Check:
+```bash
+ls CLAUDE.md 2>/dev/null
+```
+
+If present:
 - Replace `qbeamer` with `qkit` throughout.
-- In the "Architecture" section, update extension path references from `inst/extdata/_extensions/qbeamer/` to `inst/extdata/_extensions/qkit-beamer/` and add a line about the upcoming `qkit-cv/` extension (to be created in Phase 3).
-- The current `CLAUDE.md` incorrectly mentions an `inst/rmarkdown/templates/qbeamer-presentation/` directory that does not exist. Either remove that line or replace it with the future state — for now, **remove** the RMarkdown templates bullet entirely; Phase 4 may re-add it.
-- Update the function name references (`qbeamer_render` → `qkit_render`).
-- Update format key examples to `qkit-beamer`.
+- In the "Architecture" section, update extension path references from `inst/extdata/_extensions/qbeamer/` to `inst/extdata/_extensions/qkit/` and describe the single-extension layout with `beamer/` and `cv/` subdirectories.
+- Remove any reference to a non-existent `inst/rmarkdown/templates/qbeamer-presentation/` directory.
+- Update function name references (`qbeamer_render` → `qkit_render`).
+- Update format key examples to `qkit-beamer` and `qkit-pdf`.
+
+If absent, this step is a no-op — proceed to Step 4.
 
 - [ ] **Step 4: Verify**
 
@@ -458,7 +485,7 @@ mkdir -p /tmp/qkit-phase1-render
 cp inst/examples/beamer-example.qmd /tmp/qkit-phase1-render/
 Rscript -e 'qkit::qkit_render("/tmp/qkit-phase1-render/beamer-example.qmd")'
 ```
-Expected: a `.pdf` file appears at `/tmp/qkit-phase1-render/beamer-example.pdf`. Auto-install drops `_extensions/qkit-beamer/` into that directory. Exit status 0.
+Expected: a `.pdf` file appears at `/tmp/qkit-phase1-render/beamer-example.pdf`. Auto-install drops `_extensions/qkit/` (containing the `beamer/` subdirectory) into that directory. Exit status 0.
 
 - [ ] **Step 3: Verify the PDF**
 
@@ -492,7 +519,9 @@ Rename qbeamer to qkit and prepare multi-format API
 
 Phase 1 of Spec A. Renames the R package (DESCRIPTION, R/zzz.R,
 R/render.R, R/install_extension.R, R/create_project.R), the
-Quarto extension directory (qbeamer -> qkit-beamer), the RStudio
+Quarto extension directory (qbeamer -> qkit, with the existing
+beamer assets relocated to a beamer/ subdirectory inside the
+single qkit extension), the RStudio
 project template (.dcf and skeleton), the example file, the
 .Rproj filename, README, and CLAUDE.md. Regenerates NAMESPACE
 and man pages. install_extension() and create_project() now take
@@ -584,8 +613,11 @@ Expected: both exist.
 ```r
 # Tests for the internal qkit format-detection helper used by ensure_extension().
 # The helper takes a path to a .qmd file and returns a character vector of
-# detected qkit format types ("beamer", "cv"), normalizing across the YAML
+# detected qkit base formats ("beamer", "pdf"), normalizing across the YAML
 # `format:` key being either a scalar string or a named map.
+# Under Option B all qkit formats live under one extension folder; the
+# helper's job is just to confirm at least one qkit-* format is referenced
+# so ensure_extension() can install the extension when missing.
 
 test_that("detect_qkit_formats reads a scalar format key", {
   tmp <- tempfile(fileext = ".qmd")
@@ -597,16 +629,16 @@ test_that("detect_qkit_formats reads a scalar format key", {
 test_that("detect_qkit_formats reads a mapped format key", {
   tmp <- tempfile(fileext = ".qmd")
   on.exit(unlink(tmp))
-  writeLines(c("---", "title: x", "format:", "  qkit-cv: default", "---", "body"), tmp)
-  expect_equal(qkit:::detect_qkit_formats(tmp), "cv")
+  writeLines(c("---", "title: x", "format:", "  qkit-pdf: default", "---", "body"), tmp)
+  expect_equal(qkit:::detect_qkit_formats(tmp), "pdf")
 })
 
 test_that("detect_qkit_formats returns multiple types when multiple listed", {
   tmp <- tempfile(fileext = ".qmd")
   on.exit(unlink(tmp))
   writeLines(c("---", "title: x", "format:", "  qkit-beamer: default",
-               "  qkit-cv: default", "---", "body"), tmp)
-  expect_setequal(qkit:::detect_qkit_formats(tmp), c("beamer", "cv"))
+               "  qkit-pdf: default", "---", "body"), tmp)
+  expect_setequal(qkit:::detect_qkit_formats(tmp), c("beamer", "pdf"))
 })
 
 test_that("detect_qkit_formats returns empty for non-qkit format", {
@@ -649,12 +681,12 @@ Expected: failure — `detect_qkit_formats` is not defined yet.
 Append to `R/render.R` (before or after `ensure_extension`):
 
 ```r
-#' Detect qkit format types referenced in a Quarto document's YAML
+#' Detect qkit base formats referenced in a Quarto document's YAML
 #'
 #' @param input Path to a `.qmd` file.
-#' @return Character vector of detected qkit format types (subset of
-#'   `c("beamer", "cv")`). Empty if no qkit format is referenced or if
-#'   the front matter cannot be parsed.
+#' @return Character vector of detected qkit base formats (subset of
+#'   `c("beamer", "pdf")`). Empty if no qkit format is referenced or
+#'   if the front matter cannot be parsed.
 #' @noRd
 detect_qkit_formats <- function(input) {
   lines <- tryCatch(readLines(input, warn = FALSE, encoding = "UTF-8"),
@@ -672,7 +704,7 @@ detect_qkit_formats <- function(input) {
   prefix <- "qkit-"
   hits <- keys[startsWith(keys, prefix)]
   types <- substring(hits, nchar(prefix) + 1L)
-  types <- types[types %in% c("beamer", "cv")]
+  types <- types[types %in% c("beamer", "pdf")]
   unique(types)
 }
 ```
@@ -694,11 +726,11 @@ Expected: all 6 tests pass.
 Replace the `ensure_extension()` body from Phase 1 with:
 
 ```r
-#' Auto-install qkit extension(s) referenced by a Quarto file
+#' Auto-install the qkit extension when referenced by a Quarto file
 #'
-#' Inspects the YAML front matter of `input`, detects which `qkit-*`
-#' formats are referenced, and ensures each corresponding extension
-#' directory exists next to `input`. Installs any missing ones.
+#' Inspects the YAML front matter of `input`. If any `qkit-*` format is
+#' referenced and `_extensions/qkit/` is missing next to `input`,
+#' installs it.
 #'
 #' Silent no-op if no qkit format is referenced or the YAML cannot
 #' be parsed — Quarto will report any actual error.
@@ -709,11 +741,8 @@ ensure_extension <- function(input) {
   types <- detect_qkit_formats(input)
   if (length(types) == 0L) return(invisible(FALSE))
   project_dir <- fs::path_dir(fs::path_abs(input))
-  missing <- types[!vapply(types, function(t) {
-    fs::dir_exists(fs::path(project_dir, "_extensions", paste0("qkit-", t)))
-  }, logical(1))]
-  if (length(missing) > 0L) {
-    install_extension(path = project_dir, type = missing)
+  if (!fs::dir_exists(fs::path(project_dir, "_extensions", "qkit"))) {
+    install_extension(path = project_dir)
   }
   invisible(TRUE)
 }
@@ -776,33 +805,41 @@ EOF
 
 ---
 
-## Phase 3: Build the qkit-cv extension
+## Phase 3: Add the CV format to the qkit extension
 
-This phase creates the new extension directory, its `_extension.yml`, the LaTeX preamble, the title-header partial, and a feature-demo skeleton.
+This phase adds the `pdf` format (the CV) as a second contributed format under the existing single `qkit` extension, with its LaTeX assets in a `cv/` subdirectory.
 
-### Task 3.1: Create extension directory and _extension.yml
+### Task 3.1: Extend `_extension.yml` with the pdf format
 
 **Files:**
-- Create: `inst/extdata/_extensions/qkit-cv/_extension.yml`
+- Modify: `inst/extdata/_extensions/qkit/_extension.yml`
 
-- [ ] **Step 1: Create dir and file**
+- [ ] **Step 1: Append the pdf format block to the existing _extension.yml**
 
-```bash
-mkdir -p inst/extdata/_extensions/qkit-cv
-```
+The file already declares the `beamer` format (from Task 1.4). Add a sibling `pdf` block under `contributes.formats`. Final contents:
 
-`inst/extdata/_extensions/qkit-cv/_extension.yml`:
 ```yaml
-title: qkit-cv
+title: qkit
 author: Gabriel Cabrera Guzmán
 version: 0.1.0
 contributes:
   formats:
+    beamer:
+      include-in-header:
+        - beamer/preamble.tex
+      template-partials:
+        - beamer/title.tex
+      pdf-engine: xelatex
+      navigation: horizontal
+      theme: default
+      colortheme: default
+      aspectratio: 43
+      keep-tex: true
     pdf:
       include-in-header:
-        - preamble.tex
+        - cv/preamble.tex
       template-partials:
-        - before-body.tex
+        - cv/before-body.tex
       pdf-engine: lualatex
       geometry:
         - margin=0.70in
@@ -819,22 +856,26 @@ contributes:
 - [ ] **Step 2: Verify**
 
 ```bash
-cat inst/extdata/_extensions/qkit-cv/_extension.yml
+cat inst/extdata/_extensions/qkit/_extension.yml
 ```
-Expected: contents above.
+Expected: contents above with both `beamer` and `pdf` formats declared.
 
-### Task 3.2: Create preamble.tex
+### Task 3.2: Create cv/preamble.tex
 
 **Files:**
-- Create: `inst/extdata/_extensions/qkit-cv/preamble.tex`
+- Create: `inst/extdata/_extensions/qkit/cv/preamble.tex`
 
 - [ ] **Step 1: Write the preamble**
 
-`inst/extdata/_extensions/qkit-cv/preamble.tex`:
+```bash
+mkdir -p inst/extdata/_extensions/qkit/cv
+```
+
+`inst/extdata/_extensions/qkit/cv/preamble.tex`:
 ```latex
-% qkit-cv preamble — included by Quarto via include-in-header.
-% Adds CV-specific packages, macros, and styling on top of Quarto's
-% default Pandoc LaTeX template.
+% qkit CV preamble — included by Quarto via include-in-header for the
+% qkit-pdf format. Adds CV-specific packages, macros, and styling on
+% top of Quarto's default Pandoc LaTeX template.
 
 \usepackage{multicol}
 \usepackage{fontspec}
@@ -891,20 +932,21 @@ Expected: contents above.
 - [ ] **Step 2: Verify**
 
 ```bash
-wc -l inst/extdata/_extensions/qkit-cv/preamble.tex
+wc -l inst/extdata/_extensions/qkit/cv/preamble.tex
 ```
 Expected: ~50 lines.
 
-### Task 3.3: Create before-body.tex
+### Task 3.3: Create cv/before-body.tex
 
 **Files:**
-- Create: `inst/extdata/_extensions/qkit-cv/before-body.tex`
+- Create: `inst/extdata/_extensions/qkit/cv/before-body.tex`
 
 - [ ] **Step 1: Write the partial**
 
-`inst/extdata/_extensions/qkit-cv/before-body.tex`:
+`inst/extdata/_extensions/qkit/cv/before-body.tex`:
 ```latex
-% qkit-cv before-body partial — renders the title header block.
+% qkit CV before-body partial — renders the title header block for the
+% qkit-pdf format.
 % Reads YAML metadata: author (required), jobtitle, address, email,
 % phone, github, web, orcid, fontawesome (bool, default true), updated
 % (bool, default false).
@@ -933,7 +975,7 @@ $if(updated)$ \hspace{2 mm} \emph{Updated:} \today$endif$%
 - [ ] **Step 2: Verify**
 
 ```bash
-wc -l inst/extdata/_extensions/qkit-cv/before-body.tex
+wc -l inst/extdata/_extensions/qkit/cv/before-body.tex
 ```
 Expected: ~25 lines.
 
@@ -964,7 +1006,7 @@ keywords:
   - LaTeX
 
 format:
-  qkit-cv: default
+  qkit-pdf: default
 ---
 
 \vspace{5pt}
@@ -1108,9 +1150,9 @@ List your research interests here as a comma-separated paragraph.
 
 ```bash
 wc -l inst/rstudio/templates/project/skeleton/cv.qmd
-grep -c "qkit-cv" inst/rstudio/templates/project/skeleton/cv.qmd
+grep -c "qkit-pdf" inst/rstudio/templates/project/skeleton/cv.qmd
 ```
-Expected: ~130 lines; `qkit-cv` appears once (in the format key).
+Expected: ~130 lines; `qkit-pdf` appears once (in the format key).
 
 ### Task 3.5: Create the CV example
 
@@ -1149,7 +1191,7 @@ rm -rf /tmp/qkit-cv-render && mkdir /tmp/qkit-cv-render
 cp inst/examples/cv-example.qmd /tmp/qkit-cv-render/
 Rscript -e 'qkit::qkit_render("/tmp/qkit-cv-render/cv-example.qmd")'
 ```
-Expected: succeeds, `cv-example.pdf` appears. Auto-install drops `_extensions/qkit-cv/` next to the file. Exit status 0.
+Expected: succeeds, `cv-example.pdf` appears. Auto-install drops `_extensions/qkit/` next to the file (the same extension that the beamer example also uses; now with the `cv/` subdirectory present). Exit status 0.
 
 - [ ] **Step 3: Check PDF**
 
@@ -1182,25 +1224,27 @@ If any item fails, debug the corresponding LaTeX in preamble.tex or before-body.
 git add -A
 git status
 ```
-Expected: new files in `inst/extdata/_extensions/qkit-cv/`, `inst/rstudio/templates/project/skeleton/cv.qmd`, `inst/examples/cv-example.qmd`.
+Expected: new files in `inst/extdata/_extensions/qkit/cv/`, a modified `inst/extdata/_extensions/qkit/_extension.yml` (now with both formats), `inst/rstudio/templates/project/skeleton/cv.qmd`, and `inst/examples/cv-example.qmd`.
 
 - [ ] **Step 2: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'
-Add qkit-cv Quarto extension and feature-demo skeleton
+Add CV format (qkit-pdf) to the qkit extension
 
-Phase 3 of Spec A. Adds the qkit-cv Quarto extension under
-inst/extdata/_extensions/qkit-cv/ with _extension.yml, a LaTeX
-preamble carrying the CV-specific packages and macros (multicol,
-marvosym, fontawesome, orcidlink, enumitem, the L|R column types
-with VRule, sectsty/titlesec spacing, fancyhdr footer with
-author/title and page/total), and a before-body.tex partial that
+Phase 3 of Spec A. Extends the existing qkit extension's
+_extension.yml to contribute a second format (pdf) for academic
+CVs, alongside the beamer format from Phase 1. Adds a LaTeX
+preamble at inst/extdata/_extensions/qkit/cv/preamble.tex
+carrying the CV-specific packages and macros (multicol, marvosym,
+fontawesome, orcidlink, enumitem, the L|R column types with
+VRule, sectsty/titlesec spacing, fancyhdr footer with author/
+title and page/total), and a cv/before-body.tex partial that
 renders the centered name plus the contact icon row from YAML
-metadata. Ships a feature-demo skeleton at the project template
-and example locations, covering all sections from Education to
-Other with placeholder content and the LaTeX patterns the user
-will copy from.
+metadata. Ships a feature-demo skeleton (format: qkit-pdf) at
+the project template and example locations, covering all
+sections from Education to Other with placeholder content and
+the LaTeX patterns the user will copy from.
 
 Renders end-to-end via qkit::qkit_render() on the example file.
 
