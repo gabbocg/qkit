@@ -88,10 +88,11 @@ install_extension(path = ".", type = "beamer", overwrite = FALSE)
 - Returns invisibly the vector of installed target paths.
 
 ```r
-create_project(path, type = "beamer", title = "Untitled", ...)
+create_project(path, type = "beamer", title = "Untitled Presentation",
+               author = "Your Name", ...)
 ```
-- Creates `path`, copies the matching skeleton (`beamer.qmd` or `cv.qmd`) from `inst/rstudio/templates/project/skeleton/` into `path/<type>.qmd` (or a fixed name like `index.qmd` — see §5.5).
-- For `type = "beamer"`, substitutes `title` placeholder. For `type = "cv"`, substitutes an `author` placeholder instead (CV has no title).
+- Creates `path`, copies the matching skeleton from `inst/rstudio/templates/project/skeleton/` (`beamer.qmd` for `type = "beamer"`, `cv.qmd` for `type = "cv"`) into `path/index.qmd`. The fixed output name `index.qmd` is used regardless of type so RStudio's "open" hook always points at the right file.
+- For `type = "beamer"`, substitutes the `title` placeholder in the skeleton's YAML. For `type = "cv"`, substitutes the `author` placeholder. `title` is ignored for CV; `author` is ignored for Beamer.
 - Calls `install_extension(path = path, type = type)` to drop the extension files.
 - Returns invisibly the project path.
 
@@ -105,9 +106,10 @@ qkit_preview(input, ...)
 ```r
 ensure_extension(input)   # internal
 ```
-- Reads the YAML front matter of `input` using `yaml::read_yaml()` (or `rmarkdown::yaml_front_matter()` — see §6.2).
-- Inspects the `format:` key. If it resolves to `qkit-beamer` or `qkit-cv` and the corresponding `_extensions/qkit-<type>/` dir is missing next to `input`, calls `install_extension(path = dirname(input), type = <type>)`.
-- If the format isn't a recognized `qkit-*` value, the function is a silent no-op — Quarto handles the error path normally.
+- Reads the YAML front matter of `input` by scanning for the leading `---`/`---` block and parsing it with `yaml::yaml.load()` (not `yaml::read_yaml()`, which expects a whole-file YAML document). Wrap in `tryCatch`; on parse error, silently no-op and let Quarto report the issue.
+- Inspects the `format:` key. The key may be a **scalar string** (`format: qkit-beamer`) or a **named map** (`format: { qkit-beamer: default }` / `format:\n  qkit-beamer: default`). The detection helper must normalize both shapes to a character vector of format identifiers before matching against `qkit-beamer` / `qkit-cv`.
+- For each recognized `qkit-<type>` format, if `_extensions/qkit-<type>/` is missing next to `input`, calls `install_extension(path = dirname(input), type = <type>)`.
+- If no `qkit-*` format is detected, silent no-op.
 
 ### 5.3 `qkit-beamer` extension
 
@@ -147,20 +149,33 @@ The format key is `pdf` (not `cv`); users invoke it via `format: qkit-cv` in the
 
 #### 5.4.2 `preamble.tex`
 
-Ports the "stuff I added" block from the user's existing `latex-cv.tex`, stripped of all Pandoc-template conditionals (Quarto's default template already handles fontspec, hyperref, geometry, etc.). Contents include:
+Ports the "stuff I added" block from the user's existing `latex-cv.tex`, stripped of all Pandoc-template conditionals (Quarto's default template already handles geometry, the base hyperref load, fontenc, inputenc/luatex fontspec). The CV preamble adds CV-specific macros on top. Required contents, enumerated for 1:1 coverage:
 
-- `\usepackage{multicol}` — two-column References block.
-- `\usepackage{marvosym}` — `\Letter`, `\Telefon` glyphs.
-- `\usepackage{fontawesome}` — `\faEnvelopeO`, `\faGithub`, `\faGlobe`, `\faPhone` icons in the header.
-- `\usepackage{enumitem}`, `\usepackage{calc}` — list customization for hanging-indent publications.
-- `\usepackage{array, xcolor}` — custom column types `L` (right-aligned, 0.14\textwidth) and `R` (left-aligned, 0.8\textwidth), plus `\VRule` divider.
-- `\usepackage{sectsty}` — section font overrides.
-- `\usepackage{titlesec}` — section spacing tuned to `\titlespacing\section{0pt}{12pt}{4pt}`.
-- `\usepackage{fancyhdr,lastpage}` — page footer with author/title on the left and `page/total` on the right.
+**Packages**
+- `\usepackage{multicol}` — two-column References block (skeleton body).
+- `\usepackage{fontspec}` — explicit load even though Quarto's lualatex template already pulls it; harmless re-load and makes the preamble portable.
+- `\usepackage{marvosym}` — `\Letter` and `\Telefon` glyphs used inside the References section body (NOT in the header — the header uses fontawesome icons).
+- `\usepackage{fontawesome}` — `\faEnvelopeO`, `\faPhone`, `\faGithub`, `\faGlobe` icons in the title header. Requires TeXLive ≥ 2015.
+- `\usepackage{orcidlink}` — `\orcidlink{<id>}` for the optional ORCID field in the title header.
+- `\usepackage{enumitem}` — list customization for hanging-indent numbered publications (`labelindent=0pt,labelwidth=…,label=\arabic*.,itemindent=0em,leftmargin=2.75em`).
+- `\usepackage{calc}` — provides `\widthof{\ref{last-item}}` used inside the enumitem labelwidth above.
+- `\usepackage{array, xcolor}` — needed for the custom column types and the gray vertical-rule helper.
+- `\usepackage{sectsty}` — section/subsection font overrides.
+- `\usepackage{titlesec}` — section spacing.
+- `\usepackage{fancyhdr,lastpage}` — page footer.
 - `\usepackage{parskip}` — paragraph spacing in lists.
-- Itemize override (no bullets, indented).
 
-The `pageof` footer references `$author$` and `$title$` from YAML, which Quarto exposes as `\author{}` / `\title{}` macros once a small `\fancyfoot` snippet is included. Pages: `\thepage/\pageref{LastPage}` on the right.
+**Macros and definitions**
+- `\definecolor{lightgray}{gray}{0.8}` — used by `\VRule`.
+- `\newcolumntype{L}{>{\raggedleft}p{0.14\textwidth}}` — right-aligned date column.
+- `\newcolumntype{R}{p{0.8\textwidth}}` — left-aligned description column.
+- `\newcommand\VRule{\color{lightgray}\vrule width 0.5pt}` — gray vertical rule used as `\begin{tabular}{L!{\VRule width 1pt}R}` separator.
+- `\sectionfont{\rmfamily\mdseries\large\bf}` and `\subsectionfont{\rmfamily\mdseries\normalsize\itshape}`.
+- `\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}` and same for `\subsection`.
+- Itemize redefinition: `\renewenvironment{itemize}{...}{...}` to remove bullets and set `\leftmargin{1.5em}`.
+- `\pagestyle{fancy}`, `\renewcommand{\headrulewidth}{0pt}`, `\renewcommand{\footrulewidth}{0pt}`, blank `\lhead/\chead/\rhead/\lfoot`, `\cfoot{\scriptsize \theauthor\ - \thetitle}` (or equivalent — Quarto exposes `\@author` and `\@title` via Pandoc's default template; the planner verifies the exact macro names during implementation), `\rfoot{\scriptsize \thepage/\pageref{LastPage}}` with `\hypersetup{linkcolor=black}` locally so the page count isn't colored.
+- `\urlstyle{same}` — prevent monospace URLs.
+- The `pdftitle` "(Curriculum Vitae)" suffix that the user's existing template appended is dropped (Quarto handles `pdftitle` via the document title; the suffix is cosmetic and adds a Pandoc-template conditional we don't want to reintroduce).
 
 #### 5.4.3 `before-body.tex`
 
@@ -175,9 +190,10 @@ A Pandoc partial that renders the centered name + contact block before the docum
 | `phone` | string | optional | `\faPhone` + plain text |
 | `github` | string | optional | `\faGithub` + `https://github.com/<github>` link |
 | `web` | string | optional | `\faGlobe` + `https://<web>` link |
-| `orcid` | string | optional | `\orcidlink{<id>}` + ID (uses `\usepackage{orcidlink}` — add to `preamble.tex`) |
+| `orcid` | string | optional | `\orcidlink{<id>}` + ID (`orcidlink` is loaded by `preamble.tex`) |
 | `fontawesome` | bool | `true` | If `false`, fall back to `E-mail:` / `Phone:` / `Github:` / `Web:` labels |
 | `updated` | bool | `false` | If `true`, append `\| Updated: \today` to the contact line |
+| `keywords` | list of strings | optional | Passed to hyperref `pdfkeywords` — Quarto's default template wires this up; no partial code needed |
 
 Each field is conditional (`$if(field)$ … $endif$`), so omitting any one skips its output cleanly.
 
@@ -205,14 +221,19 @@ YAML front matter exposes every metadata field listed in §5.4.3 with placeholde
 ### 5.5 RStudio and RMarkdown templates
 
 **RStudio project templates** (`inst/rstudio/templates/project/`):
-- `qkit-beamer.dcf` — Title: "qkit Beamer Presentation", Binding: `create_project`, passes `type = "beamer"`, exposes a `title` parameter in the wizard.
-- `qkit-cv.dcf` — Title: "qkit CV", Binding: `create_project`, passes `type = "cv"`, exposes an `author` parameter.
+- `qkit-beamer.dcf` — Title: "qkit Beamer Presentation", Binding: `create_project`, passes `type = "beamer"`, exposes a `title` parameter in the wizard. `OpenFiles: index.qmd`.
+- `qkit-cv.dcf` — Title: "qkit CV", Binding: `create_project`, passes `type = "cv"`, exposes an `author` parameter. `OpenFiles: index.qmd`.
 
-Both dcf files point at the shared `skeleton/` directory; `create_project()` picks the right skeleton based on `type`.
+Both dcf files point at the shared `skeleton/` directory; `create_project()` picks the right skeleton file (`beamer.qmd` or `cv.qmd`) based on `type` and writes it out as `index.qmd`.
 
 **RMarkdown templates** (`inst/rmarkdown/templates/`):
-- `qkit-beamer-presentation/` — renamed from `qbeamer-presentation/`.
-- `qkit-cv/` — new, mirrors the project skeleton.
+
+*Note*: this directory does NOT exist in the codebase today. The current `CLAUDE.md` mentions it but the files were never created. The spec treats both subdirectories below as **new**, not renames.
+
+- `qkit-beamer-presentation/` — new; provides a File > New File > From Template entry. Contents: `template.yaml` (name, description, create_dir: true) and `skeleton/skeleton.qmd` (a copy of `inst/rstudio/templates/project/skeleton/beamer.qmd`).
+- `qkit-cv/` — new; same shape, with `skeleton/skeleton.qmd` mirroring `cv.qmd`.
+
+Alternatively the planner may decide to **omit RMarkdown templates entirely from Spec A** since RStudio project templates already cover the "new from template" entry point — and the duplication of skeleton content across two locations is friction. Defer this decision to the implementation plan.
 
 ### 5.6 Migration mechanics
 
@@ -222,16 +243,21 @@ String/path updates required across the codebase:
 |---|---|
 | `Package: qbeamer` → `Package: qkit` | `DESCRIPTION` |
 | `URL` / `BugReports` repo URL | `DESCRIPTION` |
+| `Imports` updated to add `yaml` | `DESCRIPTION` |
 | Function names `qbeamer_render` → `qkit_render`, `qbeamer_preview` → `qkit_preview` | `R/render.R`; exports regenerated into `NAMESPACE` via `devtools::document()` |
+| `.onAttach` startup message strings (`"qbeamer"` x2) | `R/zzz.R` |
 | Extension directory `_extensions/qbeamer/` → `_extensions/qkit-beamer/` | `inst/extdata/_extensions/` |
 | Second extension directory created | `inst/extdata/_extensions/qkit-cv/` |
 | `_extension.yml` `title:` value | both extension yamls |
-| YAML format key `qbeamer-beamer` → `qkit-beamer` | example QMDs, project skeletons, RMarkdown template skeletons |
-| RStudio `.dcf` rename + addition | `inst/rstudio/templates/project/qkit-beamer.dcf`, `qkit-cv.dcf` |
-| RMarkdown template directory rename + addition | `inst/rmarkdown/templates/qkit-beamer-presentation/`, `qkit-cv/` |
-| `CLAUDE.md` references | top of file, examples |
-| Existing `inst/examples/example.qmd` | renamed to `beamer-example.qmd`, format key updated; new `cv-example.qmd` added |
-| `.Rproj` filename (if it embeds the package name) | rename if applicable |
+| YAML format key `qbeamer-beamer` → `qkit-beamer` | `inst/rstudio/templates/project/skeleton/beamer.qmd` (renamed from `skeleton.qmd`), new `cv.qmd`, `inst/examples/beamer-example.qmd`, `inst/examples/cv-example.qmd` |
+| RStudio `.dcf` rename + addition | `inst/rstudio/templates/project/qbeamer.dcf` → `qkit-beamer.dcf`; new `qkit-cv.dcf` |
+| RStudio skeleton file rename + addition | `inst/rstudio/templates/project/skeleton/skeleton.qmd` → `beamer.qmd`; new `cv.qmd` |
+| RMarkdown templates | `inst/rmarkdown/templates/qkit-beamer-presentation/` and `qkit-cv/` — both NEW (do not exist today); see §5.5 for the option to defer |
+| `README.md` references | every `qbeamer` mention → `qkit` or `qkit-beamer`/`qkit-cv` as context requires |
+| `CLAUDE.md` references | top of file, architecture section, examples; also fix the existing incorrect claim about an `inst/rmarkdown/templates/qbeamer-presentation/` directory |
+| `qbeamer.Rproj` → `qkit.Rproj` | rename the file; contents may stay (RStudio reads filename, not contents, for project name) |
+| `inst/examples/example.qmd` → `inst/examples/beamer-example.qmd` | rename + update format key; new `cv-example.qmd` added |
+| `man/` directory | regenerate via `devtools::document()`; delete stale `qbeamer_*.Rd` files explicitly if they survive the rename |
 
 Hard cut: no `qbeamer` re-exports, aliases, or compatibility messages survive.
 
@@ -254,12 +280,25 @@ Hard cut: no `qbeamer` re-exports, aliases, or compatibility messages survive.
 
 ## 7. Validation gates
 
-The work is complete when all four pass:
+### 7.1 Mechanical gates (must all pass)
 
-1. `devtools::document()` regenerates `NAMESPACE` and `man/` with no errors.
+1. `devtools::document()` regenerates `NAMESPACE` and `man/` with no errors. No `qbeamer_*.Rd` files remain.
 2. `devtools::check()` returns 0 errors and 0 warnings. Notes are acceptable.
-3. `inst/examples/beamer-example.qmd` renders to PDF successfully via `qkit_render()`.
-4. `inst/examples/cv-example.qmd` renders to PDF successfully via `qkit_render()` and visually matches the reference CV in: section header style, horizontal rules under each section, `L|R` tabular layout for date/description rows, hanging-indent numbered publications, two-column references block, and contact-icon header.
+3. `inst/examples/beamer-example.qmd` renders to a PDF of ≥ 1 page via `qkit_render()` with exit status 0.
+4. `inst/examples/cv-example.qmd` renders to a PDF of ≥ 1 page via `qkit_render()` with exit status 0.
+5. `grep -r "qbeamer" R/ inst/ DESCRIPTION NAMESPACE CLAUDE.md README.md` returns no matches (the rename is complete).
+
+### 7.2 Manual visual review checklist (CV)
+
+After mechanical gates pass, open the rendered `cv-example.pdf` and confirm:
+
+- [ ] Title header is centered, large bold name, with `jobtitle`, `address`, and fontawesome icon row below.
+- [ ] Each section heading has a horizontal rule directly below it (`\noindent\rule{\textwidth}{1pt}` pattern).
+- [ ] Education / Research / Teaching / Languages sections render the `L | R` two-column tabular with a thin gray vertical rule between the date and description columns.
+- [ ] Publications and Working Papers use numbered lists with hanging indents (`1.`, `2.`, etc., where wrapped text aligns under the description, not under the number).
+- [ ] References section is laid out in two columns via `multicols`.
+- [ ] Footer shows author + title on one side and `page/total` on the other; the total page count is not colored as a hyperlink.
+- [ ] URLs render in upright (not monospace) font.
 
 ## 8. Risks and mitigations
 
