@@ -31,8 +31,8 @@ qkit::qkit_render("slides.qmd")
 # Preview with live reload
 qkit::qkit_preview("slides.qmd")
 
-# Or install an extension manually in any project
-qkit::install_extension(type = "beamer")
+# Or install the extension manually in any project
+qkit::install_extension()
 ```
 
 ### Beamer format
@@ -60,14 +60,14 @@ format:
 
 ### CV format
 
-Use `qkit-cv` for an academic CV:
+Use `qkit-pdf` for an academic CV:
 
 ```yaml
 ---
 title: "CV"
 author: "Your Name"
 format:
-  qkit-cv: default
+  qkit-pdf: default
 ---
 ```
 
