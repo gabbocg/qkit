@@ -1,0 +1,73 @@
+project:
+  type: book
+
+book:
+  title: "Your Book Title"
+  subtitle: |
+    \bigskip
+    Your Book Subtitle
+  author: "Your Name"
+  date: today
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: part-one.qmd
+      chapters:
+        - chapter1.qmd
+        - chapter2.qmd
+    - references.qmd
+  appendices:
+    - appendix.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    pdf-engine: xelatex
+    toc: true
+    toc-depth: 3
+    number-depth: 4
+    number-sections: true
+    lof: true
+    lot: true
+    keep-tex: true
+    documentclass: krantz
+    fontsize: 12pt
+    colorlinks: true
+    papersize: a4paper
+    template-partials:
+      - before-body.tex
+    include-in-header:
+      text: |
+
+        \usepackage{makeidx}
+        \makeindex
+
+        \usepackage{booktabs}
+        \usepackage{longtable}
+        \usepackage[bf,singlelinecheck=off]{caption}
+        \usepackage[scale=.8]{sourcecodepro}
+
+        \renewcommand{\textfraction}{0.05}
+        \renewcommand{\topfraction}{0.8}
+        \renewcommand{\bottomfraction}{0.8}
+        \renewcommand{\floatpagefraction}{0.75}
+
+        \usepackage{amsthm}
+        \makeatletter
+        \def\thm@space@setup{%
+          \thm@preskip=8pt plus 2pt minus 4pt
+          \thm@postskip=\thm@preskip
+        }
+        \makeatother
+
+        \usepackage{enumitem}
+        \setlist{leftmargin=10mm}
+
+    include-after-body:
+      text: |
+        \printindex
+
+editor: visual

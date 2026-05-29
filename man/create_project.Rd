@@ -15,11 +15,12 @@ create_project(
 \arguments{
 \item{path}{Path to the new project directory.}
 
-\item{type}{Either \code{"beamer"} or \code{"cv"}. Defaults to \code{"beamer"}.}
+\item{type}{One of \code{"beamer"}, \code{"cv"}, \code{"book"}. Defaults to \code{"beamer"}.}
 
-\item{title}{Presentation title (used when \code{type = "beamer"}).}
+\item{title}{Presentation/book title (used when \code{type} is \code{"beamer"}
+or \code{"book"}).}
 
-\item{author}{Author name (used when \code{type = "cv"}).}
+\item{author}{Author name (used when \code{type} is \code{"cv"} or \code{"book"}).}
 
 \item{...}{Additional arguments passed by RStudio (ignored).}
 }
@@ -27,7 +28,15 @@ create_project(
 Invisibly returns the project path.
 }
 \description{
-Scaffolds a Quarto project of the requested type (Beamer presentation
-or CV), drops the appropriate skeleton document, and installs the
-matching qkit extension.
+Scaffolds a Quarto project of the requested type:
+\itemize{
+\item \code{"beamer"} — a single-file Beamer presentation (uses the qkit
+extension for styling),
+\item \code{"cv"} — a single-file academic CV (uses the qkit extension),
+\item \code{"book"} — a multi-file Quarto book project with the Krantz
+document class, generic title-page partial, sample chapters,
+and a bibliography stub (self-contained — does NOT install the
+qkit extension because all book styling lives in the project's
+own \verb{_quarto.yml} and template-partials).
+}
 }

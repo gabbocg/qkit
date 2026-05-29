@@ -1,0 +1,4 @@
+# Part One
+
+A short paragraph introducing the chapters in this part of the book.
+Quarto renders this as a part divider page in the PDF.

@@ -1,0 +1,19 @@
+# Preface {.unnumbered .unlisted}
+
+A short preface introducing the book. Explain the motivation, the intended
+audience, the prerequisites, and how the book is organized.
+
+## How to read this book {.unnumbered .unlisted}
+
+Conventions used in the book: code in monospace, package names in bold,
+references in citation form. Replace this section with whatever conventions
+your book follows.
+
+## Acknowledgments {.unnumbered .unlisted}
+
+Acknowledgments go here.
+
+```{=tex}
+\mainmatter
+\pagenumbering{arabic}
+```

@@ -1,0 +1,36 @@
+$if(has-frontmatter)$
+    \frontmatter
+$endif$
+$if(title)$
+\cleardoublepage
+\thispagestyle{empty}
+{\centering
+    \hbox{}\vskip 0cm plus 1fill
+    {\Huge\bfseries $title$ \par}
+    $if(subtitle)$
+        \vspace{3ex}
+        {\Large\bfseries $subtitle$ \par}
+    $endif$
+        \vspace{12ex}
+    $for(by-author)$
+        {\Large\bfseries $by-author.name.literal$ \par}
+        $if(by-author.orcid)$
+            \vspace{1ex}
+            {\Large ORCID: $by-author.orcid$ \par}
+        $endif$
+        $for(by-author.affiliations)$%
+            \vspace{2ex}
+            $if(it.department)$%
+                {\large $it.department$ \par}
+                \vspace{1ex}
+            $endif$%
+            {\large $it.name$ \par}
+        $endfor$%
+        \vspace{3ex}
+    $endfor$
+    \vskip 0cm plus 2fill
+    $if(date)$
+        {\bfseries\large $date$ \par}
+    $endif$
+}
+$endif$

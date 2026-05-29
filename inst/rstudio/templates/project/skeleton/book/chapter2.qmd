@@ -1,0 +1,11 @@
+# Second Chapter {#sec-chapter2}
+
+A second chapter in Part One. Mirrors the structure of @sec-chapter1.
+
+## Topic A
+
+Body text.
+
+## Topic B
+
+Body text.

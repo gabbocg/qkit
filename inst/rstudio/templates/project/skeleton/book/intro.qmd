@@ -1,0 +1,16 @@
+# Introduction {#sec-intro}
+
+An introductory chapter that frames the book's subject and sets up the
+notation, scope, and main results.
+
+## Motivation
+
+Explain why the topic matters and what reader question it answers.
+
+## Scope
+
+Describe what is and is not covered.
+
+## Notation
+
+Establish notation conventions used throughout the rest of the book.

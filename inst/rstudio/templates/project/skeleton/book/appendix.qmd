@@ -1,0 +1,4 @@
+# Appendix: Additional Material {#sec-appendix}
+
+Appendix content. Quarto automatically labels and numbers appendices
+distinctly from main-matter chapters.

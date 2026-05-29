@@ -1,0 +1,21 @@
+# First Chapter {#sec-chapter1}
+
+The first substantive chapter of Part One. Body text goes here.
+
+## A section
+
+Section body. Equations render via LaTeX:
+
+$$
+y = X\beta + \varepsilon
+$$ {#eq-linear}
+
+with @eq-linear used inline for cross-references.
+
+## A second section
+
+::: {.callout-note}
+Use Quarto callouts (note, warning, tip, important, caution) for asides.
+:::
+
+Citations go in BibTeX form: @example2025.

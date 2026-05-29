@@ -1,0 +1,22 @@
+Binding: create_project
+Title: qkit Book
+OpenFiles: index.qmd
+Subtitle: Create a new Quarto book project (Krantz class) from the qkit template.
+
+Parameter: title
+Widget: TextInput
+Label: Book title
+Default: Your Book Title
+Position: left
+
+Parameter: author
+Widget: TextInput
+Label: Author name
+Default: Your Name
+Position: left
+
+Parameter: type
+Widget: TextInput
+Label: (do not edit) format type
+Default: book
+Position: left
