@@ -84,10 +84,17 @@ format:
         \hbadness=10000
 
         \AtBeginDocument{%
-          \setlength{\abovedisplayskip}{0.4cm}%
-          \setlength{\belowdisplayskip}{0.4cm}%
-          \setlength{\abovedisplayshortskip}{0.4cm}%
-          \setlength{\belowdisplayshortskip}{0.4cm}%
+          \setlength{\abovedisplayskip}{0pt}%
+          \setlength{\belowdisplayskip}{0pt}%
+          \setlength{\abovedisplayshortskip}{0pt}%
+          \setlength{\belowdisplayshortskip}{0pt}%
+        }
+        \let\oldequation=\equation
+        \let\endoldequation=\endequation
+        \renewenvironment{equation}{%
+          \vspace*{0.4cm}\oldequation%
+        }{%
+          \endoldequation\vspace*{0.4cm}%
         }
 
         \renewcommand{\thesection}{Appendix \Alph{section}}
@@ -215,6 +222,10 @@ results reported in @cooling-handbook2024 collect the relevant
 constants for typical kitchen conditions and are consistent
 with the magnitude of the $\widehat{k}$ estimated in the main
 paper.
+
+```{=tex}
+\newpage
+```
 
 # References {.unnumbered}
 

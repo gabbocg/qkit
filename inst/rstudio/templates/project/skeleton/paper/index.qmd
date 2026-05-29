@@ -114,16 +114,26 @@ format:
            \item\relax}
           {\endlist}
 
-        % Symmetric vspace above AND below every display equation.
-        % We set ALL four display skips (regular and short variants
-        % for both above and below) to the same value, and wrap the
-        % assignments in \AtBeginDocument so they win against any
-        % later overrides from Pandoc's preamble.
+        % Symmetric space above AND below every display equation.
+        % LaTeX's \abovedisplayskip / \belowdisplayskip get scaled
+        % by linestretch (doublespacing) and the short-variant
+        % skips are auto-selected based on the previous line's
+        % length, both of which make pure-\setlength approaches
+        % asymmetric in practice. We instead zero all four display
+        % skips and wrap \equation in a renew that explicitly emits
+        % \vspace*{0.4cm} above and below.
         \AtBeginDocument{%
-          \setlength{\abovedisplayskip}{0.4cm}%
-          \setlength{\belowdisplayskip}{0.4cm}%
-          \setlength{\abovedisplayshortskip}{0.4cm}%
-          \setlength{\belowdisplayshortskip}{0.4cm}%
+          \setlength{\abovedisplayskip}{0pt}%
+          \setlength{\belowdisplayskip}{0pt}%
+          \setlength{\abovedisplayshortskip}{0pt}%
+          \setlength{\belowdisplayshortskip}{0pt}%
+        }
+        \let\oldequation=\equation
+        \let\endoldequation=\endequation
+        \renewenvironment{equation}{%
+          \vspace*{0.4cm}\oldequation%
+        }{%
+          \endoldequation\vspace*{0.4cm}%
         }
 
         \theoremstyle{plain}
@@ -284,6 +294,10 @@ A single cooling constant $\widehat{k} \approx 0.024$ per minute
 describes the cooling of a hot coffee cup in a constant-temperature
 room well. The fit is consistent with the predictions of Newton's
 law and with prior estimates reported in the literature.
+
+```{=tex}
+\newpage
+```
 
 # References {.unnumbered}
 
