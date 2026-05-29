@@ -25,9 +25,13 @@ create_project <- function(path,
                           skeleton_name, package = "qkit", mustWork = TRUE)
   content <- readLines(skeleton, encoding = "UTF-8")
 
-  if (type == "beamer") {
+  # Substitute placeholders only when the caller supplied a usable value.
+  # RStudio passes empty wizard fields as NA; gsub() with replacement = NA
+  # silently writes the literal string "NA" into the document.
+  usable <- function(x) !is.null(x) && length(x) == 1L && !is.na(x) && nzchar(x)
+  if (type == "beamer" && usable(title)) {
     content <- gsub("Untitled Presentation", title, content, fixed = TRUE)
-  } else {
+  } else if (type == "cv" && usable(author)) {
     content <- gsub("Your Name", author, content, fixed = TRUE)
   }
 
