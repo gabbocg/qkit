@@ -1,0 +1,76 @@
+% qkit-paper LaTeX preamble for the main paper.
+% Loaded via the YAML include-in-header field in index.qmd.
+
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{sectsty}
+\usepackage{orcidlink}
+
+\AtBeginEnvironment{tabular}{\onehalfspacing}
+
+% Inject the italic "Preliminary draft" line between the title and
+% the author block by redefining \title so it appends the subtitle
+% to whatever Pandoc passes in.
+\makeatletter
+\renewcommand{\title}[1]{%
+  \gdef\@title{#1\\[0.3cm]%
+    {\normalsize\itshape Preliminary draft --- please do not cite without permission}%
+  }%
+}
+\makeatother
+
+% Italic subsection / subsubsection headings, with both sectsty and
+% an explicit \@startsection override so the article-class default
+% \bfseries cannot leak through.
+\subsectionfont{\large\itshape}
+\subsubsectionfont{\large\itshape}
+\makeatletter
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+  {-3.25ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+  {\normalfont\large\itshape}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+  {-3.25ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+  {\normalfont\large\itshape}}
+\makeatother
+
+% Period after the section number.
+\makeatletter
+\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+    {\csname the#1\endcsname\quad}%
+    {\csname #1@cntformat\endcsname}%
+}
+\def\section@cntformat{\thesection.\quad}
+\def\subsection@cntformat{\thesubsection \quad}
+\makeatother
+
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\renewenvironment{quote}
+  {\normalsize\list{}{\rightmargin=1.5cm \leftmargin=1.5cm}%
+   \item\relax}
+  {\endlist}
+
+% Force the short-display skips to match the regular display skips
+% so equations have the same space above and below regardless of
+% whether the preceding line is short or long.
+\AtBeginDocument{%
+  \setlength{\abovedisplayshortskip}{\abovedisplayskip}%
+  \setlength{\belowdisplayshortskip}{\belowdisplayskip}%
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
