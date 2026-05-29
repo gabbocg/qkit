@@ -19,138 +19,107 @@ format:
   qkit-pdf: default
 ---
 
-\vspace{5pt}
 # Education
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{tabular}{L!{\VRule width 1pt}R}
-\textit{2022 - Current}&{\textbf{Your Department}, Your University, Country \newline Ph.D. in Your Field}\\[15pt]
-\textit{2017 - 2019}&{\textbf{Your Department}, Earlier University, Country \newline M.Sc. in Your Field}\\[15pt]
-\textit{2012 - 2017}&{\textbf{Your Department}, Earlier University, Country \newline B.A. in Your Field}
-\end{tabular}
+::: {.cv-entries}
+- 2022 - Current | **Your Department**, Your University, Country, Ph.D. in Your Field
+- 2017 - 2019 | **Your Department**, Earlier University, Country, M.Sc. in Your Field
+- 2012 - 2017 | **Your Department**, Earlier University, Country, B.A. in Your Field
+:::
 
 # Publications
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
-\item Title of Your First Published Paper, 2026, with Co-Author A and Co-Author B. \textbf{Journal Name}, vol. X, p. 1-20. [\href{https://example.org/paper1}{Link}]
-\item Title of Your Second Published Paper, 2025, with Co-Author C. \textbf{Another Journal}, vol. Y, p. 100-150. [\href{https://example.org/paper2}{Link}]
-\end{enumerate}
+::: {.cv-publications}
+1. Title of Your First Published Paper, 2026, with Co-Author A and Co-Author B. **Journal Name**, vol. X, p. 1-20. [Link](https://example.org/paper1)
+2. Title of Your Second Published Paper, 2025, with Co-Author C. **Another Journal**, vol. Y, p. 100-150. [Link](https://example.org/paper2)
+:::
 
 # Working Papers
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
-\item Title of Your First Working Paper, 2026, with Co-Author A.
-\item Title of Your Second Working Paper, 2026. Available at \href{https://example.org/ssrn}{SSRN}.
-\end{enumerate}
+::: {.cv-publications}
+1. Title of Your First Working Paper, 2026, with Co-Author A.
+2. Title of Your Second Working Paper, 2026. Available at [SSRN](https://example.org/ssrn).
+:::
 
 # Work-in-Progress
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
-\item Title of an In-Progress Project, with Co-Author A.
-\item Another In-Progress Project.
-\end{enumerate}
+::: {.cv-publications}
+1. Title of an In-Progress Project, with Co-Author A.
+2. Another In-Progress Project.
+:::
 
 # Statistical Software Packages
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item}},label=\arabic*.,itemindent=0em,leftmargin=2.75em]
-\item yourpackage: One-line Description, 2026. \textit{R package version 0.1.0}. [\href{https://example.org/yourpackage}{Link}]
-\end{enumerate}
+::: {.cv-publications}
+1. yourpackage: One-line Description, 2026. *R package version 0.1.0*. [Link](https://example.org/yourpackage)
+:::
 
 # Conferences and Workshops
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{itemize}
-\item Conference Name A (City, Year), Conference Name B (City, Year), Workshop C* (City, Year).
-\item \hspace{1em} *\textit{Presentations by co-authors}
-\end{itemize}
+- Conference Name A (City, Year), Conference Name B (City, Year), Workshop C* (City, Year).
+- \hspace{1em} *\textit{Presentations by co-authors}
 
 # Research Experience
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
 - **Your University**, Country
 
-    \begin{tabular}{L!{\VRule width 1pt}R}
-    \textit{2022 - Current}&{Postgraduate Researcher}\\[2.5pt]
-    \end{tabular}
+  ::: {.cv-entries gap="2.5pt"}
+  - 2022 - Current | Postgraduate Researcher
+  :::
 
 # Teaching Experience
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
 - **Undergraduate** \textbf{\small as Teaching Assistant}
 
-    \begin{tabular}{L!{\VRule width 1pt}R}
-    \textit{Fall 2025}&{\textbf{Course Name} \newline Your Department, Your University}
-    \end{tabular}
+  ::: {.cv-entries gap="2.5pt"}
+  - Fall 2025 | **Course Name**, Your Department, Your University
+  :::
 
 # Grants and Scholarships
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{tabular}{L!{\VRule width 1pt}R}
-\textit{2022 - Current}&{Name of Your Scholarship.}
-\end{tabular}
+::: {.cv-entries}
+- 2022 - Current | Name of Your Scholarship.
+:::
 
 # Other Academic Services
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{tabular}{L!{\VRule width 1pt}R}
-\textbf{Referee}&{Journal A, Journal B, Journal C.}
-\end{tabular}
+::: {.cv-keys}
+- Referee | Journal A, Journal B, Journal C.
+:::
 
 # Languages
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{tabular}{L!{\VRule width 1pt}R}
-\textbf{Language A}&{Native}\\[2.5pt]
-\textbf{Language B}&{Fluent}
-\end{tabular}
+::: {.cv-keys}
+- Language A | Native
+- Language B | Fluent
+:::
 
 # Research Interests
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
 List your research interests here as a comma-separated paragraph.
 
 # References
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{multicols}{2}
+::: {.cv-references}
+::: {.referee}
+**[Referee A, Ph.D.](https://example.org/referee-a)**\
+Department\
+University\
+Address\
+\Letter\ [a@example.org](mailto:a@example.org)
+:::
 
-    \textbf{\href{https://example.org/referee-a}{Referee A, Ph.D.}}\\
-    Department \\
-    University \\
-    Address \\
-    \Letter\ \href{mailto:a@example.org}{a@example.org}
-
-\vfill\columnbreak
-
-    \textbf{\href{https://example.org/referee-b}{Referee B, Ph.D.}}\\
-    Department \\
-    University \\
-    Address \\
-    \Letter\ \href{mailto:b@example.org}{b@example.org}
-
-\end{multicols}
+::: {.referee}
+**[Referee B, Ph.D.](https://example.org/referee-b)**\
+Department\
+University\
+Address\
+\Letter\ [b@example.org](mailto:b@example.org)
+:::
+:::
 
 # Other
-\vspace{-15pt}
-\noindent\rule{\textwidth}{1pt}
 
-\begin{tabular}{L!{\VRule width 1pt}R}
-\textbf{Nationality}&{Your Nationality}\\
-\end{tabular}
+::: {.cv-keys}
+- Nationality | Your Nationality
+:::

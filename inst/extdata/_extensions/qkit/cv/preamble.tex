@@ -18,7 +18,11 @@
 \newcolumntype{R}{p{0.8\textwidth}}
 \newcommand\VRule{\color{lightgray}\vrule width 0.5pt}
 
-% Section font and spacing overrides.
+% Section font and spacing overrides. titlesec's \titleformat conflicts with
+% Pandoc's default \paragraph redefinition, so we use sectsty for fonts and
+% titlespacing only for vertical spacing. The horizontal rule under each
+% section is injected by the Lua filter (cv/filter.lua) directly, not via
+% titleformat.
 \usepackage{sectsty}
 \sectionfont{\rmfamily\mdseries\large\bf}
 \subsectionfont{\rmfamily\mdseries\normalsize\itshape}

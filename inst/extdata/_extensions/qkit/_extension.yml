@@ -19,6 +19,8 @@ contributes:
         - cv/preamble.tex
       template-partials:
         - cv/before-body.tex
+      filters:
+        - cv/filter.lua
       pdf-engine: lualatex
       geometry:
         - margin=0.70in
