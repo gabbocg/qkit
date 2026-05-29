@@ -31,17 +31,11 @@
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
 
-% Itemize without bullets, indented. Tighten the inter-item and intra-item
-% paragraph spacing so consecutive \item entries (and \newline'd footnotes
-% inside one item) sit close together rather than getting parskip's
-% generous default gap.
+% Itemize without bullets, indented. Default list spacing preserved so
+% Research Experience / Teaching Experience bullets (one per institution
+% or category) keep the breathing room a CV needs.
 \renewenvironment{itemize}{%
-  \begin{list}{}{%
-    \setlength{\leftmargin}{1.5em}%
-    \setlength{\itemsep}{0pt}%
-    \setlength{\parsep}{0pt}%
-    \setlength{\topsep}{0pt}%
-  }%
+  \begin{list}{}{\setlength{\leftmargin}{1.5em}}%
 }{%
   \end{list}%
 }
