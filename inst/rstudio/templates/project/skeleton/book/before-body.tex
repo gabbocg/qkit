@@ -34,21 +34,3 @@ $if(title)$
     $endif$
 }
 $endif$
-
-% Optional dedication page. Renders only when YAML metadata includes
-% `dedication-to:`; if `dedication-text:` is also set, it appears as a
-% smaller line below the dedicatee's name. The page starts on a fresh
-% recto via \cleardoublepage so it falls right after the title page.
-$if(dedication-to)$
-\cleardoublepage
-\thispagestyle{empty}
-\null\vfill
-\begin{center}
-    {\Large To $dedication-to$,\par}
-    $if(dedication-text)$
-        \vspace{2ex}
-        {\large $dedication-text$\par}
-    $endif$
-\end{center}
-\vfill\null
-$endif$

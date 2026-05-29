@@ -1,3 +1,31 @@
+<!--
+Optional dedication page. Delete this entire HTML comment wrapper
+(the surrounding `<!- -` and `- ->` markers — without the spaces) to
+enable. Edit the text inside to suit. Renders for both PDF (centered,
+own page via \cleardoublepage) and HTML (centered block above the
+preface).
+
+::: {.content-visible when-format="pdf"}
+\cleardoublepage
+\thispagestyle{empty}
+\null\vfill
+\begin{center}
+{\Large To Someone Important (1900 -- 2000),\par}
+\vspace{2ex}
+{\large a short tribute, quotation, or description\par}
+\end{center}
+\vfill\null
+:::
+
+::: {.content-visible when-format="html"}
+::: {.qkit-dedication style="text-align: center; margin: 4em 0;"}
+*To Someone Important (1900 -- 2000),*
+
+*a short tribute, quotation, or description*
+:::
+:::
+-->
+
 # Preface {.unnumbered .unlisted}
 
 A short preface introducing the book. Explain the motivation, the intended

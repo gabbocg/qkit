@@ -26,11 +26,6 @@ format:
   html:
     theme: cosmo
   pdf:
-    # Optional dedication page (uncomment and edit to use). When
-    # dedication-to is present, the qkit book title-page partial
-    # renders a centered dedication page right after the title page.
-    # dedication-to: "Someone Important (1900 -- 2000)"
-    # dedication-text: "a short tribute, quotation, or description"
     pdf-engine: xelatex
     toc: true
     toc-depth: 3
