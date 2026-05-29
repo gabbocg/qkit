@@ -1,5 +1,7 @@
 ---
-title: "Your Paper Title"
+title: |
+  Your Paper Title \\
+  \textit{\normalsize Preliminary draft --- please do not cite without permission}
 author:
   - name: Your Name
     email: you@example.org
@@ -108,14 +110,6 @@ format:
         \newtheorem{definition}[theorem]{Definition}
         \newtheorem{assumption}[theorem]{Assumption}
 ---
-
-```{=tex}
-\begin{center}
-\vspace{0.4cm}
-\textit{\normalsize Preliminary draft --- please do not cite without permission}\\[0.3cm]
-\end{center}
-\vspace{-0.50cm}
-```
 
 # Introduction {#sec-intro}
 
@@ -253,6 +247,11 @@ the qkit paper format. Replace each section's contents with your
 own analysis. The structure, equation environments, theorem-style
 blocks, in-paper appendix, and separate Internet Appendix are
 ready to use as-is.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
 
 ```{=tex}
 \newpage

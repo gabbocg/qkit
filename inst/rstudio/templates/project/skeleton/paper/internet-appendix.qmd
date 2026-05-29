@@ -1,5 +1,7 @@
 ---
-title: "Internet Appendix for: Your Paper Title"
+title: |
+  Internet Appendix for: Your Paper Title \\
+  \textit{\normalsize Preliminary draft --- please do not cite without permission}
 author:
   - name: Your Name
     email: you@example.org
@@ -9,6 +11,11 @@ author:
         corresponding: true
   - name: Co-Author One
     email: one@example.org
+    affiliations:
+      - name: Co-Author Department, Co-Author University
+        address: Some Address, Country
+  - name: Co-Author Two
+    email: two@example.org
     affiliations:
       - name: Co-Author Department, Co-Author University
         address: Some Address, Country
@@ -38,11 +45,9 @@ format:
     urlcolor: magenta
     cite-method: natbib
     biblio-style: apalike
+    number-sections: true
     keep-tex: true
     subparagraph: true
-    # Restart appendix section numbering with letters (A, B, C, ...)
-    # and prefix headings with "Appendix" so readers can tell at a
-    # glance that they are in the supplementary material.
     include-in-header:
       text: |
         \usepackage{amsthm}
@@ -90,26 +95,64 @@ format:
 
 # Sample Construction and Matching {#sec-app-matching}
 
-Describe additional details about the sample, propensity-score
-matching, or other data construction not covered in the main paper.
+This appendix documents how the analysis sample was constructed.
+The procedure consists of three steps: (i) merging the source
+datasets on a common unit identifier, (ii) restricting to units
+observed for at least 10 consecutive periods, and (iii) trimming
+the most extreme 1% of observations on the focal regressor. The
+final panel contains 1{,}000 units and 20 time periods.
+
+## Matching Procedure {#sec-app-matching-procedure}
+
+We match treated units to control units on a set of pre-period
+covariates using nearest-neighbour matching with replacement. The
+matched control sample is used in the robustness checks reported
+in @sec-app-robust below.
 
 # Auxiliary Methodology {#sec-app-method}
 
-Walk through derivations or estimator details that were summarized
-in the main text. A representative supplementary equation:
+This appendix walks through derivations referenced in the main
+text. Consider the within transformation that absorbs the unit
+fixed effect:
 
 $$
-\widehat{\beta}_{IA} = (X' X)^{-1} X' y
+\tilde{y}_{it} = y_{it} - \bar{y}_i, \qquad
+\tilde{x}_{it} = x_{it} - \bar{x}_i
+$$ {#eq-app-within}
+
+The within estimator $\hat{\beta}_{FE}$ is the OLS slope from
+regressing $\tilde{y}_{it}$ on $\tilde{x}_{it}$ and analogously
+demeaned controls:
+
+$$
+\widehat{\beta}_{FE} = \left( \widetilde{X}' \widetilde{X} \right)^{-1} \widetilde{X}' \widetilde{y}
 $$ {#eq-app-baseline}
 
-@eq-app-baseline refers to the supplementary specification.
+Under the assumption stated in the main text, $\hat{\beta}_{FE}$
+is consistent for the parameter of interest. See @sec-app-proofs
+for the formal argument.
 
 # Robustness Tables {#sec-app-robust}
 
-Tables and figures that did not fit in the main paper.
+This appendix reports robustness checks that supplement the main
+text. The headline finding survives: trimming, alternative
+sub-samples, and unit-specific linear trends each leave the
+point estimate within one standard error of the baseline of
+$0.12$ reported in the main paper.
 
 # Proofs {#sec-app-proofs}
 
 ::: {.proof}
-A proof of Proposition 1 from the main paper.
+*(Proof of the proposition in the main text.)* Under the assumption
+that $\varepsilon_{it}$ is mean-zero and orthogonal to $x_{it}$
+conditional on $\alpha_i$, within-unit demeaning removes $\alpha_i$
+from the estimating equation. The transformed regressor
+$\tilde{x}_{it}$ is then orthogonal to the transformed error
+$\tilde{\varepsilon}_{it}$, so OLS on @eq-app-within delivers a
+consistent estimate of $\beta$. $\square$
+:::
+
+# References {.unnumbered}
+
+::: {#refs}
 :::
