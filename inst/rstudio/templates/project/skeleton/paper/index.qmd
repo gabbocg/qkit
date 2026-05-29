@@ -1,0 +1,116 @@
+---
+title: "Your Paper Title"
+subtitle: "Preliminary draft --- please do not cite without permission"
+author:
+  - name: Your Name
+    email: you@example.org
+    affiliations:
+      - name: Your Department, Your University
+        address: Some Address, Country
+        corresponding: true
+  - name: Co-Author One
+    email: one@example.org
+    affiliations:
+      - name: Co-Author Department, Co-Author University
+        address: Some Address, Country
+date: today
+date-format: "[This revision:] D MMMM YYYY"
+abstract: |
+  A short abstract goes here. Summarize the paper's question, data,
+  method, and main findings in 150--250 words. Replace this text with
+  your own.
+keywords:
+  - keyword one
+  - keyword two
+  - keyword three
+thanks: |
+  We thank seminar and conference participants for helpful comments.
+  Replace this acknowledgments block with your own.
+bibliography: references.bib
+
+format:
+  pdf:
+    pdf-engine: xelatex
+    documentclass: article
+    classoption:
+      - "12pt"
+    geometry:
+      - margin=1in
+    linestretch: 2
+    indent: true
+    fontsize: 12pt
+    colorlinks: true
+    linkcolor: red
+    citecolor: blue
+    urlcolor: magenta
+    cite-method: natbib
+    biblio-style: apalike
+    keep-tex: true
+    include-in-header:
+      text: |
+        % Quarto's default template already loads amsmath, amssymb,
+        % booktabs, graphicx, caption, and hyperref. The extras below
+        % are what a minimalist economics/finance paper typically adds.
+        \usepackage{amsthm}
+        \usepackage{subcaption}
+        \usepackage{setspace}
+        \AtBeginEnvironment{tabular}{\onehalfspacing}
+        \tolerance=1
+        \emergencystretch=\maxdimen
+        \hyphenpenalty=10000
+        \hbadness=10000
+        \theoremstyle{plain}
+        \newtheorem{theorem}{Theorem}[section]
+        \newtheorem{proposition}[theorem]{Proposition}
+        \newtheorem{lemma}[theorem]{Lemma}
+        \theoremstyle{definition}
+        \newtheorem{definition}[theorem]{Definition}
+        \newtheorem{assumption}[theorem]{Assumption}
+---
+
+# Introduction {#sec-intro}
+
+A paragraph or two of motivation: what question does this paper ask,
+why does it matter, what's the contribution, what's the punchline?
+Conclude with a roadmap of the remaining sections.
+
+# Data {#sec-data}
+
+Describe the sample, sources, and any cleaning. Reference Table 1
+([@tbl-summary]) for summary statistics.
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Summary statistics."
+#| echo: false
+#| eval: false
+# knitr::kable(your_data_frame, booktabs = TRUE)
+```
+
+# Methodology {#sec-method}
+
+State the model or estimator. A representative equation:
+
+$$
+y_{it} = \alpha_i + \beta\, x_{it} + \varepsilon_{it}
+$$ {#eq-baseline}
+
+@eq-baseline is the baseline specification. Identifying assumptions
+go in the prose below.
+
+::: {.proof}
+Sketch the argument or refer to an online appendix.
+:::
+
+# Results {#sec-results}
+
+Lead with the main result. Discuss robustness in subsections.
+
+## Robustness {#sec-robust}
+
+Describe alternative specifications, placebo tests, etc.
+
+# Conclusion {#sec-conc}
+
+Summarize the contribution, acknowledge limitations, and point to
+follow-up questions.

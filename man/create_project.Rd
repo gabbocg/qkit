@@ -15,12 +15,14 @@ create_project(
 \arguments{
 \item{path}{Path to the new project directory.}
 
-\item{type}{One of \code{"beamer"}, \code{"cv"}, \code{"book"}. Defaults to \code{"beamer"}.}
+\item{type}{One of \code{"beamer"}, \code{"cv"}, \code{"book"}, \code{"paper"}. Defaults
+to \code{"beamer"}.}
 
-\item{title}{Presentation/book title (used when \code{type} is \code{"beamer"}
-or \code{"book"}).}
+\item{title}{Presentation / book / paper title (used when \code{type} is
+\code{"beamer"}, \code{"book"}, or \code{"paper"}).}
 
-\item{author}{Author name (used when \code{type} is \code{"cv"} or \code{"book"}).}
+\item{author}{Author name (used when \code{type} is \code{"cv"}, \code{"book"}, or
+\code{"paper"}).}
 
 \item{...}{Additional arguments passed by RStudio (ignored).}
 }
@@ -37,6 +39,10 @@ extension for styling),
 document class, generic title-page partial, sample chapters,
 and a bibliography stub (self-contained — does NOT install the
 qkit extension because all book styling lives in the project's
-own \verb{_quarto.yml} and template-partials).
+own \verb{_quarto.yml} and template-partials),
+\item \code{"paper"} — a minimalist Quarto academic paper (12pt article,
+1in margins, double-spaced, natbib + apalike, doublespacing
+body / onehalfspacing title) bundled with a \code{references.bib}
+stub.
 }
 }

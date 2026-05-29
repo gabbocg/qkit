@@ -8,13 +8,19 @@
 #'     document class, generic title-page partial, sample chapters,
 #'     and a bibliography stub (self-contained — does NOT install the
 #'     qkit extension because all book styling lives in the project's
-#'     own `_quarto.yml` and template-partials).
+#'     own `_quarto.yml` and template-partials),
+#'   * `"paper"` — a minimalist Quarto academic paper (12pt article,
+#'     1in margins, double-spaced, natbib + apalike, doublespacing
+#'     body / onehalfspacing title) bundled with a `references.bib`
+#'     stub.
 #'
 #' @param path Path to the new project directory.
-#' @param type One of `"beamer"`, `"cv"`, `"book"`. Defaults to `"beamer"`.
-#' @param title Presentation/book title (used when `type` is `"beamer"`
-#'   or `"book"`).
-#' @param author Author name (used when `type` is `"cv"` or `"book"`).
+#' @param type One of `"beamer"`, `"cv"`, `"book"`, `"paper"`. Defaults
+#'   to `"beamer"`.
+#' @param title Presentation / book / paper title (used when `type` is
+#'   `"beamer"`, `"book"`, or `"paper"`).
+#' @param author Author name (used when `type` is `"cv"`, `"book"`, or
+#'   `"paper"`).
 #' @param ... Additional arguments passed by RStudio (ignored).
 #'
 #' @return Invisibly returns the project path.
@@ -31,7 +37,7 @@ create_project <- function(path,
     stop("create_project() requires a non-empty 'path' argument. Got: ",
          deparse(path), call. = FALSE)
   }
-  type <- match.arg(type, choices = c("beamer", "cv", "book"))
+  type <- match.arg(type, choices = c("beamer", "cv", "book", "paper"))
   fs::dir_create(path)
 
   # Substitute placeholders only when the caller supplied a usable value.
@@ -39,23 +45,25 @@ create_project <- function(path,
   # silently writes the literal string "NA" into the document.
   usable <- function(x) !is.null(x) && length(x) == 1L && !is.na(x) && nzchar(x)
 
-  if (type == "book") {
-    book_src <- system.file("rstudio", "templates", "project", "skeleton",
-                            "book", package = "qkit", mustWork = TRUE)
-    files <- fs::dir_ls(book_src, recurse = TRUE, type = "file")
+  if (type %in% c("book", "paper")) {
+    src <- system.file("rstudio", "templates", "project", "skeleton",
+                       type, package = "qkit", mustWork = TRUE)
+    files <- fs::dir_ls(src, recurse = TRUE, type = "file")
     for (f in files) {
-      rel <- fs::path_rel(f, book_src)
+      rel <- fs::path_rel(f, src)
       target <- fs::path(path, rel)
       fs::dir_create(fs::path_dir(target))
       fs::file_copy(f, target, overwrite = FALSE)
     }
-    # Patch _quarto.yml with the user's supplied title/author.
-    qy <- fs::path(path, "_quarto.yml")
-    if (fs::file_exists(qy)) {
-      content <- readLines(qy, encoding = "UTF-8")
-      if (usable(title))  content <- gsub("Your Book Title", title, content, fixed = TRUE)
+    # Patch placeholders in the entry file (`_quarto.yml` for book,
+    # `index.qmd` for paper).
+    entry <- fs::path(path, if (type == "book") "_quarto.yml" else "index.qmd")
+    if (fs::file_exists(entry)) {
+      content <- readLines(entry, encoding = "UTF-8")
+      title_placeholder <- if (type == "book") "Your Book Title" else "Your Paper Title"
+      if (usable(title))  content <- gsub(title_placeholder, title, content, fixed = TRUE)
       if (usable(author)) content <- gsub("Your Name", author, content, fixed = TRUE)
-      writeLines(content, qy, useBytes = TRUE)
+      writeLines(content, entry, useBytes = TRUE)
     }
     return(invisible(path))
   }
