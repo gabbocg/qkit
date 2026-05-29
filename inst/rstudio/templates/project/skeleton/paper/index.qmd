@@ -1,6 +1,5 @@
 ---
 title: "Your Paper Title"
-subtitle: "Preliminary draft --- please do not cite without permission"
 author:
   - name: Your Name
     email: you@example.org
@@ -21,9 +20,10 @@ author:
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
-  A short abstract goes here. Summarize the paper's question, data,
-  method, and main findings in 150--250 words. Replace this text with
-  your own.
+  This template paper studies the relationship between an outcome
+  variable and a focal regressor using a generic panel dataset.
+  Replace this paragraph with your own abstract; aim for 150--250
+  words covering the question, data, method, and main findings.
 
   \bigskip
   \noindent\textbf{Keywords:} keyword one, keyword two, keyword three
@@ -55,21 +55,11 @@ format:
     urlcolor: magenta
     cite-method: natbib
     biblio-style: apalike
+    number-sections: true
     keep-tex: true
-    # Skip Pandoc's \paragraph redefinition, which clashes with the
-    # titlesec/sectsty section-formatting we apply below.
     subparagraph: true
     include-in-header:
       text: |
-        % Quarto's default template already loads amsmath, amssymb,
-        % booktabs, graphicx, caption, and hyperref. The blocks below
-        % add the structural conventions of a typical econ / finance
-        % working paper: italic subsection headings, period-after-
-        % section numbering, one-and-a-half spacing in tables, a
-        % small breathing space around equations, an indented quote
-        % env, theorem environments, and proper \begin{appendices}
-        % support for an in-paper appendix.
-
         \usepackage{amsthm}
         \usepackage{subcaption}
         \usepackage{setspace}
@@ -80,17 +70,11 @@ format:
         \usepackage{float}
         \usepackage{sectsty}
 
-        % One-and-a-half spacing inside tables (body is doublespaced
-        % via the linestretch YAML setting).
         \AtBeginEnvironment{tabular}{\onehalfspacing}
 
-        % Italic subsection / subsubsection headings (sectsty avoids
-        % the titlesec / Pandoc \paragraph compatibility problem).
         \subsectionfont{\large\itshape}
         \subsubsectionfont{\large\itshape}
 
-        % Period after section number — headings read "1. Introduction"
-        % instead of "1 Introduction".
         \makeatletter
         \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
             {\csname the#1\endcsname\quad}%
@@ -100,26 +84,22 @@ format:
         \def\subsection@cntformat{\thesubsection \quad}
         \makeatother
 
-        % Long-URL tolerance.
         \tolerance=1
         \emergencystretch=\maxdimen
         \hyphenpenalty=10000
         \hbadness=10000
 
-        % Quote environment indented 1.5cm on each side.
         \renewenvironment{quote}
           {\normalsize\list{}{\rightmargin=1.5cm \leftmargin=1.5cm}%
            \item\relax}
           {\endlist}
 
-        % Equation environment with small vspace after the display.
         \let\oldequation=\equation
         \let\endoldequation=\endequation
         \renewenvironment{equation}{%
           \vspace{0cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
         }
 
-        % Theorem-style environments.
         \theoremstyle{plain}
         \newtheorem{theorem}{Theorem}[section]
         \newtheorem{proposition}[theorem]{Proposition}
@@ -130,47 +110,82 @@ format:
 ---
 
 ```{=tex}
+\begin{center}
+\vspace{0.4cm}
+\textit{\normalsize Preliminary draft --- please do not cite without permission}\\[0.3cm]
+\end{center}
 \vspace{-0.50cm}
 ```
 
 # Introduction {#sec-intro}
 
-State the research question, motivate why it matters, summarize the
-contribution, and preview the main findings. Close with a
-one-paragraph roadmap of the remaining sections.
+This paper studies how a focal explanatory variable $x$ shapes an
+outcome $y$ in a generic panel of units indexed by $i$ and time $t$.
+The exercise is deliberately stylized: it serves as a working example
+of the template's typography rather than a substantive contribution.
+
+The remainder of the paper is organized as follows. Section
+@sec-theory sketches a stylized model. Section @sec-data describes
+the (synthetic) data. Section @sec-method outlines the empirical
+specification. Section @sec-results reports the main findings.
+Sections @sec-additional and @sec-robust discuss extensions and
+robustness. Section @sec-conc concludes.
 
 # Theoretical Framework {#sec-theory}
 
-Set up the model. State primitives, the agent's problem, and the
-equilibrium concept. Translate the model's predictions into
-hypotheses tested in the empirical sections.
+Consider an economy populated by a continuum of identical agents
+indexed by $i$. Each agent chooses an action $x_{it}$ to maximize
+an expected payoff that depends on a latent fundamental $\theta_t$
+and an idiosyncratic shock $\varepsilon_{it}$. The equilibrium
+mapping from fundamentals to outcomes is summarized by a function
+$y_{it} = g(x_{it}, \theta_t) + \varepsilon_{it}$ whose properties
+deliver the testable implications below.
 
 ## Testable Predictions {#sec-theory-predictions}
 
-Spell out the predictions that follow from the model. Each prediction
-should be tight enough that the data can support or reject it.
+The model yields two predictions that we take to the data.
+
+::: {.assumption}
+The idiosyncratic shock $\varepsilon_{it}$ is mean-zero and
+independent of the focal regressor $x_{it}$ conditional on the
+unit fixed effect $\alpha_i$.
+:::
+
+::: {.proposition}
+Under the assumption above, the marginal effect $\partial y / \partial x$
+is identified from the within-unit variation in $x_{it}$.
+:::
 
 # Data {#sec-data}
 
-Describe the sample, sources, and any cleaning. Full variable
-definitions appear in @sec-app-vardesc.
+We illustrate the empirical workflow on a synthetic panel of 1{,}000
+units observed over 20 periods, generated to mimic the kind of
+firm-level data common in applied economics and finance.
 
 ## Data Sources and Sample Construction {#sec-data-sources}
 
-List each data source, the time window, and the merge / filter rules.
+The panel is balanced and contains no missing values. In a real
+application this subsection would list each external data source
+(e.g., CRSP, Compustat, BLS), the time window covered, and the
+merge and filter rules applied to arrive at the analysis sample.
 
 ## Variable Definitions {#sec-data-vars}
 
-Define the dependent variable, the focal regressor, and any controls.
+The outcome variable $y_{it}$ takes positive real values. The
+focal regressor $x_{it}$ is continuous and roughly symmetric.
+Three control variables $z^{1}_{it}, z^{2}_{it}, z^{3}_{it}$
+capture observable unit characteristics. Full definitions are in
+Appendix \ref{sec-app-vardesc}.
 
 ## Summary Statistics {#sec-data-summary}
 
-Discuss summary statistics. Reference @tbl-summary for the numerical
-table.
+Table @tbl-summary reports means and standard deviations for each
+variable. The outcome and focal regressor exhibit modest
+dispersion; the controls are roughly normalized.
 
 ```{r}
 #| label: tbl-summary
-#| tbl-cap: "Summary statistics."
+#| tbl-cap: "Summary statistics for the example panel."
 #| echo: false
 #| eval: false
 # knitr::kable(your_data_frame, booktabs = TRUE)
@@ -178,59 +193,69 @@ table.
 
 # Methodology {#sec-method}
 
-State the estimator and identifying assumptions. A representative
-baseline specification:
+Our baseline specification is a two-way fixed-effects regression:
 
 $$
-y_{it} = \alpha_i + \beta\, x_{it} + \gamma' \mathbf{Z}_{it} + \varepsilon_{it}
+y_{it} = \alpha_i + \delta_t + \beta\, x_{it} + \gamma' \mathbf{Z}_{it} + \varepsilon_{it}
 $$ {#eq-baseline}
 
-where $y_{it}$ is the outcome of interest, $x_{it}$ the focal
-regressor, and $\mathbf{Z}_{it}$ a vector of controls. Identification
-of $\beta$ rests on the assumptions discussed below.
-
-::: {.assumption}
-State the key identifying assumption here.
-:::
+where $\alpha_i$ absorbs time-invariant unit heterogeneity, $\delta_t$
+absorbs common time shocks, and $\mathbf{Z}_{it}$ is the vector of
+controls defined above. We cluster standard errors at the unit level
+to allow for arbitrary within-unit serial correlation.
 
 # Main Results {#sec-results}
 
-Lead with the headline result. Discuss the magnitude and what it
-means in context.
+This section reports the baseline estimates and explores how they
+vary across observable subgroups.
 
 ## Baseline Estimates {#sec-results-baseline}
 
-Present the baseline estimate of @eq-baseline and discuss it.
+Estimating @eq-baseline on the full sample yields a point estimate
+of $\hat{\beta} = 0.12$ (standard error 0.03), statistically
+significant at the 1% level. A one-standard-deviation increase in
+$x_{it}$ is associated with a 0.12-unit movement in $y_{it}$,
+which translates to roughly 8% of the outcome's sample mean.
 
 ## Heterogeneity {#sec-results-hetero}
 
-Document how the baseline effect varies along observable dimensions.
+Splitting the sample by tercile of a pre-period unit characteristic,
+the estimate ranges from 0.04 in the bottom tercile to 0.21 in the
+top tercile. The pattern is monotone and statistically distinct
+across terciles.
 
 ## Mechanisms {#sec-results-mechanism}
 
-Decompose the headline effect into the channel(s) the theory predicts.
+Decomposing the headline estimate into its within-period and
+across-period components shows that roughly two-thirds of the effect
+operates contemporaneously, with the remainder unfolding over the
+following two periods.
 
 # Additional Analyses {#sec-additional}
 
-Present any extension that does not fit the main narrative but is
-useful context for readers.
+A natural extension is to allow $\beta$ to vary with the macro state.
+Letting $S_t \in \{0, 1\}$ indicate recession periods and interacting
+it with $x_{it}$ yields an additional $0.05$ uplift on the focal
+coefficient in recessions.
 
 # Robustness {#sec-robust}
 
-Re-estimate the baseline under alternative specifications, placebo
-samples, and falsification tests. Detailed robustness tables that do
-not fit in the main text live in the Internet Appendix.
+The baseline survives the usual battery of robustness checks:
+dropping the most extreme 1% of observations, restricting the panel
+to a balanced subsample, replacing fixed effects with unit-specific
+linear trends, and re-clustering at alternative levels. Detailed
+results appear in the Internet Appendix.
 
 # Conclusion {#sec-conc}
 
-Summarize the contribution, acknowledge limitations, and suggest
-directions for follow-up work.
+This template paper has illustrated the typographic conventions of
+the qkit paper format. Replace each section's contents with your
+own analysis. The structure, equation environments, theorem-style
+blocks, in-paper appendix, and separate Internet Appendix are
+ready to use as-is.
 
 ```{=tex}
 \newpage
-% The \appendix macro is built into the article class: it resets the
-% section counter, switches \thesection to A, B, C, ..., and continues
-% numbering tables/figures/equations within each appendix section.
 \appendix
 \setcounter{table}{0}
 \setcounter{figure}{0}
@@ -242,14 +267,18 @@ directions for follow-up work.
 
 # Variable Definitions {#sec-app-vardesc}
 
-Provide formal definitions and data sources for every variable used
-in the empirical analysis. A table works well here.
+This appendix would list formal definitions and data sources for
+every variable used in @sec-data. Replace with your own table of
+variable definitions.
 
 # Auxiliary Derivations {#sec-app-derivations}
 
-Walk through derivations or proofs sketched in the main text.
+Selected derivations sketched in the main text. Replace with the
+derivations your paper requires.
 
 ::: {.proof}
-Sketch the argument or refer to the Internet Appendix for the full
-proof.
+A short proof of the proposition in @sec-theory-predictions:
+under the stated assumption, within-unit demeaning eliminates
+$\alpha_i$, leaving an estimating equation that satisfies the
+standard OLS exogeneity condition. $\square$
 :::
