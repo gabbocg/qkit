@@ -19,8 +19,6 @@ format:
     linkcolor: red
     citecolor: blue
     urlcolor: magenta
-    cite-method: natbib
-    biblio-style: apalike
     number-sections: true
     keep-tex: true
     subparagraph: true
@@ -84,17 +82,8 @@ format:
         \hbadness=10000
 
         \AtBeginDocument{%
-          \setlength{\abovedisplayskip}{0pt}%
-          \setlength{\belowdisplayskip}{0pt}%
-          \setlength{\abovedisplayshortskip}{0pt}%
-          \setlength{\belowdisplayshortskip}{0pt}%
-        }
-        \let\oldequation=\equation
-        \let\endoldequation=\endequation
-        \renewenvironment{equation}{%
-          \vspace*{0.4cm}\oldequation%
-        }{%
-          \endoldequation\vspace*{0.4cm}%
+          \setlength{\abovedisplayshortskip}{\abovedisplayskip}%
+          \setlength{\belowdisplayshortskip}{\belowdisplayskip}%
         }
 
         \renewcommand{\thesection}{Appendix \Alph{section}}

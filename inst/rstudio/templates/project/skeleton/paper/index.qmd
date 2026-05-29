@@ -49,8 +49,6 @@ format:
     linkcolor: red
     citecolor: blue
     urlcolor: magenta
-    cite-method: natbib
-    biblio-style: apalike
     number-sections: true
     keep-tex: true
     subparagraph: true
@@ -114,26 +112,16 @@ format:
            \item\relax}
           {\endlist}
 
-        % Symmetric space above AND below every display equation.
-        % LaTeX's \abovedisplayskip / \belowdisplayskip get scaled
-        % by linestretch (doublespacing) and the short-variant
-        % skips are auto-selected based on the previous line's
-        % length, both of which make pure-\setlength approaches
-        % asymmetric in practice. We instead zero all four display
-        % skips and wrap \equation in a renew that explicitly emits
-        % \vspace*{0.4cm} above and below.
+        % Make display-equation spacing symmetric. LaTeX's default
+        % \abovedisplayshortskip is 0pt while \belowdisplayshortskip
+        % is 7pt, so when the line preceding an equation is short
+        % the gap above looks tighter than the gap below. We copy
+        % the short-skip values to the regular display-skip values
+        % so all four are equal, then let setspace's linestretch
+        % scale them uniformly.
         \AtBeginDocument{%
-          \setlength{\abovedisplayskip}{0pt}%
-          \setlength{\belowdisplayskip}{0pt}%
-          \setlength{\abovedisplayshortskip}{0pt}%
-          \setlength{\belowdisplayshortskip}{0pt}%
-        }
-        \let\oldequation=\equation
-        \let\endoldequation=\endequation
-        \renewenvironment{equation}{%
-          \vspace*{0.4cm}\oldequation%
-        }{%
-          \endoldequation\vspace*{0.4cm}%
+          \setlength{\abovedisplayshortskip}{\abovedisplayskip}%
+          \setlength{\belowdisplayshortskip}{\belowdisplayskip}%
         }
 
         \theoremstyle{plain}
