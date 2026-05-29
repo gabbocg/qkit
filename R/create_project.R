@@ -55,12 +55,20 @@ create_project <- function(path,
       fs::dir_create(fs::path_dir(target))
       fs::file_copy(f, target, overwrite = FALSE)
     }
-    # Patch placeholders in the entry file (`_quarto.yml` for book,
-    # `index.qmd` for paper).
-    entry <- fs::path(path, if (type == "book") "_quarto.yml" else "index.qmd")
-    if (fs::file_exists(entry)) {
+    # Patch placeholders in the entry file(s):
+    #   * book: `_quarto.yml` (title + author)
+    #   * paper: `index.qmd` and `internet-appendix.qmd` if present
+    #     (both share the same "Your Paper Title" / "Your Name" placeholders)
+    title_placeholder <- if (type == "book") "Your Book Title" else "Your Paper Title"
+    entries <- if (type == "book") {
+      fs::path(path, "_quarto.yml")
+    } else {
+      c(fs::path(path, "index.qmd"),
+        fs::path(path, "internet-appendix.qmd"))
+    }
+    for (entry in entries) {
+      if (!fs::file_exists(entry)) next
       content <- readLines(entry, encoding = "UTF-8")
-      title_placeholder <- if (type == "book") "Your Book Title" else "Your Paper Title"
       if (usable(title))  content <- gsub(title_placeholder, title, content, fixed = TRUE)
       if (usable(author)) content <- gsub("Your Name", author, content, fixed = TRUE)
       writeLines(content, entry, useBytes = TRUE)

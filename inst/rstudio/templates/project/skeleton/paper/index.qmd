@@ -19,6 +19,11 @@ abstract: |
   A short abstract goes here. Summarize the paper's question, data,
   method, and main findings in 150--250 words. Replace this text with
   your own.
+
+  \bigskip
+  \noindent\textbf{Keywords:} keyword one, keyword two, keyword three
+
+  \noindent\textbf{JEL Classification:} A00, B00, C00
 keywords:
   - keyword one
   - keyword two

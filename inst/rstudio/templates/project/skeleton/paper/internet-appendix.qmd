@@ -1,0 +1,93 @@
+---
+title: "Internet Appendix for: Your Paper Title"
+author:
+  - name: Your Name
+    email: you@example.org
+    affiliations:
+      - name: Your Department, Your University
+        address: Some Address, Country
+        corresponding: true
+  - name: Co-Author One
+    email: one@example.org
+    affiliations:
+      - name: Co-Author Department, Co-Author University
+        address: Some Address, Country
+date: today
+date-format: "[This revision:] D MMMM YYYY"
+abstract: |
+  This Internet Appendix provides supplementary results, robustness
+  checks, additional tables and figures, and proofs that complement
+  the main paper. Replace this paragraph with a one- or two-sentence
+  description of what readers will find here.
+bibliography: references-appendix.bib
+
+format:
+  pdf:
+    pdf-engine: xelatex
+    documentclass: article
+    classoption:
+      - "12pt"
+    geometry:
+      - margin=1in
+    linestretch: 2
+    indent: true
+    fontsize: 12pt
+    colorlinks: true
+    linkcolor: red
+    citecolor: blue
+    urlcolor: magenta
+    cite-method: natbib
+    biblio-style: apalike
+    keep-tex: true
+    # Restart appendix section numbering with letters (A, B, C, ...)
+    # and prefix headings with the "Appendix" label so readers can tell
+    # at a glance that they are in the supplementary material.
+    include-in-header:
+      text: |
+        \usepackage{amsthm}
+        \usepackage{subcaption}
+        \usepackage{setspace}
+        \AtBeginEnvironment{tabular}{\onehalfspacing}
+        \tolerance=1
+        \emergencystretch=\maxdimen
+        \hyphenpenalty=10000
+        \hbadness=10000
+        \renewcommand{\thesection}{\Alph{section}}
+        \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
+        \renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+        \renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+        \renewcommand{\theequation}{\Alph{section}.\arabic{equation}}
+        \theoremstyle{plain}
+        \newtheorem{theorem}{Theorem}[section]
+        \newtheorem{proposition}[theorem]{Proposition}
+        \newtheorem{lemma}[theorem]{Lemma}
+        \theoremstyle{definition}
+        \newtheorem{definition}[theorem]{Definition}
+        \newtheorem{assumption}[theorem]{Assumption}
+---
+
+# Sample Construction and Matching {#sec-app-matching}
+
+Describe additional details about the sample, propensity-score
+matching, or other data construction not covered in the main paper.
+
+# Auxiliary Methodology {#sec-app-method}
+
+Walk through derivations or estimator details that were summarized
+in the main text. A representative supplementary equation:
+
+$$
+\widehat{\beta}_{IA} = (X' X)^{-1} X' y
+$$ {#eq-app-baseline}
+
+@eq-app-baseline refers to the supplementary specification.
+
+# Robustness Tables {#sec-app-robust}
+
+Tables and figures that did not fit in the main paper.
+
+# Proofs {#sec-app-proofs}
+
+::: {.proof}
+A proof of Proposition 1 from the main paper.
+:::
