@@ -1,7 +1,5 @@
 ---
-title: |
-  Your Paper Title \\
-  \textit{\normalsize Preliminary draft --- please do not cite without permission}
+title: "Your Paper Title"
 author:
   - name: Your Name
     email: you@example.org
@@ -74,9 +72,36 @@ format:
 
         \AtBeginEnvironment{tabular}{\onehalfspacing}
 
+        % Inject the italic "Preliminary draft" line between the title
+        % and the author block. We redefine \title so that whatever
+        % the YAML supplies gets appended with a line break and the
+        % italic subtitle line. Avoids the titling package, which
+        % isn't always present in TinyTex installs.
+        \makeatletter
+        \renewcommand{\title}[1]{%
+          \gdef\@title{#1\\[0.3cm]%
+            {\normalsize\itshape Preliminary draft --- please do not cite without permission}%
+          }%
+        }
+        \makeatother
+
+        % Italic subsection / subsubsection headings. sectsty alone
+        % sometimes doesn't fully override the article-class default
+        % \bfseries, so we also re-issue \@startsection directly with
+        % \itshape in the font slot for belt-and-suspenders coverage.
         \subsectionfont{\large\itshape}
         \subsubsectionfont{\large\itshape}
+        \makeatletter
+        \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+          {-3.25ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+          {\normalfont\large\itshape}}
+        \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+          {-3.25ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+          {\normalfont\large\itshape}}
+        \makeatother
 
+        % Period-after-section numbering: headings read "1. Foo"
+        % rather than "1 Foo".
         \makeatletter
         \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
             {\csname the#1\endcsname\quad}%
@@ -96,10 +121,11 @@ format:
            \item\relax}
           {\endlist}
 
+        % Symmetric vspace before AND after equations.
         \let\oldequation=\equation
         \let\endoldequation=\endequation
         \renewenvironment{equation}{%
-          \vspace{0cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
+          \vspace{0.25cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
         }
 
         \theoremstyle{plain}
@@ -115,8 +141,9 @@ format:
 
 This paper studies how a focal explanatory variable $x$ shapes an
 outcome $y$ in a generic panel of units indexed by $i$ and time $t$.
-The exercise is deliberately stylized: it serves as a working example
-of the template's typography rather than a substantive contribution.
+The exercise is deliberately stylized: it serves as a working
+example of the template's typography rather than a substantive
+contribution.
 
 The remainder of the paper is organized as follows. Section
 @sec-theory sketches a stylized model. Section @sec-data describes
@@ -152,16 +179,16 @@ is identified from the within-unit variation in $x_{it}$.
 
 # Data {#sec-data}
 
-We illustrate the empirical workflow on a synthetic panel of 1{,}000
-units observed over 20 periods, generated to mimic the kind of
-firm-level data common in applied economics and finance.
+We illustrate the empirical workflow on a synthetic panel of
+1{,}000 units observed over 20 periods, generated to mimic the
+kind of firm-level data common in applied economics and finance.
 
 ## Data Sources and Sample Construction {#sec-data-sources}
 
 The panel is balanced and contains no missing values. In a real
-application this subsection would list each external data source
-(e.g., CRSP, Compustat, BLS), the time window covered, and the
-merge and filter rules applied to arrive at the analysis sample.
+application this subsection would list each external data source,
+the time window covered, and the merge and filter rules applied
+to arrive at the analysis sample.
 
 ## Variable Definitions {#sec-data-vars}
 
@@ -169,13 +196,12 @@ The outcome variable $y_{it}$ takes positive real values. The
 focal regressor $x_{it}$ is continuous and roughly symmetric.
 Three control variables $z^{1}_{it}, z^{2}_{it}, z^{3}_{it}$
 capture observable unit characteristics. Full definitions are in
-Appendix \ref{sec-app-vardesc}.
+Appendix @sec-app-vardesc.
 
 ## Summary Statistics {#sec-data-summary}
 
-Table @tbl-summary reports means and standard deviations for each
-variable. The outcome and focal regressor exhibit modest
-dispersion; the controls are roughly normalized.
+Table @tbl-summary reports means and standard deviations for
+each variable.
 
 ```{r}
 #| label: tbl-summary
@@ -187,16 +213,18 @@ dispersion; the controls are roughly normalized.
 
 # Methodology {#sec-method}
 
-Our baseline specification is a two-way fixed-effects regression:
+Following @example2025, our baseline specification is a two-way
+fixed-effects regression:
 
 $$
 y_{it} = \alpha_i + \delta_t + \beta\, x_{it} + \gamma' \mathbf{Z}_{it} + \varepsilon_{it}
 $$ {#eq-baseline}
 
-where $\alpha_i$ absorbs time-invariant unit heterogeneity, $\delta_t$
-absorbs common time shocks, and $\mathbf{Z}_{it}$ is the vector of
-controls defined above. We cluster standard errors at the unit level
-to allow for arbitrary within-unit serial correlation.
+where $\alpha_i$ absorbs time-invariant unit heterogeneity,
+$\delta_t$ absorbs common time shocks, and $\mathbf{Z}_{it}$ is
+the vector of controls defined above. We cluster standard errors
+at the unit level to allow for arbitrary within-unit serial
+correlation.
 
 # Main Results {#sec-results}
 
@@ -207,9 +235,7 @@ vary across observable subgroups.
 
 Estimating @eq-baseline on the full sample yields a point estimate
 of $\hat{\beta} = 0.12$ (standard error 0.03), statistically
-significant at the 1% level. A one-standard-deviation increase in
-$x_{it}$ is associated with a 0.12-unit movement in $y_{it}$,
-which translates to roughly 8% of the outcome's sample mean.
+significant at the 1% level.
 
 ## Heterogeneity {#sec-results-hetero}
 
@@ -221,32 +247,30 @@ across terciles.
 ## Mechanisms {#sec-results-mechanism}
 
 Decomposing the headline estimate into its within-period and
-across-period components shows that roughly two-thirds of the effect
-operates contemporaneously, with the remainder unfolding over the
-following two periods.
+across-period components shows that roughly two-thirds of the
+effect operates contemporaneously, with the remainder unfolding
+over the following two periods.
 
 # Additional Analyses {#sec-additional}
 
-A natural extension is to allow $\beta$ to vary with the macro state.
-Letting $S_t \in \{0, 1\}$ indicate recession periods and interacting
-it with $x_{it}$ yields an additional $0.05$ uplift on the focal
-coefficient in recessions.
+A natural extension is to allow $\beta$ to vary with the macro
+state. Letting $S_t \in \{0, 1\}$ indicate recession periods and
+interacting it with $x_{it}$ yields an additional $0.05$ uplift
+on the focal coefficient in recessions.
 
 # Robustness {#sec-robust}
 
 The baseline survives the usual battery of robustness checks:
-dropping the most extreme 1% of observations, restricting the panel
-to a balanced subsample, replacing fixed effects with unit-specific
-linear trends, and re-clustering at alternative levels. Detailed
-results appear in the Internet Appendix.
+dropping the most extreme 1% of observations, restricting the
+panel to a balanced subsample, replacing fixed effects with
+unit-specific linear trends, and re-clustering at alternative
+levels. Detailed results appear in the Internet Appendix.
 
 # Conclusion {#sec-conc}
 
-This template paper has illustrated the typographic conventions of
-the qkit paper format. Replace each section's contents with your
-own analysis. The structure, equation environments, theorem-style
-blocks, in-paper appendix, and separate Internet Appendix are
-ready to use as-is.
+This template paper has illustrated the typographic conventions
+of the qkit paper format. Replace each section's contents with
+your own analysis.
 
 # References {.unnumbered}
 
@@ -272,8 +296,7 @@ variable definitions.
 
 # Auxiliary Derivations {#sec-app-derivations}
 
-Selected derivations sketched in the main text. Replace with the
-derivations your paper requires.
+Selected derivations sketched in the main text.
 
 ::: {.proof}
 A short proof of the proposition in @sec-theory-predictions:

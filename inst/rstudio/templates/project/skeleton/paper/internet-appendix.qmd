@@ -1,7 +1,5 @@
 ---
-title: |
-  Internet Appendix for: Your Paper Title \\
-  \textit{\normalsize Preliminary draft --- please do not cite without permission}
+title: "Internet Appendix for: Your Paper Title"
 author:
   - name: Your Name
     email: you@example.org
@@ -22,10 +20,11 @@ author:
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
-  This Internet Appendix provides supplementary results, robustness
-  checks, additional tables and figures, and proofs that complement
-  the main paper. Replace this paragraph with a one- or two-sentence
-  description of what readers will find here.
+  This Internet Appendix is a worked typographic example. The
+  content below is unrelated to the main paper and is included
+  only to show how the template renders longer prose, equations,
+  theorem environments, and bibliography references. Replace it
+  with material specific to your paper.
 bibliography: references-appendix.bib
 
 format:
@@ -61,8 +60,25 @@ format:
         \usepackage{sectsty}
 
         \AtBeginEnvironment{tabular}{\onehalfspacing}
+
+        \makeatletter
+        \renewcommand{\title}[1]{%
+          \gdef\@title{#1\\[0.3cm]%
+            {\normalsize\itshape Supplementary Results}%
+          }%
+        }
+        \makeatother
+
         \subsectionfont{\large\itshape}
         \subsubsectionfont{\large\itshape}
+        \makeatletter
+        \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+          {-3.25ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+          {\normalfont\large\itshape}}
+        \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+          {-3.25ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+          {\normalfont\large\itshape}}
+        \makeatother
 
         \makeatletter
         \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
@@ -77,6 +93,12 @@ format:
         \emergencystretch=\maxdimen
         \hyphenpenalty=10000
         \hbadness=10000
+
+        \let\oldequation=\equation
+        \let\endoldequation=\endequation
+        \renewenvironment{equation}{%
+          \vspace{0.25cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
+        }
 
         \renewcommand{\thesection}{Appendix \Alph{section}}
         \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
@@ -93,64 +115,97 @@ format:
         \newtheorem{assumption}[theorem]{Assumption}
 ---
 
-# Sample Construction and Matching {#sec-app-matching}
+# What Is a Black Hole? {#sec-app-blackhole}
 
-This appendix documents how the analysis sample was constructed.
-The procedure consists of three steps: (i) merging the source
-datasets on a common unit identifier, (ii) restricting to units
-observed for at least 10 consecutive periods, and (iii) trimming
-the most extreme 1% of observations on the focal regressor. The
-final panel contains 1{,}000 units and 20 time periods.
+A black hole is a region of spacetime where gravity is so intense
+that nothing, not even light, can escape once it crosses an
+imaginary surface called the event horizon. From a long way away
+the black hole looks like a small, very dark object; up close, it
+is more accurately described as a structure of the geometry of
+space itself.
 
-## Matching Procedure {#sec-app-matching-procedure}
+## A Brief History of the Idea {#sec-app-blackhole-history}
 
-We match treated units to control units on a set of pre-period
-covariates using nearest-neighbour matching with replacement. The
-matched control sample is used in the robustness checks reported
-in @sec-app-robust below.
+The possibility of objects so dense that light cannot escape was
+already discussed by John Michell in 1783 and independently by
+Laplace shortly afterwards. The modern picture emerged from
+Schwarzschild's 1916 solution to Einstein's field equations of
+general relativity. As surveyed by @blackhole-review2024,
+black-hole physics has since become a central object of study in
+both classical and quantum gravity.
 
-# Auxiliary Methodology {#sec-app-method}
+# The Schwarzschild Solution {#sec-app-schwarzschild}
 
-This appendix walks through derivations referenced in the main
-text. Consider the within transformation that absorbs the unit
-fixed effect:
-
-$$
-\tilde{y}_{it} = y_{it} - \bar{y}_i, \qquad
-\tilde{x}_{it} = x_{it} - \bar{x}_i
-$$ {#eq-app-within}
-
-The within estimator $\hat{\beta}_{FE}$ is the OLS slope from
-regressing $\tilde{y}_{it}$ on $\tilde{x}_{it}$ and analogously
-demeaned controls:
+Outside a spherically symmetric, non-rotating mass $M$, spacetime
+is described by the Schwarzschild metric. In standard coordinates
+$(t, r, \theta, \phi)$ and units with $G = c = 1$, the line
+element is
 
 $$
-\widehat{\beta}_{FE} = \left( \widetilde{X}' \widetilde{X} \right)^{-1} \widetilde{X}' \widetilde{y}
-$$ {#eq-app-baseline}
+ds^{2}
+= -\left(1 - \frac{2M}{r}\right) dt^{2}
++ \left(1 - \frac{2M}{r}\right)^{-1} dr^{2}
++ r^{2}\, d\Omega^{2},
+$$ {#eq-app-schwarz}
 
-Under the assumption stated in the main text, $\hat{\beta}_{FE}$
-is consistent for the parameter of interest. See @sec-app-proofs
-for the formal argument.
+where $d\Omega^{2} = d\theta^{2} + \sin^{2}\theta\, d\phi^{2}$ is
+the line element on the unit two-sphere. The radius $r = 2M$ is
+the *event horizon*: an infalling observer who crosses it cannot
+send any signal back outward.
 
-# Robustness Tables {#sec-app-robust}
+## The Horizon Area and Surface Gravity {#sec-app-schwarzschild-horizon}
 
-This appendix reports robustness checks that supplement the main
-text. The headline finding survives: trimming, alternative
-sub-samples, and unit-specific linear trends each leave the
-point estimate within one standard error of the baseline of
-$0.12$ reported in the main paper.
+The horizon at $r = 2M$ is a two-sphere of area
 
-# Proofs {#sec-app-proofs}
+$$
+A = 4\pi (2M)^{2} = 16\pi M^{2}
+$$ {#eq-app-area}
+
+and the associated surface gravity is
+
+$$
+\kappa = \frac{1}{4M}.
+$$ {#eq-app-kappa}
+
+These two quantities reappear in the next section's discussion of
+black-hole thermodynamics.
+
+# Black-Hole Thermodynamics {#sec-app-thermo}
+
+A surprising parallel between the laws governing horizons and the
+laws of thermodynamics emerged in the 1970s. Treating the horizon
+area as an entropy and the surface gravity as a temperature gives
+the *first law of black-hole mechanics*,
+
+$$
+dM = \frac{\kappa}{8\pi}\, dA + \Omega_{H}\, dJ + \Phi_{H}\, dQ,
+$$ {#eq-app-firstlaw}
+
+where $J$ is angular momentum, $Q$ is electric charge, and
+$\Omega_{H}, \Phi_{H}$ are the angular velocity and electrostatic
+potential at the horizon.
+
+::: {.theorem}
+*(No-hair theorem, informal.)* A stationary, asymptotically flat
+black-hole solution of the Einstein-Maxwell equations is uniquely
+characterized by its mass $M$, angular momentum $J$, and electric
+charge $Q$.
+:::
 
 ::: {.proof}
-*(Proof of the proposition in the main text.)* Under the assumption
-that $\varepsilon_{it}$ is mean-zero and orthogonal to $x_{it}$
-conditional on $\alpha_i$, within-unit demeaning removes $\alpha_i$
-from the estimating equation. The transformed regressor
-$\tilde{x}_{it}$ is then orthogonal to the transformed error
-$\tilde{\varepsilon}_{it}$, so OLS on @eq-app-within delivers a
-consistent estimate of $\beta$. $\square$
+The full proof requires a careful analysis of the constraint
+equations and the rigidity of the horizon Killing vector field;
+see standard references for the details. $\square$
 :::
+
+# Outlook {#sec-app-outlook}
+
+This appendix has used black-hole physics purely as a vehicle to
+demonstrate the qkit paper template's handling of multi-section
+appendices, lettered section numbering, displayed equations with
+labels, theorem environments, and a separate bibliography. Replace
+this material with the supplementary content your own paper
+requires.
 
 # References {.unnumbered}
 
