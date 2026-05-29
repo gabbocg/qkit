@@ -1,30 +1,17 @@
 ---
 title: "Internet Appendix for: Your Paper Title"
-author:
-  - name: Your Name
-    email: you@example.org
-    affiliations:
-      - name: Your Department, Your University
-        address: Some Address, Country
-        corresponding: true
-  - name: Co-Author One
-    email: one@example.org
-    affiliations:
-      - name: Co-Author Department, Co-Author University
-        address: Some Address, Country
-  - name: Co-Author Two
-    email: two@example.org
-    affiliations:
-      - name: Co-Author Department, Co-Author University
-        address: Some Address, Country
+author: |
+  Author One\orcidlink{0000-0000-0000-0001}\thanks{Email: \href{mailto:author.one@example.org}{author.one@example.org}.} ,
+  Author Two\orcidlink{0000-0000-0000-0002}\thanks{Email: \href{mailto:author.two@example.org}{author.two@example.org}.} , and
+  Author Three\orcidlink{0000-0000-0000-0003}\thanks{Email: \href{mailto:author.three@example.org}{author.three@example.org}. Corresponding author.}
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
-  This Internet Appendix is a worked typographic example. The
-  content below is unrelated to the main paper and is included
-  only to show how the template renders longer prose, equations,
-  theorem environments, and bibliography references. Replace it
-  with material specific to your paper.
+  This Internet Appendix supplements the main paper with the
+  formal derivation of Newton's law of cooling from first
+  principles, a discussion of how the cooling constant depends on
+  the heat-transfer coefficient and the geometry of the mug, and
+  an extension to the case of time-varying ambient temperature.
 bibliography: references-appendix.bib
 
 format:
@@ -58,6 +45,7 @@ format:
         \usepackage{tabularx}
         \usepackage{float}
         \usepackage{sectsty}
+        \usepackage{orcidlink}
 
         \AtBeginEnvironment{tabular}{\onehalfspacing}
 
@@ -94,11 +82,10 @@ format:
         \hyphenpenalty=10000
         \hbadness=10000
 
-        \let\oldequation=\equation
-        \let\endoldequation=\endequation
-        \renewenvironment{equation}{%
-          \vspace{0.25cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
-        }
+        \setlength{\abovedisplayskip}{0.4cm}
+        \setlength{\belowdisplayskip}{0.4cm}
+        \setlength{\abovedisplayshortskip}{0.4cm}
+        \setlength{\belowdisplayshortskip}{0.4cm}
 
         \renewcommand{\thesection}{Appendix \Alph{section}}
         \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
@@ -115,97 +102,110 @@ format:
         \newtheorem{assumption}[theorem]{Assumption}
 ---
 
-# What Is a Black Hole? {#sec-app-blackhole}
+```{=tex}
+\newpage
+```
 
-A black hole is a region of spacetime where gravity is so intense
-that nothing, not even light, can escape once it crosses an
-imaginary surface called the event horizon. From a long way away
-the black hole looks like a small, very dark object; up close, it
-is more accurately described as a structure of the geometry of
-space itself.
+# Derivation of Newton's Law from First Principles {#sec-app-derivation}
 
-## A Brief History of the Idea {#sec-app-blackhole-history}
+This appendix derives the cooling law @eq-newton in the main
+paper from a heat-balance argument and discusses the parameters
+that determine the cooling constant $k$.
 
-The possibility of objects so dense that light cannot escape was
-already discussed by John Michell in 1783 and independently by
-Laplace shortly afterwards. The modern picture emerged from
-Schwarzschild's 1916 solution to Einstein's field equations of
-general relativity. As surveyed by @blackhole-review2024,
-black-hole physics has since become a central object of study in
-both classical and quantum gravity.
+## The Heat-Balance Equation {#sec-app-derivation-balance}
 
-# The Schwarzschild Solution {#sec-app-schwarzschild}
-
-Outside a spherically symmetric, non-rotating mass $M$, spacetime
-is described by the Schwarzschild metric. In standard coordinates
-$(t, r, \theta, \phi)$ and units with $G = c = 1$, the line
-element is
+Let $C$ denote the heat capacity of the coffee (J / $^\circ$C),
+$h$ the heat-transfer coefficient at the mug-air interface
+(W / m$^{2}$ / $^\circ$C), and $A$ the surface area of the mug
+(m$^{2}$). The rate at which the coffee loses thermal energy is
 
 $$
-ds^{2}
-= -\left(1 - \frac{2M}{r}\right) dt^{2}
-+ \left(1 - \frac{2M}{r}\right)^{-1} dr^{2}
-+ r^{2}\, d\Omega^{2},
-$$ {#eq-app-schwarz}
+C\, \frac{dT}{dt} = -h\, A\, \bigl(T - T_\infty\bigr).
+$$ {#eq-app-heatbalance}
 
-where $d\Omega^{2} = d\theta^{2} + \sin^{2}\theta\, d\phi^{2}$ is
-the line element on the unit two-sphere. The radius $r = 2M$ is
-the *event horizon*: an infalling observer who crosses it cannot
-send any signal back outward.
-
-## The Horizon Area and Surface Gravity {#sec-app-schwarzschild-horizon}
-
-The horizon at $r = 2M$ is a two-sphere of area
+Dividing both sides by $C$ gives the form of @eq-newton with
 
 $$
-A = 4\pi (2M)^{2} = 16\pi M^{2}
+k = \frac{h\, A}{C}.
+$$ {#eq-app-kdef}
+
+This identifies the cooling constant as the product of three
+physical quantities. Holding $h$ and $C$ fixed, doubling the
+surface area $A$ doubles $k$, which is why a wide shallow bowl
+of coffee cools much faster than a tall narrow mug.
+
+# The Cooling Constant and Mug Geometry {#sec-app-geometry}
+
+For a cylindrical mug of radius $r$ and height $H$, the relevant
+surface area for heat exchange with the surrounding air is the
+top opening plus the lateral wall (the bottom usually sits on an
+insulating surface),
+
+$$
+A = \pi r^{2} + 2 \pi r H,
 $$ {#eq-app-area}
 
-and the associated surface gravity is
+and the heat capacity scales with volume,
 
 $$
-\kappa = \frac{1}{4M}.
-$$ {#eq-app-kappa}
+C = \rho c_p\, \pi r^{2} H,
+$$ {#eq-app-capacity}
 
-These two quantities reappear in the next section's discussion of
-black-hole thermodynamics.
-
-# Black-Hole Thermodynamics {#sec-app-thermo}
-
-A surprising parallel between the laws governing horizons and the
-laws of thermodynamics emerged in the 1970s. Treating the horizon
-area as an entropy and the surface gravity as a temperature gives
-the *first law of black-hole mechanics*,
+where $\rho$ is the density and $c_p$ the specific heat of
+coffee (approximately those of water). Substituting into
+@eq-app-kdef gives
 
 $$
-dM = \frac{\kappa}{8\pi}\, dA + \Omega_{H}\, dJ + \Phi_{H}\, dQ,
-$$ {#eq-app-firstlaw}
+k = \frac{h\, (\pi r^{2} + 2 \pi r H)}{\rho c_p\, \pi r^{2} H}
+  = \frac{h}{\rho c_p}\left(\frac{1}{H} + \frac{2}{r}\right).
+$$ {#eq-app-kgeom}
 
-where $J$ is angular momentum, $Q$ is electric charge, and
-$\Omega_{H}, \Phi_{H}$ are the angular velocity and electrostatic
-potential at the horizon.
+@eq-app-kgeom predicts that, holding the heat-transfer coefficient
+fixed, $k$ decreases with both height and radius, and that the
+two enter symmetrically only when $r = 2H$.
+
+# Time-Varying Ambient Temperature {#sec-app-tvarying}
+
+When the ambient temperature itself depends on time, $T_\infty
+\to T_\infty(t)$, the cooling equation becomes
+
+$$
+\frac{dT}{dt} = -k\bigl(T(t) - T_\infty(t)\bigr).
+$$ {#eq-app-tvarying}
+
+@eq-app-tvarying is a linear first-order ODE with an integrating
+factor $e^{k t}$, and its general solution is
+
+$$
+T(t) = e^{-k t}\, T(0) + k \int_{0}^{t} e^{-k (t - s)}\, T_\infty(s)\, ds.
+$$ {#eq-app-tvarying-soln}
+
+The coffee temperature is an exponentially weighted moving
+average of past ambient temperatures, with the weight given by
+the cooling constant $k$.
 
 ::: {.theorem}
-*(No-hair theorem, informal.)* A stationary, asymptotically flat
-black-hole solution of the Einstein-Maxwell equations is uniquely
-characterized by its mass $M$, angular momentum $J$, and electric
-charge $Q$.
+*(Long-run limit.)* If $T_\infty(t) \to \bar T$ as $t \to \infty$,
+then $T(t) \to \bar T$ as $t \to \infty$.
 :::
 
 ::: {.proof}
-The full proof requires a careful analysis of the constraint
-equations and the rigidity of the horizon Killing vector field;
-see standard references for the details. $\square$
+Apply the integrating-factor solution @eq-app-tvarying-soln and
+take limits: the first term decays exponentially, and the
+convolution term converges to $\bar T$ by dominated convergence.
+$\square$
 :::
 
-# Outlook {#sec-app-outlook}
+# Notes on the Heat-Transfer Coefficient {#sec-app-htc}
 
-This appendix has used black-hole physics purely as a vehicle to
-demonstrate the qkit paper template's handling of multi-section
-appendices, lettered section numbering, displayed equations with
-labels, theorem environments, and a separate bibliography. Replace
-this material with the supplementary content your own paper
-requires.
+The heat-transfer coefficient $h$ depends on whether the cooling
+proceeds by natural convection, by forced convection (e.g. an
+ambient draft), or by radiation; standard texts on transport
+phenomena tabulate empirical correlations for each regime. The
+results reported in @cooling-handbook2024 collect the relevant
+constants for typical kitchen conditions and are consistent
+with the magnitude of the $\widehat{k}$ estimated in the main
+paper.
 
 # References {.unnumbered}
 

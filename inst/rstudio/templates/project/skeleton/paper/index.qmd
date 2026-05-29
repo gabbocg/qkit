@@ -1,40 +1,36 @@
 ---
 title: "Your Paper Title"
-author:
-  - name: Your Name
-    email: you@example.org
-    affiliations:
-      - name: Your Department, Your University
-        address: Some Address, Country
-        corresponding: true
-  - name: Co-Author One
-    email: one@example.org
-    affiliations:
-      - name: Co-Author Department, Co-Author University
-        address: Some Address, Country
-  - name: Co-Author Two
-    email: two@example.org
-    affiliations:
-      - name: Co-Author Department, Co-Author University
-        address: Some Address, Country
+author: |
+  Author One\orcidlink{0000-0000-0000-0001}\thanks{Email: \href{mailto:author.one@example.org}{author.one@example.org}. Address: Department, University, City, Country.} ,
+  Author Two\orcidlink{0000-0000-0000-0002}\thanks{Email: \href{mailto:author.two@example.org}{author.two@example.org}. Address: Department, University, City, Country.} , and
+  Author Three\orcidlink{0000-0000-0000-0003}\thanks{Email: \href{mailto:author.three@example.org}{author.three@example.org}. Corresponding author. Address: Department, University, City, Country.}
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
-  This template paper studies the relationship between an outcome
-  variable and a focal regressor using a generic panel dataset.
-  Replace this paragraph with your own abstract; aim for 150--250
-  words covering the question, data, method, and main findings.
+  We study the cooling of a hot cup of coffee left undisturbed in a
+  room at constant ambient temperature. Fitting Newton's law of
+  cooling to a sample of repeated measurements yields a cooling
+  constant of $k \approx 0.024$ per minute, implying a half-cooling
+  time of roughly 29 minutes. The fit is tight, the residuals are
+  small, and a single-parameter exponential decay accommodates the
+  data over the observed range. Robustness checks vary the
+  ambient-temperature assumption and the sampling interval; the
+  central estimate is unchanged.
 
   \bigskip
-  \noindent\textbf{Keywords:} keyword one, keyword two, keyword three
+  \noindent\textbf{Keywords:} Newton's law of cooling, exponential
+  decay, nonlinear least squares, coffee
 
   \noindent\textbf{JEL Classification:} A00, B00, C00
 keywords:
-  - keyword one
-  - keyword two
-  - keyword three
+  - Newton's law of cooling
+  - exponential decay
+  - nonlinear least squares
+  - coffee
 thanks: |
-  We thank seminar and conference participants for helpful comments.
+  We thank colleagues for helpful comments and the staff of the
+  coffee bar where the measurements were collected. Contact: see
+  \href{mailto:author.three@example.org}{author.three@example.org}.
   Replace this acknowledgments block with your own.
 bibliography: references.bib
 
@@ -69,14 +65,13 @@ format:
         \usepackage{tabularx}
         \usepackage{float}
         \usepackage{sectsty}
+        \usepackage{orcidlink}
 
         \AtBeginEnvironment{tabular}{\onehalfspacing}
 
-        % Inject the italic "Preliminary draft" line between the title
-        % and the author block. We redefine \title so that whatever
-        % the YAML supplies gets appended with a line break and the
-        % italic subtitle line. Avoids the titling package, which
-        % isn't always present in TinyTex installs.
+        % Inject the italic "Preliminary draft" line between the
+        % title and the author block by redefining \title so it
+        % appends the subtitle to whatever Pandoc passes in.
         \makeatletter
         \renewcommand{\title}[1]{%
           \gdef\@title{#1\\[0.3cm]%
@@ -85,10 +80,9 @@ format:
         }
         \makeatother
 
-        % Italic subsection / subsubsection headings. sectsty alone
-        % sometimes doesn't fully override the article-class default
-        % \bfseries, so we also re-issue \@startsection directly with
-        % \itshape in the font slot for belt-and-suspenders coverage.
+        % Italic subsection / subsubsection headings, with both
+        % sectsty and an explicit \@startsection override so the
+        % article-class default \bfseries cannot leak through.
         \subsectionfont{\large\itshape}
         \subsubsectionfont{\large\itshape}
         \makeatletter
@@ -100,8 +94,7 @@ format:
           {\normalfont\large\itshape}}
         \makeatother
 
-        % Period-after-section numbering: headings read "1. Foo"
-        % rather than "1 Foo".
+        % Period after the section number.
         \makeatletter
         \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
             {\csname the#1\endcsname\quad}%
@@ -121,12 +114,14 @@ format:
            \item\relax}
           {\endlist}
 
-        % Symmetric vspace before AND after equations.
-        \let\oldequation=\equation
-        \let\endoldequation=\endequation
-        \renewenvironment{equation}{%
-          \vspace{0.25cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
-        }
+        % Symmetric vspace above AND below every display equation.
+        % We set the LaTeX display skips directly rather than wrap
+        % the equation env, so amsmath and built-in math displays
+        % all get the same spacing.
+        \setlength{\abovedisplayskip}{0.4cm}
+        \setlength{\belowdisplayskip}{0.4cm}
+        \setlength{\abovedisplayshortskip}{0.4cm}
+        \setlength{\belowdisplayshortskip}{0.4cm}
 
         \theoremstyle{plain}
         \newtheorem{theorem}{Theorem}[section]
@@ -137,75 +132,91 @@ format:
         \newtheorem{assumption}[theorem]{Assumption}
 ---
 
+```{=tex}
+\newpage
+```
+
 # Introduction {#sec-intro}
 
-This paper studies how a focal explanatory variable $x$ shapes an
-outcome $y$ in a generic panel of units indexed by $i$ and time $t$.
-The exercise is deliberately stylized: it serves as a working
-example of the template's typography rather than a substantive
-contribution.
+A cup of coffee left on a desk cools toward room temperature.
+Empirically the cooling looks roughly exponential: the hotter the
+coffee is at a given moment, the faster it loses heat to its
+surroundings. Newton's law of cooling provides a one-parameter
+description of this behaviour. This paper fits the law to a small
+sample of coffee-cup temperature measurements and reports the
+implied cooling constant.
 
 The remainder of the paper is organized as follows. Section
-@sec-theory sketches a stylized model. Section @sec-data describes
-the (synthetic) data. Section @sec-method outlines the empirical
-specification. Section @sec-results reports the main findings.
-Sections @sec-additional and @sec-robust discuss extensions and
-robustness. Section @sec-conc concludes.
+@sec-theory states Newton's law and derives the testable
+implication. Section @sec-data describes the measurement protocol
+and the sample. Section @sec-method explains the estimator.
+Section @sec-results reports the fit. Sections @sec-additional
+and @sec-robust discuss extensions and robustness. Section
+@sec-conc concludes.
 
 # Theoretical Framework {#sec-theory}
 
-Consider an economy populated by a continuum of identical agents
-indexed by $i$. Each agent chooses an action $x_{it}$ to maximize
-an expected payoff that depends on a latent fundamental $\theta_t$
-and an idiosyncratic shock $\varepsilon_{it}$. The equilibrium
-mapping from fundamentals to outcomes is summarized by a function
-$y_{it} = g(x_{it}, \theta_t) + \varepsilon_{it}$ whose properties
-deliver the testable implications below.
+Let $T(t)$ denote the temperature of the coffee at time $t$ and
+let $T_\infty$ denote the (constant) ambient temperature of the
+room. Newton's law of cooling asserts that the instantaneous rate
+of cooling is proportional to the temperature difference between
+the coffee and its surroundings,
+
+$$
+\frac{dT(t)}{dt} = -k\, \bigl(T(t) - T_\infty\bigr),
+$$ {#eq-newton}
+
+with cooling constant $k > 0$. Integrating @eq-newton subject to
+the initial condition $T(0) = T_0$ yields the closed-form
+solution
+
+$$
+T(t) = T_\infty + (T_0 - T_\infty)\, e^{-k t}.
+$$ {#eq-solution}
 
 ## Testable Predictions {#sec-theory-predictions}
 
-The model yields two predictions that we take to the data.
+@eq-solution implies that the logarithm of the standardised
+temperature difference is linear in time,
 
-::: {.assumption}
-The idiosyncratic shock $\varepsilon_{it}$ is mean-zero and
-independent of the focal regressor $x_{it}$ conditional on the
-unit fixed effect $\alpha_i$.
-:::
+$$
+\log\!\bigl(T(t) - T_\infty\bigr) = \log(T_0 - T_\infty) - k\, t,
+$$ {#eq-log}
+
+which provides the empirical specification estimated below.
 
 ::: {.proposition}
-Under the assumption above, the marginal effect $\partial y / \partial x$
-is identified from the within-unit variation in $x_{it}$.
+Under @eq-newton, the half-cooling time of the coffee --- the
+time required for the gap $T(t) - T_\infty$ to halve --- is
+$t_{1/2} = \log 2 / k$ and is independent of the initial
+temperature $T_0$.
 :::
 
 # Data {#sec-data}
 
-We illustrate the empirical workflow on a synthetic panel of
-1{,}000 units observed over 20 periods, generated to mimic the
-kind of firm-level data common in applied economics and finance.
+## Measurement Protocol {#sec-data-protocol}
 
-## Data Sources and Sample Construction {#sec-data-sources}
-
-The panel is balanced and contains no missing values. In a real
-application this subsection would list each external data source,
-the time window covered, and the merge and filter rules applied
-to arrive at the analysis sample.
+We prepared a single cup of brewed coffee in a standard ceramic
+mug and recorded its temperature with a digital thermocouple at
+one-minute intervals over 60 minutes. The room temperature was
+held at $T_\infty = 22^\circ$C throughout. We repeated the
+protocol on five separate days; the analysis below uses the
+average across the five runs.
 
 ## Variable Definitions {#sec-data-vars}
 
-The outcome variable $y_{it}$ takes positive real values. The
-focal regressor $x_{it}$ is continuous and roughly symmetric.
-Three control variables $z^{1}_{it}, z^{2}_{it}, z^{3}_{it}$
-capture observable unit characteristics. Full definitions are in
-Appendix @sec-app-vardesc.
+The dependent variable is the temperature reading $T_t$ in
+degrees Celsius at minute $t \in \{0, 1, \ldots, 60\}$. Full
+variable definitions appear in Appendix @sec-app-vardesc.
 
 ## Summary Statistics {#sec-data-summary}
 
-Table @tbl-summary reports means and standard deviations for
-each variable.
+Table @tbl-summary reports the mean and standard deviation of
+the temperature across the five runs, at selected minutes.
 
 ```{r}
 #| label: tbl-summary
-#| tbl-cap: "Summary statistics for the example panel."
+#| tbl-cap: "Summary statistics for the coffee-cup cooling sample."
 #| echo: false
 #| eval: false
 # knitr::kable(your_data_frame, booktabs = TRUE)
@@ -213,64 +224,63 @@ each variable.
 
 # Methodology {#sec-method}
 
-Following @example2025, our baseline specification is a two-way
-fixed-effects regression:
+Taking logs of @eq-solution and subtracting $T_\infty$ yields a
+specification linear in $k$. Following @example2025, we estimate
+$k$ by nonlinear least squares on the level form,
 
 $$
-y_{it} = \alpha_i + \delta_t + \beta\, x_{it} + \gamma' \mathbf{Z}_{it} + \varepsilon_{it}
-$$ {#eq-baseline}
+\widehat{k} = \arg\min_{k}\, \sum_{t=0}^{60} \Bigl[T_t - T_\infty - (T_0 - T_\infty)\, e^{-k t}\Bigr]^{2}.
+$$ {#eq-nls}
 
-where $\alpha_i$ absorbs time-invariant unit heterogeneity,
-$\delta_t$ absorbs common time shocks, and $\mathbf{Z}_{it}$ is
-the vector of controls defined above. We cluster standard errors
-at the unit level to allow for arbitrary within-unit serial
-correlation.
+Standard errors are obtained from the asymptotic covariance of
+the NLS estimator and reported in parentheses below.
 
 # Main Results {#sec-results}
 
-This section reports the baseline estimates and explores how they
-vary across observable subgroups.
+## Baseline Estimate {#sec-results-baseline}
 
-## Baseline Estimates {#sec-results-baseline}
-
-Estimating @eq-baseline on the full sample yields a point estimate
-of $\hat{\beta} = 0.12$ (standard error 0.03), statistically
-significant at the 1% level.
+The point estimate is $\widehat{k} = 0.024$ per minute (standard
+error 0.002), implying a half-cooling time of $t_{1/2} =
+\log 2 / 0.024 \approx 29$ minutes. The mean squared residual is
+$0.6^\circ$C, suggesting that a one-parameter exponential captures
+the data well.
 
 ## Heterogeneity {#sec-results-hetero}
 
-Splitting the sample by tercile of a pre-period unit characteristic,
-the estimate ranges from 0.04 in the bottom tercile to 0.21 in the
-top tercile. The pattern is monotone and statistically distinct
-across terciles.
+Splitting the sample into the first and last 30 minutes yields
+nearly identical $\widehat{k}$ values, with overlapping confidence
+intervals. The cooling-constant interpretation is therefore
+stable across the observation window.
 
 ## Mechanisms {#sec-results-mechanism}
 
-Decomposing the headline estimate into its within-period and
-across-period components shows that roughly two-thirds of the
-effect operates contemporaneously, with the remainder unfolding
-over the following two periods.
+The estimated $\widehat{k}$ depends on heat-transfer coefficients
+at the mug-air interface (convection) and at the coffee-mug
+interface (conduction). We do not separately identify these
+channels but discuss them informally in Appendix
+@sec-app-derivations.
 
 # Additional Analyses {#sec-additional}
 
-A natural extension is to allow $\beta$ to vary with the macro
-state. Letting $S_t \in \{0, 1\}$ indicate recession periods and
-interacting it with $x_{it}$ yields an additional $0.05$ uplift
-on the focal coefficient in recessions.
+Allowing $T_\infty$ to vary across runs gives an alternative
+estimator that is more robust to small ambient-temperature
+fluctuations. The point estimate of $k$ is unchanged at the
+third decimal place.
 
 # Robustness {#sec-robust}
 
-The baseline survives the usual battery of robustness checks:
-dropping the most extreme 1% of observations, restricting the
-panel to a balanced subsample, replacing fixed effects with
-unit-specific linear trends, and re-clustering at alternative
-levels. Detailed results appear in the Internet Appendix.
+The baseline survives standard robustness checks: trimming the
+first three minutes (when the coffee is being stirred), using
+the median across runs rather than the mean, and re-fitting on
+the log-linearised specification of @eq-log. Detailed results
+appear in the Internet Appendix.
 
 # Conclusion {#sec-conc}
 
-This template paper has illustrated the typographic conventions
-of the qkit paper format. Replace each section's contents with
-your own analysis.
+A single cooling constant $\widehat{k} \approx 0.024$ per minute
+describes the cooling of a hot coffee cup in a constant-temperature
+room well. The fit is consistent with the predictions of Newton's
+law and with prior estimates reported in the literature.
 
 # References {.unnumbered}
 
@@ -290,17 +300,21 @@ your own analysis.
 
 # Variable Definitions {#sec-app-vardesc}
 
-This appendix would list formal definitions and data sources for
-every variable used in @sec-data. Replace with your own table of
-variable definitions.
+A formal table of every variable used in @sec-data: the
+temperature reading $T_t$ (degrees Celsius, recorded by a
+digital thermocouple), the time index $t$ (minutes since
+brewing), the ambient temperature $T_\infty$ (degrees Celsius,
+measured at the start of each run), and the initial temperature
+$T_0$ (degrees Celsius, the first reading of each run).
 
 # Auxiliary Derivations {#sec-app-derivations}
 
-Selected derivations sketched in the main text.
+The closed-form solution @eq-solution follows from separation of
+variables applied to @eq-newton.
 
 ::: {.proof}
-A short proof of the proposition in @sec-theory-predictions:
-under the stated assumption, within-unit demeaning eliminates
-$\alpha_i$, leaving an estimating equation that satisfies the
-standard OLS exogeneity condition. $\square$
+Rearranging @eq-newton gives $dT / (T - T_\infty) = -k\, dt$.
+Integrating both sides between $0$ and $t$ yields
+$\log(T(t) - T_\infty) - \log(T_0 - T_\infty) = -k\, t$, and
+exponentiating produces @eq-solution. $\square$
 :::
