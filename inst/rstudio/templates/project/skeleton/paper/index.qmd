@@ -1,9 +1,9 @@
 ---
 title: "Your Paper Title"
 author: |
-  Author One\orcidlink{0000-0000-0000-0001}\thanks{Email: \href{mailto:author.one@example.org}{author.one@example.org}. Address: Department, University, City, Country.} ,
-  Author Two\orcidlink{0000-0000-0000-0002}\thanks{Email: \href{mailto:author.two@example.org}{author.two@example.org}. Address: Department, University, City, Country.} , and
-  Author Three\orcidlink{0000-0000-0000-0003}\thanks{Email: \href{mailto:author.three@example.org}{author.three@example.org}. Corresponding author. Address: Department, University, City, Country.}
+  Author One\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0001}}\thanks{Email: \href{mailto:author.one@example.org}{author.one@example.org}. Address: Department, University, City, Country.} ,
+  Author Two\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0002}}\thanks{Email: \href{mailto:author.two@example.org}{author.two@example.org}. Address: Department, University, City, Country.} , and
+  Author Three\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0003}}\thanks{Email: \href{mailto:author.three@example.org}{author.three@example.org}. Corresponding author. Address: Department, University, City, Country.}
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
@@ -115,13 +115,16 @@ format:
           {\endlist}
 
         % Symmetric vspace above AND below every display equation.
-        % We set the LaTeX display skips directly rather than wrap
-        % the equation env, so amsmath and built-in math displays
-        % all get the same spacing.
-        \setlength{\abovedisplayskip}{0.4cm}
-        \setlength{\belowdisplayskip}{0.4cm}
-        \setlength{\abovedisplayshortskip}{0.4cm}
-        \setlength{\belowdisplayshortskip}{0.4cm}
+        % We set ALL four display skips (regular and short variants
+        % for both above and below) to the same value, and wrap the
+        % assignments in \AtBeginDocument so they win against any
+        % later overrides from Pandoc's preamble.
+        \AtBeginDocument{%
+          \setlength{\abovedisplayskip}{0.4cm}%
+          \setlength{\belowdisplayskip}{0.4cm}%
+          \setlength{\abovedisplayshortskip}{0.4cm}%
+          \setlength{\belowdisplayshortskip}{0.4cm}%
+        }
 
         \theoremstyle{plain}
         \newtheorem{theorem}{Theorem}[section]

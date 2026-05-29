@@ -1,17 +1,7 @@
 ---
-title: "Internet Appendix for: Your Paper Title"
-author: |
-  Author One\orcidlink{0000-0000-0000-0001}\thanks{Email: \href{mailto:author.one@example.org}{author.one@example.org}.} ,
-  Author Two\orcidlink{0000-0000-0000-0002}\thanks{Email: \href{mailto:author.two@example.org}{author.two@example.org}.} , and
-  Author Three\orcidlink{0000-0000-0000-0003}\thanks{Email: \href{mailto:author.three@example.org}{author.three@example.org}. Corresponding author.}
+title: "Your Paper Title"
 date: today
 date-format: "[This revision:] D MMMM YYYY"
-abstract: |
-  This Internet Appendix supplements the main paper with the
-  formal derivation of Newton's law of cooling from first
-  principles, a discussion of how the cooling constant depends on
-  the heat-transfer coefficient and the geometry of the mug, and
-  an extension to the case of time-varying ambient temperature.
 bibliography: references-appendix.bib
 
 format:
@@ -49,11 +39,22 @@ format:
 
         \AtBeginEnvironment{tabular}{\onehalfspacing}
 
+        % Custom \maketitle for the Internet Appendix that matches
+        % the source draft layout: "Internet Appendix for" / title /
+        % authors-with-spaces / SUPPLEMENTARY RESULTS. No \author
+        % block / date is printed — Quarto's YAML title field gives
+        % us \@title for the second line; author names are hardcoded
+        % below (edit to match your paper).
         \makeatletter
-        \renewcommand{\title}[1]{%
-          \gdef\@title{#1\\[0.3cm]%
-            {\normalsize\itshape Supplementary Results}%
-          }%
+        \renewcommand{\maketitle}{%
+          \vspace*{0.25cm}%
+          \begin{center}%
+            {\LARGE Internet Appendix for}\\[0.50cm]%
+            {\LARGE \@title}\\[0.75cm]%
+            {\large Author One\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0001}} \hspace{1cm} Author Two\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0002}} \hspace{1cm} Author Three\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0003}}}\\[1cm]%
+            {\normalsize\textsc{Supplementary Results}}\\[1cm]%
+          \end{center}%
+          \normalsize%
         }
         \makeatother
 
@@ -82,10 +83,12 @@ format:
         \hyphenpenalty=10000
         \hbadness=10000
 
-        \setlength{\abovedisplayskip}{0.4cm}
-        \setlength{\belowdisplayskip}{0.4cm}
-        \setlength{\abovedisplayshortskip}{0.4cm}
-        \setlength{\belowdisplayshortskip}{0.4cm}
+        \AtBeginDocument{%
+          \setlength{\abovedisplayskip}{0.4cm}%
+          \setlength{\belowdisplayskip}{0.4cm}%
+          \setlength{\abovedisplayshortskip}{0.4cm}%
+          \setlength{\belowdisplayshortskip}{0.4cm}%
+        }
 
         \renewcommand{\thesection}{Appendix \Alph{section}}
         \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
@@ -101,6 +104,12 @@ format:
         \newtheorem{definition}[theorem]{Definition}
         \newtheorem{assumption}[theorem]{Assumption}
 ---
+
+This Internet Appendix supplements the main paper with the formal
+derivation of Newton's law of cooling from first principles, a
+discussion of how the cooling constant depends on the
+heat-transfer coefficient and the geometry of the mug, and an
+extension to the case of time-varying ambient temperature.
 
 ```{=tex}
 \newpage
