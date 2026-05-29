@@ -13,6 +13,11 @@ author:
     affiliations:
       - name: Co-Author Department, Co-Author University
         address: Some Address, Country
+  - name: Co-Author Two
+    email: two@example.org
+    affiliations:
+      - name: Co-Author Department, Co-Author University
+        address: Some Address, Country
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
@@ -51,19 +56,70 @@ format:
     cite-method: natbib
     biblio-style: apalike
     keep-tex: true
+    # Skip Pandoc's \paragraph redefinition, which clashes with the
+    # titlesec/sectsty section-formatting we apply below.
+    subparagraph: true
     include-in-header:
       text: |
         % Quarto's default template already loads amsmath, amssymb,
-        % booktabs, graphicx, caption, and hyperref. The extras below
-        % are what a minimalist economics/finance paper typically adds.
+        % booktabs, graphicx, caption, and hyperref. The blocks below
+        % add the structural conventions of a typical econ / finance
+        % working paper: italic subsection headings, period-after-
+        % section numbering, one-and-a-half spacing in tables, a
+        % small breathing space around equations, an indented quote
+        % env, theorem environments, and proper \begin{appendices}
+        % support for an in-paper appendix.
+
         \usepackage{amsthm}
         \usepackage{subcaption}
         \usepackage{setspace}
+        \usepackage{enumitem}
+        \usepackage{multirow}
+        \usepackage{longtable}
+        \usepackage{tabularx}
+        \usepackage{float}
+        \usepackage{sectsty}
+
+        % One-and-a-half spacing inside tables (body is doublespaced
+        % via the linestretch YAML setting).
         \AtBeginEnvironment{tabular}{\onehalfspacing}
+
+        % Italic subsection / subsubsection headings (sectsty avoids
+        % the titlesec / Pandoc \paragraph compatibility problem).
+        \subsectionfont{\large\itshape}
+        \subsubsectionfont{\large\itshape}
+
+        % Period after section number — headings read "1. Introduction"
+        % instead of "1 Introduction".
+        \makeatletter
+        \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+            {\csname the#1\endcsname\quad}%
+            {\csname #1@cntformat\endcsname}%
+        }
+        \def\section@cntformat{\thesection.\quad}
+        \def\subsection@cntformat{\thesubsection \quad}
+        \makeatother
+
+        % Long-URL tolerance.
         \tolerance=1
         \emergencystretch=\maxdimen
         \hyphenpenalty=10000
         \hbadness=10000
+
+        % Quote environment indented 1.5cm on each side.
+        \renewenvironment{quote}
+          {\normalsize\list{}{\rightmargin=1.5cm \leftmargin=1.5cm}%
+           \item\relax}
+          {\endlist}
+
+        % Equation environment with small vspace after the display.
+        \let\oldequation=\equation
+        \let\endoldequation=\endequation
+        \renewenvironment{equation}{%
+          \vspace{0cm}\begin{oldequation}}{\vspace{0.25cm}\end{oldequation}%
+        }
+
+        % Theorem-style environments.
         \theoremstyle{plain}
         \newtheorem{theorem}{Theorem}[section]
         \newtheorem{proposition}[theorem]{Proposition}
@@ -73,16 +129,44 @@ format:
         \newtheorem{assumption}[theorem]{Assumption}
 ---
 
+```{=tex}
+\vspace{-0.50cm}
+```
+
 # Introduction {#sec-intro}
 
-A paragraph or two of motivation: what question does this paper ask,
-why does it matter, what's the contribution, what's the punchline?
-Conclude with a roadmap of the remaining sections.
+State the research question, motivate why it matters, summarize the
+contribution, and preview the main findings. Close with a
+one-paragraph roadmap of the remaining sections.
+
+# Theoretical Framework {#sec-theory}
+
+Set up the model. State primitives, the agent's problem, and the
+equilibrium concept. Translate the model's predictions into
+hypotheses tested in the empirical sections.
+
+## Testable Predictions {#sec-theory-predictions}
+
+Spell out the predictions that follow from the model. Each prediction
+should be tight enough that the data can support or reject it.
 
 # Data {#sec-data}
 
-Describe the sample, sources, and any cleaning. Reference Table 1
-([@tbl-summary]) for summary statistics.
+Describe the sample, sources, and any cleaning. Full variable
+definitions appear in @sec-app-vardesc.
+
+## Data Sources and Sample Construction {#sec-data-sources}
+
+List each data source, the time window, and the merge / filter rules.
+
+## Variable Definitions {#sec-data-vars}
+
+Define the dependent variable, the focal regressor, and any controls.
+
+## Summary Statistics {#sec-data-summary}
+
+Discuss summary statistics. Reference @tbl-summary for the numerical
+table.
 
 ```{r}
 #| label: tbl-summary
@@ -94,28 +178,78 @@ Describe the sample, sources, and any cleaning. Reference Table 1
 
 # Methodology {#sec-method}
 
-State the model or estimator. A representative equation:
+State the estimator and identifying assumptions. A representative
+baseline specification:
 
 $$
-y_{it} = \alpha_i + \beta\, x_{it} + \varepsilon_{it}
+y_{it} = \alpha_i + \beta\, x_{it} + \gamma' \mathbf{Z}_{it} + \varepsilon_{it}
 $$ {#eq-baseline}
 
-@eq-baseline is the baseline specification. Identifying assumptions
-go in the prose below.
+where $y_{it}$ is the outcome of interest, $x_{it}$ the focal
+regressor, and $\mathbf{Z}_{it}$ a vector of controls. Identification
+of $\beta$ rests on the assumptions discussed below.
 
-::: {.proof}
-Sketch the argument or refer to an online appendix.
+::: {.assumption}
+State the key identifying assumption here.
 :::
 
-# Results {#sec-results}
+# Main Results {#sec-results}
 
-Lead with the main result. Discuss robustness in subsections.
+Lead with the headline result. Discuss the magnitude and what it
+means in context.
 
-## Robustness {#sec-robust}
+## Baseline Estimates {#sec-results-baseline}
 
-Describe alternative specifications, placebo tests, etc.
+Present the baseline estimate of @eq-baseline and discuss it.
+
+## Heterogeneity {#sec-results-hetero}
+
+Document how the baseline effect varies along observable dimensions.
+
+## Mechanisms {#sec-results-mechanism}
+
+Decompose the headline effect into the channel(s) the theory predicts.
+
+# Additional Analyses {#sec-additional}
+
+Present any extension that does not fit the main narrative but is
+useful context for readers.
+
+# Robustness {#sec-robust}
+
+Re-estimate the baseline under alternative specifications, placebo
+samples, and falsification tests. Detailed robustness tables that do
+not fit in the main text live in the Internet Appendix.
 
 # Conclusion {#sec-conc}
 
-Summarize the contribution, acknowledge limitations, and point to
-follow-up questions.
+Summarize the contribution, acknowledge limitations, and suggest
+directions for follow-up work.
+
+```{=tex}
+\newpage
+% The \appendix macro is built into the article class: it resets the
+% section counter, switches \thesection to A, B, C, ..., and continues
+% numbering tables/figures/equations within each appendix section.
+\appendix
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thesection}{Appendix \Alph{section}}
+\renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+\renewcommand{\theequation}{\Alph{section}.\arabic{equation}}
+```
+
+# Variable Definitions {#sec-app-vardesc}
+
+Provide formal definitions and data sources for every variable used
+in the empirical analysis. A table works well here.
+
+# Auxiliary Derivations {#sec-app-derivations}
+
+Walk through derivations or proofs sketched in the main text.
+
+::: {.proof}
+Sketch the argument or refer to the Internet Appendix for the full
+proof.
+:::

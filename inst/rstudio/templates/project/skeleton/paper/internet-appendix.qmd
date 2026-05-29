@@ -39,24 +39,46 @@ format:
     cite-method: natbib
     biblio-style: apalike
     keep-tex: true
+    subparagraph: true
     # Restart appendix section numbering with letters (A, B, C, ...)
-    # and prefix headings with the "Appendix" label so readers can tell
-    # at a glance that they are in the supplementary material.
+    # and prefix headings with "Appendix" so readers can tell at a
+    # glance that they are in the supplementary material.
     include-in-header:
       text: |
         \usepackage{amsthm}
         \usepackage{subcaption}
         \usepackage{setspace}
+        \usepackage{enumitem}
+        \usepackage{multirow}
+        \usepackage{longtable}
+        \usepackage{tabularx}
+        \usepackage{float}
+        \usepackage{sectsty}
+
         \AtBeginEnvironment{tabular}{\onehalfspacing}
+        \subsectionfont{\large\itshape}
+        \subsubsectionfont{\large\itshape}
+
+        \makeatletter
+        \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+            {\csname the#1\endcsname\quad}%
+            {\csname #1@cntformat\endcsname}%
+        }
+        \def\section@cntformat{\thesection.\quad}
+        \def\subsection@cntformat{\thesubsection \quad}
+        \makeatother
+
         \tolerance=1
         \emergencystretch=\maxdimen
         \hyphenpenalty=10000
         \hbadness=10000
-        \renewcommand{\thesection}{\Alph{section}}
+
+        \renewcommand{\thesection}{Appendix \Alph{section}}
         \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
         \renewcommand{\thetable}{\Alph{section}.\arabic{table}}
         \renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
         \renewcommand{\theequation}{\Alph{section}.\arabic{equation}}
+
         \theoremstyle{plain}
         \newtheorem{theorem}{Theorem}[section]
         \newtheorem{proposition}[theorem]{Proposition}
