@@ -62,8 +62,7 @@ format:
 
 # Conferences and Workshops
 
-- Conference A (City, 2026), Conference B (City, 2026), Conference C (City, 2026), Ph.D. Workshop (City, 2026), Workshop D (City, 2026), Workshop E (City, 2026), Joint Ph.D. Workshop (City, 2025), Conference F (City, 2024), Conference G (City, 2024), Conference H (City, 2024), Workshop I* (City, 2024), Workshop J (City, 2024), Doctoral Conference (City, 2023), Joint Ph.D. Workshop (City, 2023), Symposium A* (City, 2022), Symposium B* (City, 2022), Conference I* (Online, 2022), Symposium C* (Online, 2021), Conference J* (City, 2021), Annual Meeting* (Virtual, 2020), and Conference K* (City, 2019).
-- \hspace{1em} *\textit{Presentations by co-authors}
+- Conference A (City, 2026), Conference B (City, 2026), Conference C (City, 2026), Ph.D. Workshop (City, 2026), Workshop D (City, 2026), Workshop E (City, 2026), Joint Ph.D. Workshop (City, 2025), Conference F (City, 2024), Conference G (City, 2024), Conference H (City, 2024), Workshop I* (City, 2024), Workshop J (City, 2024), Doctoral Conference (City, 2023), Joint Ph.D. Workshop (City, 2023), Symposium A* (City, 2022), Symposium B* (City, 2022), Conference I* (Online, 2022), Symposium C* (Online, 2021), Conference J* (City, 2021), Annual Meeting* (Virtual, 2020), and Conference K* (City, 2019). \newline \hspace{1em} *\textit{Presentations by co-authors}
 
 # Research Experience
 
