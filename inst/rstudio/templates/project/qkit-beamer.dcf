@@ -1,4 +1,5 @@
 Binding: create_project
+Type: project
 Title: qkit Beamer Presentation
 OpenFiles: index.qmd
 Subtitle: Create a new Beamer presentation from the qkit template.

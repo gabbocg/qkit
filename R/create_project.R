@@ -24,6 +24,13 @@ create_project <- function(path,
                            title = "Untitled Presentation",
                            author = "Your Name",
                            ...) {
+  # Guard against RStudio's wizard passing path as NA / "" / NULL, which
+  # would silently coerce downstream fs::path() calls into the literal
+  # string "NA" and write skeleton files into the parent directory.
+  if (is.null(path) || length(path) != 1L || is.na(path) || !nzchar(path)) {
+    stop("create_project() requires a non-empty 'path' argument. Got: ",
+         deparse(path), call. = FALSE)
+  }
   type <- match.arg(type, choices = c("beamer", "cv", "book"))
   fs::dir_create(path)
 
