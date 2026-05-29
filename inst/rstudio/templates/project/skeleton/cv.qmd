@@ -2,12 +2,10 @@
 title: "CV"
 author: "Your Name"
 jobtitle: ""
-address: "Department, Institution, City, Country"
-email: "you@example.org"
-phone: ""
-github: "your-github-handle"
-web: "your-website.example.org"
-orcid: ""
+address: "Department of Your Field, Example University, Example City, Country"
+email: "jane.researcher@example.edu"
+github: "janeresearcher"
+web: "janeresearcher.example.org"
 fontawesome: true
 updated: true
 keywords:
@@ -22,49 +20,68 @@ format:
 # Education
 
 ::: {.cv-entries}
-- 2022 - Current | **Your Department**, Your University, Country, Ph.D. in Your Field
-- 2017 - 2019 | **Your Department**, Earlier University, Country, M.Sc. in Your Field
-- 2012 - 2017 | **Your Department**, Earlier University, Country, B.A. in Your Field
+- 2022 - Current | **School of Your Field**, Example University, Country \newline Ph.D. in Your Field
+- 2017 - 2019 | **Department of Your Field**, Other University, Country \newline M.Sc. in Your Field
+- 2012 - 2017 | **Faculty of Your Field**, Other University, Country \newline B.A. in Your Field
 :::
 
 # Publications
 
 ::: {.cv-publications}
-1. Title of Your First Published Paper, 2026, with Co-Author A and Co-Author B. **Journal Name**, vol. X, p. 1-20. [Link](https://example.org/paper1)
-2. Title of Your Second Published Paper, 2025, with Co-Author C. **Another Journal**, vol. Y, p. 100-150. [Link](https://example.org/paper2)
+1. Title of Your First Published Paper, 2026, with A. Coauthor and B. Coauthor. **Journal Name**, vol. 1, p. 1-50. [Link](https://example.org/paper1)
+2. Title of Your Second Published Paper, 2025, with A. Coauthor. **Another Journal**, vol. 44, p. 100-150. [Link](https://example.org/paper2)
+3. Title of Your Third Published Paper, 2025, with C. Coauthor and B. Coauthor. **Third Journal**, vol. 75, p. 200-230. [Link](https://example.org/paper3)
+4. Title of Your Fourth Published Paper, 2024, with A. Coauthor. **Fourth Journal**, vol. 94, p. 300-330. [Link](https://example.org/paper4)
+5. Title of Your Fifth Published Paper, 2023, with A. Coauthor and B. Coauthor. **Fifth Journal**, vol. 31, p. 400-420. [Link](https://example.org/paper5)
+6. Title of Your Sixth Published Paper, 2021, with A. Coauthor. **Sixth Journal**, vol. 73, p. 500-525. [Link](https://example.org/paper6)
+7. Title of Your Seventh Published Paper, 2020, with A. Coauthor and B. Coauthor. **Seventh Journal**, vol. 69, p. 600-625. [Link](https://example.org/paper7)
 :::
 
 # Working Papers
 
 ::: {.cv-publications}
-1. Title of Your First Working Paper, 2026, with Co-Author A.
-2. Title of Your Second Working Paper, 2026. Available at [SSRN](https://example.org/ssrn).
+1. Title of Your First Working Paper, 2026, with D. Coauthor and E. Coauthor.
+2. Title of Your Second Working Paper, 2026, with D. Coauthor and E. Coauthor. Available at [SSRN](https://example.org/ssrn).
 :::
 
 # Work-in-Progress
 
 ::: {.cv-publications}
-1. Title of an In-Progress Project, with Co-Author A.
-2. Another In-Progress Project.
+1. Title of an In-Progress Project, with D. Coauthor and E. Coauthor.
+2. Title of Another In-Progress Project.
+3. Title of a Third In-Progress Project, with F. Coauthor.
+4. Title of a Fourth In-Progress Project, with A. Coauthor and B. Coauthor.
 :::
 
 # Statistical Software Packages
 
 ::: {.cv-publications}
-1. yourpackage: One-line Description, 2026. *R package version 0.1.0*. [Link](https://example.org/yourpackage)
+1. firstpackage: One-line Description of What It Does, 2026. *R package version 0.1.0*. [Link](https://example.org/firstpackage)
+2. secondpackage: One-line Description of What It Does, 2026. *R package version 0.1.0*. [Link](https://example.org/secondpackage)
 :::
 
 # Conferences and Workshops
 
-- Conference Name A (City, Year), Conference Name B (City, Year), Workshop C* (City, Year).
-- \hspace{1em} *\textit{Presentations by co-authors}
+- Conference A (City, 2026), Conference B (City, 2026), Conference C (City, 2026), Ph.D. Workshop (City, 2026), Workshop D (City, 2026), Workshop E (City, 2026), Joint Ph.D. Workshop (City, 2025), Conference F (City, 2024), Conference G (City, 2024), Conference H (City, 2024), Workshop I* (City, 2024), Workshop J (City, 2024), Doctoral Conference (City, 2023), Joint Ph.D. Workshop (City, 2023), Symposium A* (City, 2022), Symposium B* (City, 2022), Conference I* (Online, 2022), Symposium C* (Online, 2021), Conference J* (City, 2021), Annual Meeting* (Virtual, 2020), and Conference K* (City, 2019). \newline \hspace{1em} *\textit{Presentations by co-authors}
 
 # Research Experience
 
-- **Your University**, Country
+- **School of Your Field**, Other University, Country
+
+  ::: {.cv-entries gap="2.5pt"}
+  - 2025 - Current | Visiting Researcher
+  :::
+
+- **School of Your Field**, Example University, Country
 
   ::: {.cv-entries gap="2.5pt"}
   - 2022 - Current | Postgraduate Researcher
+  :::
+
+- **Department of Your Field**, Earlier University, Country
+
+  ::: {.cv-entries gap="2.5pt"}
+  - 2017 - 2022 | Research Assistant
   :::
 
 # Teaching Experience
@@ -72,19 +89,36 @@ format:
 - **Undergraduate** \textbf{\small as Teaching Assistant}
 
   ::: {.cv-entries gap="2.5pt"}
-  - Fall 2025 | **Course Name**, Your Department, Your University
+  - Fall 2025 | **First Course Name** \newline School of Your Field, Example University, Country
+  - Spring 2025/26 | **Second Course Name** \newline School of Your Field, Example University, Country
+  - Fall 2024/25 | **Third Course Name** \newline School of Your Field, Example University, Country
+  :::
+
+- **Undergraduate** \textbf{\small as Lecturer}
+
+  ::: {.cv-entries gap="2.5pt"}
+  - Fall 2020 | **Fourth Course Name** \newline Department of Your Field, Earlier University, Country
+  :::
+
+- **Graduate** \textbf{\small as Lecturer}
+
+  ::: {.cv-entries gap="2.5pt"}
+  - Fall 2022 | **Fifth Course Name** \newline Department of Your Field, Earlier University, Country
+  - Spring 2021 | **Sixth Course Name** \newline Joint Certificate Program
+  - Fall 2021/22 | **Seventh Course Name** \newline Department of Your Field, Earlier University, Country
+  - Spring 2020 | **Eighth Course Name** \newline Department of Your Field, Earlier University, Country
   :::
 
 # Grants and Scholarships
 
 ::: {.cv-entries}
-- 2022 - Current | Name of Your Scholarship.
+- 2022 - Current | Name of Your Scholarship or Funding Source.
 :::
 
 # Other Academic Services
 
 ::: {.cv-keys}
-- Referee | Journal A, Journal B, Journal C.
+- Referee | Journal A, Journal B, Journal C, and Journal D.
 :::
 
 # Languages
@@ -96,25 +130,47 @@ format:
 
 # Research Interests
 
-List your research interests here as a comma-separated paragraph.
+A short comma-separated list of your research interests goes here, written as a single paragraph.
 
 # References
 
 ::: {.cv-references}
 ::: {.referee}
-**[Referee A, Ph.D.](https://example.org/referee-a)**\
-Department\
-University\
-Address\
-\Letter\ [a@example.org](mailto:a@example.org)
+**[Referee One, Ph.D.](https://example.org/referee-one)**\
+Department of Your Field\
+School of Your Field\
+Some University\
+Some Address, Country\
+\Letter\ [r.one@example.org](mailto:r.one@example.org)
 :::
 
 ::: {.referee}
-**[Referee B, Ph.D.](https://example.org/referee-b)**\
-Department\
-University\
-Address\
-\Letter\ [b@example.org](mailto:b@example.org)
+**[Referee Two, Ph.D.](https://example.org/referee-two)**\
+Department of Your Field\
+School of Your Field\
+Example University\
+Some Address, Country\
+\Letter\ [r.two@example.org](mailto:r.two@example.org)
+:::
+:::
+
+::: {.cv-references}
+::: {.referee}
+**[Referee Three, Ph.D.](https://example.org/referee-three)**\
+Department of Your Field\
+Faculty of Your Field\
+Earlier University\
+Some Address, Country\
+\Letter\ [r.three@example.org](mailto:r.three@example.org)
+:::
+
+::: {.referee}
+**[Referee Four, Ph.D.](https://example.org/referee-four)**\
+Department of Your Field\
+Faculty of Your Field\
+Earlier University\
+Some Address, Country\
+\Letter\ [r.four@example.org](mailto:r.four@example.org)
 :::
 :::
 
