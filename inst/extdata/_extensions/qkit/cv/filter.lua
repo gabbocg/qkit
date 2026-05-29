@@ -129,14 +129,18 @@ function Div(div)
 end
 
 -- Auto-inject the horizontal rule under each top-level section heading so
--- the user doesn't have to write \vspace{-15pt}\noindent\rule{\textwidth}{1pt}
--- after every # in the source. Skipped if the user already wrote their own
--- rule (we detect a following RawBlock containing \noindent\rule).
+-- the user doesn't have to write the boilerplate after every # in the source.
+-- We emit \vspace{-15pt}, \noindent, and \rule{\textwidth}{1pt} as three
+-- separate RawBlocks; the blank lines Pandoc inserts between them produce
+-- the small \parskip-driven vertical breathing room between the heading
+-- and the rule that the hand-written skeleton had.
 function Header(h)
   if h.level == 1 then
     return {
       h,
-      pandoc.RawBlock("latex", [[\vspace{-15pt}\noindent\rule{\textwidth}{1pt}]])
+      pandoc.RawBlock("latex", "\\vspace{-15pt}"),
+      pandoc.RawBlock("latex", "\\noindent"),
+      pandoc.RawBlock("latex", "\\rule{\\textwidth}{1pt}")
     }
   end
 end
