@@ -1,6 +1,7 @@
 Binding: create_project
 Type: project
 Title: qkit Book
+Icon: qkit-book.png
 OpenFiles: index.qmd
 Subtitle: Create a new Quarto book project (Krantz class) from the qkit template.
 
