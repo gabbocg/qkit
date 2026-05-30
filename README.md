@@ -170,7 +170,6 @@ qkit::install_extension(path = ".")
   raw `{=tex}`/`{=html}` blocks, `.content-visible
   when-format=...` conditional content)
 
-## License
+## Getting help
 
-MIT © 2026 Gabriel Cabrera Guzmán. See [LICENSE](LICENSE) for the
-full text.
+If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/GabboCg/sdim/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
