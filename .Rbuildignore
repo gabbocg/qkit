@@ -1,15 +1,9 @@
 ^docs$
-^slide-r\.Rproj$
-^example\.qmd$
-^example\.pdf$
-^example\.tex$
-^fig$
 ^README\.md$
 ^CLAUDE\.md$
 ^\.DS_Store$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.claude$
-^before-body\.tex$
-^title\.tex$
+^\.worktrees$
 ^LICENSE\.md$

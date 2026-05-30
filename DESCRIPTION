@@ -6,10 +6,12 @@ Authors@R:
            email = "gabriel.cabrera.guz@gmail.com",
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8803-2338"))
-Description: Provides Quarto extensions and RStudio integration for creating
-    Beamer presentations and academic CVs. Includes custom styling, enhanced
-    author/affiliation support with ORCID, and helper functions for rendering
-    and previewing presentations.
+Description: A small set of Quarto project templates with RStudio
+    integration: Beamer presentations, academic CVs, Quarto book projects
+    (Krantz document class), and minimalist economics/finance papers
+    (with a separate Internet Appendix). Includes custom LaTeX styling,
+    enhanced author/affiliation support with ORCID, a Pandoc Lua filter
+    for markdown-first CV authoring, and helper functions for rendering.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

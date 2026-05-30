@@ -41,8 +41,10 @@ and a bibliography stub (self-contained — does NOT install the
 qkit extension because all book styling lives in the project's
 own \verb{_quarto.yml} and template-partials),
 \item \code{"paper"} — a minimalist Quarto academic paper (12pt article,
-1in margins, double-spaced, natbib + apalike, doublespacing
-body / onehalfspacing title) bundled with a \code{references.bib}
-stub.
+1in margins, double-spaced body, one-and-a-half-spaced title,
+italic subsection headings, period-after-section numbering,
+citeproc bibliography) bundled with a separate Internet
+Appendix file (\code{internet-appendix.qmd}), two \code{.bib} stubs,
+and two LaTeX preamble files.
 }
 }

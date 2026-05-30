@@ -1,7 +1,6 @@
 Binding: create_project
 Type: project
 Title: qkit CV
-Icon: qkit-cv.png
 OpenFiles: index.qmd
 Subtitle: Create a new academic CV from the qkit template.
 

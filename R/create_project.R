@@ -10,9 +10,11 @@
 #'     qkit extension because all book styling lives in the project's
 #'     own `_quarto.yml` and template-partials),
 #'   * `"paper"` — a minimalist Quarto academic paper (12pt article,
-#'     1in margins, double-spaced, natbib + apalike, doublespacing
-#'     body / onehalfspacing title) bundled with a `references.bib`
-#'     stub.
+#'     1in margins, double-spaced body, one-and-a-half-spaced title,
+#'     italic subsection headings, period-after-section numbering,
+#'     citeproc bibliography) bundled with a separate Internet
+#'     Appendix file (`internet-appendix.qmd`), two `.bib` stubs,
+#'     and two LaTeX preamble files.
 #'
 #' @param path Path to the new project directory.
 #' @param type One of `"beamer"`, `"cv"`, `"book"`, `"paper"`. Defaults

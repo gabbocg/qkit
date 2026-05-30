@@ -1,7 +1,6 @@
 Binding: create_project
 Type: project
 Title: qkit Paper
-Icon: qkit-paper.png
 OpenFiles: index.qmd
 Subtitle: Create a new minimalist academic paper project from the qkit template.
 
@@ -9,12 +8,6 @@ Parameter: title
 Widget: TextInput
 Label: Paper title
 Default: Your Paper Title
-Position: left
-
-Parameter: author
-Widget: TextInput
-Label: Author name
-Default: Your Name
 Position: left
 
 Parameter: type
