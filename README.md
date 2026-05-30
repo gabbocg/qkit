@@ -2,8 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A small set of opinionated [Quarto](https://quarto.org) project templates
-with RStudio integration. `qkit` ships four template types — a Beamer
+A set of personal [Quarto](https://quarto.org) templates with RStudio integration. 
+`qkit` ships four template types — a Beamer
 presentation, an academic CV, a Quarto book project, and a minimalist
 academic paper — each with a sensible LaTeX preamble, ORCID-aware
 author handling, and a one-click *File > New Project* entry in RStudio.
