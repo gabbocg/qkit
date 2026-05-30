@@ -13,6 +13,7 @@ local function mark(list)
   list[1]["is-first"] = true
   if n > 1 then
     list[n]["is-last"] = true
+    list[n-1]["next-is-last"] = true
     if n == 2 then
       list[n]["is-only-coauthor"] = true
     end

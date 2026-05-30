@@ -29,7 +29,6 @@ $endif$
 $if(by-author)$
 \author{%
 $for(by-author)$%
-$if(it.is-first)$$else$$if(it.is-only-coauthor)$~and~$else$$if(it.is-last)$ ,~and~$else$ ,~$endif$$endif$$endif$%
 $it.name.literal$%
 $if(it.orcid)$\textsuperscript{\normalsize\orcidlink{$it.orcid$}}$endif$%
 \thanks{%
@@ -37,6 +36,7 @@ $if(it.email)$Email: \href{mailto:$it.email$}{$it.email$}.$endif$%
 $if(it.corresponding)$ Corresponding author.$endif$%
 $if(it.affiliations)$$for(it.affiliations)$ Address: $it.name$.$endfor$$endif$%
 }%
+$if(it.is-last)$$else$\nolinebreak[4]$if(it.is-first)$$if(it.next-is-last)$ and $else$~, $endif$$else$$if(it.next-is-last)$~, and $else$~, $endif$$endif$$endif$%
 $endfor$%
 }
 $endif$
