@@ -1,18 +1,31 @@
 ---
 title: "Your Paper Title"
-author: |
-  Author One\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0001}}\thanks{Email: \href{mailto:author.one@example.org}{author.one@example.org}. Address: Department, University, City, Country.} ,
-  Author Two\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0002}}\thanks{Email: \href{mailto:author.two@example.org}{author.two@example.org}. Address: Department, University, City, Country.} , and
-  Author Three\textsuperscript{\normalsize\orcidlink{0000-0000-0000-0003}}\thanks{Email: \href{mailto:author.three@example.org}{author.three@example.org}. Corresponding author. Address: Department, University, City, Country.}
+author:
+  - name: Author One
+    orcid: 0000-0000-0000-0001
+    email: author.one@example.org
+    affiliations:
+      - name: Department, University, City, Country
+  - name: Author Two
+    orcid: 0000-0000-0000-0002
+    email: author.two@example.org
+    affiliations:
+      - name: Department, University, City, Country
+  - name: Author Three
+    orcid: 0000-0000-0000-0003
+    email: author.three@example.org
+    corresponding: true
+    affiliations:
+      - name: Department, University, City, Country
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
   This is a self-documenting Quarto paper template. The body of the
   paper explains how to use the qkit paper format: YAML metadata,
   cross-references, equations, theorem environments, citations,
-  callouts, code chunks, and the in-paper Appendix. Replace this
-  abstract with your own (150--250 words covering question, data,
-  method, and main findings).
+  callouts, code chunks, tables, figures, and the in-paper
+  Appendix. Replace this abstract with your own (150--250 words
+  covering question, data, method, and main findings).
 
   \bigskip
   \noindent\textbf{Keywords:} keyword one, keyword two, keyword three
@@ -45,6 +58,8 @@ format:
     number-sections: true
     keep-tex: true
     subparagraph: true
+    template-partials:
+      - title.tex
     include-in-header: preamble.tex
 ---
 
@@ -54,50 +69,116 @@ format:
 
 # Introduction {#sec-intro}
 
-This template is a worked example. Each section below demonstrates a
-Quarto feature you can use when writing your own paper; replace the
-demonstration text with your own prose as you fill in the template.
+This template is a worked example of Quarto's PDF authoring
+features as configured by the **qkit Paper** scaffold. Each section
+below demonstrates a different feature; replace the demonstration
+text with your own prose when you fill the template in.
 
-**Markdown basics.** Use single asterisks for *italic*, doubles for
-**bold**, triples for ***bold italic***, and backticks for
-`inline code`. Hyperlinks are inline: see the
-[Quarto documentation](https://quarto.org) for the full reference.
+## Editing the YAML header
 
-**Cross-references.** Prefix any section heading's label with `sec-`
-(for example `# Introduction {#sec-intro}`) and reference it inline
-with `@sec-intro`. Equations use the `eq-` prefix, tables `tbl-`,
-figures `fig-`. The remainder of the paper is organized as follows.
-Section @sec-theory shows how to write theorems and labeled
-equations. Section @sec-data shows how to insert tables. Section
-@sec-method demonstrates citations and equation references. Section
+The block of metadata above the body (between the two `---`
+markers) is the YAML header. The qkit Paper template wires it up
+so the author block is fully editable from YAML --- no LaTeX
+required for routine changes:
+
+``` yaml
+author:
+  - name: Author One
+    orcid: 0000-0000-0000-0001
+    email: author.one@example.org
+    affiliations:
+      - name: Department, University, City, Country
+  - name: Author Two
+    ...
+  - name: Author Three
+    corresponding: true
+    ...
+```
+
+Each author becomes a name followed by a small `\orcidlink`
+superscript and a `\thanks{}` footnote with the email (wrapped in
+a clickable `mailto:` link) and the address. Setting
+`corresponding: true` on one author adds *"Corresponding author."*
+to that author's footnote. The italic *"Preliminary draft ---
+please do not cite without permission"* subtitle is appended to
+the title by the same `title.tex` partial.
+
+To add or remove an author, just add or remove a YAML list entry.
+The first ORCID renders as `^1`, the second `^2`, and so on (the
+LaTeX `\thanks` mechanism numbers them automatically).
+
+## Markdown basics
+
+Use single asterisks for *italic*, doubles for **bold**, triples
+for ***bold italic***, and backticks for `inline code`. Em dashes
+are typed as three hyphens `---`, en dashes as two `--`, and an
+ellipsis as three dots `...`. Hyperlinks are inline: see the
+[Quarto documentation](https://quarto.org).
+
+Smart-quote handling is on by default, so `"text"` becomes
+"text" with proper curly quotes and `'text'` becomes 'text'.
+
+## Cross-references
+
+Prefix any heading label with one of Quarto's cross-reference
+prefixes:
+
+| Prefix | Used for | Reference syntax |
+|--------|----------|------------------|
+| `sec-` | Sections | `@sec-intro` |
+| `eq-`  | Equations | `@eq-baseline` |
+| `tbl-` | Tables | `@tbl-summary` |
+| `fig-` | Figures | `@fig-example` |
+
+The remainder of the paper is organized as follows. Section
+@sec-theory shows how to write theorems and labeled equations.
+Section @sec-data shows how to insert tables. Section @sec-method
+demonstrates citations and equation references. Section
 @sec-results covers Quarto callouts. Sections @sec-additional and
-@sec-robust round out the body. Section @sec-conc closes.
-Appendices @sec-app-vardesc and @sec-app-derivations demonstrate
-`\appendix`-style numbering.
+@sec-robust cover quotations, footnotes, and code formatting.
+Section @sec-conc closes. Appendices @sec-app-vardesc and
+@sec-app-derivations demonstrate `\appendix`-style numbering.
 
-**Citations.** Cite a `.bib` entry with `[@example2025]` for a
-parenthetical (Doe and Roe 2025) or with `@example2025` for an
-in-text citation; the qkit paper template uses Pandoc's `citeproc`
-with Chicago author-date style by default. The bibliography renders
-at the `# References` anchor placed after the Conclusion.
+## Citations
+
+Cite a `.bib` entry with `[@key]` for a parenthetical (Doe and Roe
+2025) or with `@key` for an in-text citation; the qkit paper
+template uses Pandoc's `citeproc` (Chicago author-date by
+default). The bibliography renders at the `# References` anchor
+placed after the Conclusion. For instance, @example2025 introduces
+the ideas summarized here.
 
 # Theoretical Framework {#sec-theory}
 
 A labeled display equation uses the syntax
-`$$...$$ {#eq-label}`. For example,
+`$$...$$ {#eq-label}`. For example:
 
 $$
 y_{it} = \alpha_i + \delta_t + \beta\, x_{it} + \gamma'\mathbf{Z}_{it} + \varepsilon_{it}
 $$ {#eq-baseline}
 
 is referenced inline with `@eq-baseline`. The qkit preamble forces
-symmetric vertical space above and below every display equation, so
-the gap looks the same whether the line preceding the equation is
-short or long. See @eq-baseline above for the baseline specification.
+symmetric vertical space above and below every display equation,
+so the gap looks the same whether the line preceding the equation
+is short or long.
+
+For multi-line displays, wrap in an `aligned` environment inside
+the `$$ $$`:
+
+$$
+\begin{aligned}
+y_{it} &= \alpha_i + \delta_t + \beta\, x_{it} + \varepsilon_{it} \\
+\varepsilon_{it} &\sim \mathcal{N}(0, \sigma^{2}).
+\end{aligned}
+$$ {#eq-aligned}
+
+`cases`, `pmatrix`, `bmatrix`, and the rest of the `amsmath`
+toolkit are available because the document loads `amsmath` by
+default.
 
 Five theorem-style environments are predefined via `amsthm`:
 `theorem`, `proposition`, `lemma`, `definition`, and `assumption`.
-Use any of them with Pandoc's fenced-div syntax. For example:
+Use any with Pandoc's fenced-div syntax `::: {.theorem}` ... `:::`.
 
 ::: {.assumption}
 The error term $\varepsilon_{it}$ is mean-zero and conditionally
@@ -106,23 +187,23 @@ effect $\alpha_i$.
 :::
 
 ::: {.proposition}
-Under the assumption above, the within-unit OLS estimator of $\beta$
-in @eq-baseline is consistent.
+Under the assumption above, the within-unit OLS estimator of
+$\beta$ in @eq-baseline is consistent.
 :::
 
 ## Testable Predictions {#sec-theory-predictions}
 
 Subsection headings render italic, not bold --- a deliberate qkit
 style choice that gives section headings the visual weight and
-subsection headings the contrast of italic. Section numbering carries
-a period after the digit (`1. Introduction`, `1.1 Subsection`), also
-a preamble tweak.
+subsection headings the contrast of italic. Section numbering
+carries a period after the digit (`1. Introduction`, `1.1
+Subsection`), also a preamble tweak.
 
 # Data {#sec-data}
 
-Variable definitions are deferred to Appendix @sec-app-vardesc. This
-section shows how to insert a table via a `knitr` chunk and how to
-reference it from the prose.
+Variable definitions are deferred to Appendix @sec-app-vardesc.
+This section shows how to insert a table directly in markdown and
+via a `knitr` chunk.
 
 ## Data Sources and Sample Construction {#sec-data-sources}
 
@@ -142,11 +223,35 @@ Numbered lists use the same syntax:
 2. Numbering is automatic; Quarto renumbers on render.
 3. To restart numbering, leave a blank line and start a new list.
 
+Definition lists are written with the term on its own line and the
+definition indented two spaces below, prefixed by a colon:
+
+Term
+:   Definition of the term goes here. Multiple lines stay attached
+    to the same term as long as the indentation is consistent.
+
+Another term
+:   Its definition.
+
 ## Summary Statistics {#sec-data-summary}
 
-Reference Table @tbl-summary for descriptive statistics. The
-following `knitr` chunk renders a table when given real data and
-`eval: true`; it's currently a placeholder.
+Reference Table @tbl-summary for descriptive statistics. The first
+example below is a **pipe table** written in pure markdown:
+
+| Variable | Mean | SD |
+|----------|-----:|---:|
+| Outcome $y$ | 0.50 | 0.10 |
+| Focal regressor $x$ | 0.00 | 1.00 |
+| Control $z^{1}$ | 0.00 | 1.00 |
+
+: Pipe-table example. {#tbl-pipe}
+
+The alignment symbols `:-`, `-:`, `:-:` after each header dash
+control left, right, and centre alignment of the column.
+
+The second example uses a **`knitr` chunk** for a computed table.
+With `eval: false` it stays a placeholder; flip to `true` and add
+real data to render a `knitr::kable()` table:
 
 ```{r}
 #| label: tbl-summary
@@ -157,26 +262,26 @@ following `knitr` chunk renders a table when given real data and
 ```
 
 Chunk options live in the `#| key: value` block at the top of the
-chunk. The `label:` value drives cross-references (use `tbl-` for
-tables, `fig-` for figures), `tbl-cap:` sets the caption, and
-`eval:` controls whether the code actually runs.
+chunk. `label:` drives cross-references (use `tbl-` for tables,
+`fig-` for figures), `tbl-cap:` sets the caption, and `eval:`
+controls whether the code actually runs.
 
 # Methodology {#sec-method}
 
 To cite a reference, write `@key` for in-text or `[@key]` for
-parenthetical. The bibliography reads from the `bibliography:`
-YAML field --- by default `references.bib`. For example, the model
-in @eq-baseline mirrors the specification studied by @example2025.
+parenthetical. Multiple citations stack inside a single
+parenthetical: `[@key1; @key2; @key3]`. To suppress the author
+name in a citation, prefix with a hyphen: `[-@key]` --- useful when
+the author has already been mentioned in the sentence.
 
-A second labeled equation lets us reference the estimator:
+The estimator solves a nonlinear least-squares problem:
 
 $$
-\widehat{\beta} = \arg\min_{\beta}\, \sum_{i,t} \bigl(y_{it} - X_{it}'\beta\bigr)^{2}.
-$$ {#eq-ols}
+\widehat{\beta} = \arg\min_{\beta} \sum_{i,t} \bigl(y_{it} - X_{it}'\beta\bigr)^{2}.
+$$ {#eq-nls}
 
-Equations @eq-baseline and @eq-ols can be referenced together in a
-single sentence, and Quarto formats the cross-reference list
-automatically.
+Standard errors are clustered at the unit level, following
+@example2025.
 
 # Main Results {#sec-results}
 
@@ -184,8 +289,8 @@ This section demonstrates Quarto callouts. Five variants are
 available; each renders as a tinted box with a coloured left rule.
 
 ::: {.callout-note}
-A `note` callout is for general asides --- context the reader might
-want but doesn't need to follow the main argument.
+A `note` callout is for general asides --- context the reader
+might want but doesn't need to follow the main argument.
 :::
 
 ::: {.callout-tip}
@@ -215,8 +320,8 @@ reference because the label was declared with the `eq-` prefix.
 
 ## Heterogeneity {#sec-results-hetero}
 
-Subgroup estimates range from 0.04 to 0.21. Inline math uses single
-dollar signs: $\widehat{\beta}_{\text{low}} = 0.04$ and
+Subgroup estimates range from 0.04 to 0.21. Inline math uses
+single dollar signs: $\widehat{\beta}_{\text{low}} = 0.04$ and
 $\widehat{\beta}_{\text{high}} = 0.21$.
 
 ## Mechanisms {#sec-results-mechanism}
@@ -235,9 +340,9 @@ working-paper templates:
 > matching a common econ/finance convention. Multiple lines stay
 > within the block as long as each starts with `>`.
 
-Footnotes use the inline syntax `^[...]`.^[Like this --- a footnote
-attached to the word "this". Footnotes render at the bottom of the
-page they appear on.]
+Footnotes use the inline syntax `^[...]`.^[Like this --- a
+footnote attached to the word "this". Footnotes render at the
+bottom of the page they appear on.]
 
 # Robustness {#sec-robust}
 
@@ -249,8 +354,32 @@ highlighting:
 \textit{italic text} and \textbf{bold text}.
 ```
 
-Inline math: $\widehat{\beta} \xrightarrow{p} \beta$ as
-$n \to \infty$. Display math: see @eq-baseline.
+```r
+fit <- lm(y ~ x + z1 + z2 + z3, data = df)
+summary(fit)
+```
+
+Inline math: $\widehat{\beta} \xrightarrow{p} \beta$ as $n \to
+\infty$. Display math: see @eq-baseline.
+
+For LaTeX-only material that should not be processed as markdown,
+use a raw block:
+
+```` markdown
+```{=tex}
+\begin{flushright}\itshape Author's note.\end{flushright}
+```
+````
+
+The same syntax with `{=html}` produces HTML-only material when
+you render to HTML. To make content appear only in one output
+format, use a fenced div with `.content-visible`:
+
+```markdown
+::: {.content-visible when-format="pdf"}
+This block appears only in the PDF render.
+:::
+```
 
 # Conclusion {#sec-conc}
 
@@ -282,12 +411,13 @@ will pick up the qkit styling automatically.
 
 # Variable Definitions {#sec-app-vardesc}
 
-The in-paper Appendix demonstrates appendix-specific numbering. The
-`\appendix` macro --- called from a raw-LaTeX block just before this
-heading --- resets the section counter and remaps `\thesection` so
-headings render as "Appendix A.", "Appendix B.", and so on. Tables,
-figures, and equations within an appendix section pick up the
-appendix letter as a prefix (A.1, A.2, B.1, ...).
+The in-paper Appendix demonstrates appendix-specific numbering.
+The `\appendix` macro --- called from a raw-LaTeX block just
+before this heading --- resets the section counter and remaps
+`\thesection` so headings render as "Appendix A.", "Appendix B.",
+and so on. Tables, figures, and equations within an appendix
+section pick up the appendix letter as a prefix (A.1, A.2, B.1,
+...).
 
 In a real paper, this section would carry a `tabularx` or
 `booktabs` table listing every variable used in @sec-data, with

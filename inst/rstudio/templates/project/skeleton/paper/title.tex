@@ -1,0 +1,47 @@
+% Custom title-block partial for the qkit paper template.
+% Activated via "template-partials: title.tex" in the YAML header.
+%
+% Renders:
+%   \title{<YAML title>\\[0.3cm] {\normalsize\itshape Preliminary draft ...}}
+%   \author{<each YAML author with ORCID superscript and \thanks{} for email+address>}
+%   \date{<YAML date>}
+%
+% Structured authors expected in the YAML:
+%
+%   author:
+%     - name: Author One
+%       orcid: 0000-0000-0000-0001
+%       email: author.one@example.org
+%       affiliations:
+%         - name: Department, University, City, Country
+%     - name: Author Two
+%       ...
+%     - name: Author Three
+%       corresponding: true
+%       ...
+
+$if(title)$
+\title{$title$\\[0.3cm]%
+{\normalsize\itshape Preliminary draft --- please do not cite without permission}%
+$if(thanks)$\thanks{$thanks$}$endif$%
+}
+$endif$
+
+$if(by-author)$
+\author{%
+$for(by-author)$%
+$by-author.name.literal$%
+$if(by-author.orcid)$\textsuperscript{\normalsize\orcidlink{$by-author.orcid$}}$endif$%
+\thanks{%
+$if(by-author.email)$Email: \href{mailto:$by-author.email$}{$by-author.email$}.$endif$%
+$if(by-author.corresponding)$ Corresponding author.$endif$%
+$if(by-author.affiliations)$$for(by-author.affiliations)$ Address: $it.name$.$endfor$$endif$%
+}%
+$sep$ , %
+$endfor$%
+}
+$endif$
+
+$if(date)$
+\date{$date$}
+$endif$
