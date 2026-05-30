@@ -172,5 +172,5 @@ qkit::install_extension(path = ".")
 
 ## License
 
-MIT © 2026 Gabriel Cabrera Guzmán. See [LICENSE.md](LICENSE.md) for
-the full text.
+MIT © 2026 Gabriel Cabrera Guzmán. See [LICENSE](LICENSE) for the
+full text.
