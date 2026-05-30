@@ -237,7 +237,7 @@ Another term
 
 ## Summary Statistics {#sec-data-summary}
 
-Reference Table @tbl-summary for descriptive statistics. The first
+Reference Table @tbl-pipe for descriptive statistics. The first
 example below is a **pipe table** written in pure markdown:
 
 | Variable | Mean | SD |

@@ -30,7 +30,7 @@ templates.
 | `beamer` | qkit Beamer Presentation | XeLaTeX slides | `index.qmd` + `_extensions/qkit/` |
 | `cv` | qkit CV | LuaLaTeX one-pager | `index.qmd` + `_extensions/qkit/` |
 | `book` | qkit Book | XeLaTeX book (Krantz class) | full multi-file Quarto book project |
-| `paper` | qkit Paper | XeLaTeX article + Internet Appendix | `index.qmd`, `internet-appendix.qmd`, two `.bib` stubs, two `.tex` preambles |
+| `paper` | qkit Paper | XeLaTeX article + Internet Appendix | `index.qmd`, `internet-appendix.qmd`, `title.tex`, `preamble.tex`, `preamble-appendix.tex`, `mark-last-author.lua`, `references.bib`, `references-appendix.bib` |
 
 The Beamer and CV formats are backed by a Quarto extension; Book and
 Paper are self-contained project scaffolds (no extension installed).
@@ -128,29 +128,47 @@ qkit::install_extension(path = ".")
 
 - Minimalist 12pt `article`, 1in margins, doublespaced body,
   one-and-a-half-spaced title block and tables
-- Three-author YAML scaffold with clickable
-  `\href{mailto:...}{...}` emails, ORCID superscripts via
-  `\orcidlink`, and per-author `\thanks{}` address footnotes
+- Structured-YAML author list with ORCID, email, affiliations,
+  and an optional `corresponding: true` flag — rendered by a
+  custom `title.tex` Pandoc partial as
+  `Name\textsuperscript{\orcidlink{...}}\thanks{Email: \href{mailto:...}{...}. Address: ...}`
+  for each author
+- Oxford-comma joining of the author list (`A`, `A and B`, or
+  `A, B, and C`) driven by a Pandoc Lua filter
+  (`mark-last-author.lua`) that annotates the YAML list with
+  `is-first` / `is-last` / `next-is-last` flags
 - Italic subsection headings, period-after-section numbering
   (`1. Introduction`), 1.5cm-indented quote env, symmetric
-  display-equation spacing
+  display-equation spacing pinned to 12pt on all four
+  `\abovedisplayskip` / `\belowdisplayskip` / `*shortskip`
+  lengths
 - "Preliminary draft --- please do not cite without permission"
-  italic subtitle inline under the title
+  italic subtitle on the same line as the title; the title's
+  `\thanks{}` acknowledgment footnote sits next to the title
+  text, not the subtitle
 - JEL Classification line below the abstract's Keywords
+- Footnotes pinned to the bottom of every page via
+  `\usepackage[bottom]{footmisc}`
 - In-paper Appendix block (`\appendix` + `\thesection = Appendix
   A`)
-- Separate `internet-appendix.qmd` with its own `\maketitle`
-  ("Internet Appendix for: \<Title\>" / authors / SUPPLEMENTARY
-  RESULTS) and its own `references-appendix.bib`
-- LaTeX preamble externalised into `preamble.tex` /
-  `preamble-appendix.tex` so it can be edited without touching YAML
-- References on a new page after the Conclusion (and at the end of
-  the Internet Appendix)
+- Separate `internet-appendix.qmd` with a custom `\maketitle`
+  redefinition (in `preamble-appendix.tex`) emitting the
+  "Internet Appendix for / Title / Authors / SUPPLEMENTARY
+  RESULTS" centered title page, plus its own
+  `references-appendix.bib`
+- LaTeX preamble externalised into `preamble.tex` and
+  `preamble-appendix.tex` so it can be edited without touching
+  the YAML header
+- References on a new page after the Conclusion (and at the end
+  of the Internet Appendix)
 - Pandoc `citeproc` for bibliographies (Chicago author-date by
   default)
-- Body sections wired with an example two-way fixed-effects
-  regression worked through Newton's law of cooling on a generic
-  coffee dataset, just to demonstrate typography
+- Body is a self-documenting Quarto tutorial: each section walks
+  through a Quarto/Markdown feature (cross-reference prefixes,
+  labeled equations, theorem environments, citation styles,
+  callouts, knitr table chunks, pipe tables, definition lists,
+  raw `{=tex}`/`{=html}` blocks, `.content-visible
+  when-format=...` conditional content)
 
 ## License
 

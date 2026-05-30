@@ -20,8 +20,16 @@
 
 % Custom \maketitle for the Internet Appendix that matches the
 % source draft layout: "Internet Appendix for" / title / authors /
-% SUPPLEMENTARY RESULTS. Author names are hardcoded here — edit
-% to suit when you fill in the template.
+% SUPPLEMENTARY RESULTS.
+%
+% IMPORTANT: the title comes from the YAML title: field in
+% internet-appendix.qmd (via \@title) and stays in sync with the
+% main paper automatically, but the AUTHOR NAMES BELOW ARE
+% HARDCODED. If you add, remove, or rename authors in the main
+% paper's index.qmd YAML, edit the \large {...} line below to
+% match. (Quarto's structured author block isn't propagated into
+% this partial because internet-appendix.qmd carries no by-author
+% list of its own.)
 \makeatletter
 \renewcommand{\maketitle}{%
   \vspace*{0.25cm}%

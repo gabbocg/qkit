@@ -21,8 +21,9 @@ to \code{"beamer"}.}
 \item{title}{Presentation / book / paper title (used when \code{type} is
 \code{"beamer"}, \code{"book"}, or \code{"paper"}).}
 
-\item{author}{Author name (used when \code{type} is \code{"cv"}, \code{"book"}, or
-\code{"paper"}).}
+\item{author}{Author name (used when \code{type} is \code{"cv"} or \code{"book"}).
+For \code{"paper"} the YAML carries a structured author list (with
+ORCID, email, affiliations); edit \code{index.qmd} after scaffolding.}
 
 \item{...}{Additional arguments passed by RStudio (ignored).}
 }
