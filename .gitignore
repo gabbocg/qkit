@@ -6,3 +6,4 @@ CLAUDE.md
 .claude/*
 .worktrees/
 docs/
+.DS_Store
