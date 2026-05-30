@@ -30,14 +30,16 @@ $endif$
 $if(by-author)$
 \author{%
 $for(by-author)$%
-$by-author.name.literal$%
-$if(by-author.orcid)$\textsuperscript{\normalsize\orcidlink{$by-author.orcid$}}$endif$%
+$if(it.is-first)$$else$$if(it.is-only-coauthor)$ and $else$$if(it.is-last)$, and $else$, $endif$$endif$$endif$%
+\mbox{%
+$it.name.literal$%
+$if(it.orcid)$\textsuperscript{\normalsize\orcidlink{$it.orcid$}}$endif$%
 \thanks{%
-$if(by-author.email)$Email: \href{mailto:$by-author.email$}{$by-author.email$}.$endif$%
-$if(by-author.corresponding)$ Corresponding author.$endif$%
-$if(by-author.affiliations)$$for(by-author.affiliations)$ Address: $it.name$.$endfor$$endif$%
+$if(it.email)$Email: \href{mailto:$it.email$}{$it.email$}.$endif$%
+$if(it.corresponding)$ Corresponding author.$endif$%
+$if(it.affiliations)$$for(it.affiliations)$ Address: $it.name$.$endfor$$endif$%
 }%
-$sep$ , %
+}%
 $endfor$%
 }
 $endif$

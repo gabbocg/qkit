@@ -18,6 +18,11 @@
 % \thanks{} footnotes are emitted by the custom title.tex partial
 % activated via "template-partials: title.tex" in the YAML header.)
 
+% (The author-separator logic lives in title.tex and is driven by
+% the is-first / is-last / is-only-coauthor flags injected onto the
+% YAML author list by mark-last-author.lua. No preamble macros are
+% needed.)
+
 % Italic subsection / subsubsection headings, with both sectsty and
 % an explicit \@startsection override so the article-class default
 % \bfseries cannot leak through.

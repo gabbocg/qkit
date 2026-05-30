@@ -39,6 +39,8 @@ thanks: |
   We thank seminar and conference participants for helpful comments.
   Replace this acknowledgments block with your own.
 bibliography: references.bib
+filters:
+  - mark-last-author.lua
 
 format:
   pdf:
