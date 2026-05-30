@@ -30,8 +30,8 @@ $endif$
 $if(by-author)$
 \author{%
 $for(by-author)$%
-$if(it.is-first)$$else$$if(it.is-only-coauthor)$ and $else$$if(it.is-last)$, and $else$, $endif$$endif$$endif$%
 \mbox{%
+$if(it.is-first)$$else$$if(it.is-only-coauthor)$ and $else$$if(it.is-last)$, and $else$, $endif$$endif$$endif$%
 $it.name.literal$%
 $if(it.orcid)$\textsuperscript{\normalsize\orcidlink{$it.orcid$}}$endif$%
 \thanks{%

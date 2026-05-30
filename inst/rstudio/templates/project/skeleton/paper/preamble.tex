@@ -61,12 +61,23 @@
    \item\relax}
   {\endlist}
 
-% Force the short-display skips to match the regular display skips
-% so equations have the same space above and below regardless of
-% whether the preceding line is short or long.
+% Symmetric display-equation spacing. LaTeX has FOUR display-skip
+% lengths: the short-skip variants kick in when the line immediately
+% preceding the equation is short, and by article-class default
+% \abovedisplayshortskip is 0pt while \belowdisplayshortskip is 7pt
+% — that asymmetry is what makes the gap above an equation feel
+% tighter than the gap below. We force all four to one common value
+% and re-apply the setting after \begin{document} in case
+% setspace/linestretch adjusted them in the meantime.
+\setlength{\abovedisplayskip}{12pt}
+\setlength{\belowdisplayskip}{12pt}
+\setlength{\abovedisplayshortskip}{12pt}
+\setlength{\belowdisplayshortskip}{12pt}
 \AtBeginDocument{%
-  \setlength{\abovedisplayshortskip}{\abovedisplayskip}%
-  \setlength{\belowdisplayshortskip}{\belowdisplayskip}%
+  \setlength{\abovedisplayskip}{12pt}%
+  \setlength{\belowdisplayskip}{12pt}%
+  \setlength{\abovedisplayshortskip}{12pt}%
+  \setlength{\belowdisplayshortskip}{12pt}%
 }
 
 \theoremstyle{plain}

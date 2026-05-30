@@ -62,10 +62,19 @@
 \hyphenpenalty=10000
 \hbadness=10000
 
-% Symmetric short-display skips.
+% Symmetric display-equation spacing. See the comment in
+% preamble.tex for the rationale; the four lengths are pinned to
+% a single common value here and re-applied at \begin{document} so
+% setspace / linestretch cannot drift them.
+\setlength{\abovedisplayskip}{12pt}
+\setlength{\belowdisplayskip}{12pt}
+\setlength{\abovedisplayshortskip}{12pt}
+\setlength{\belowdisplayshortskip}{12pt}
 \AtBeginDocument{%
-  \setlength{\abovedisplayshortskip}{\abovedisplayskip}%
-  \setlength{\belowdisplayshortskip}{\belowdisplayskip}%
+  \setlength{\abovedisplayskip}{12pt}%
+  \setlength{\belowdisplayskip}{12pt}%
+  \setlength{\abovedisplayshortskip}{12pt}%
+  \setlength{\belowdisplayshortskip}{12pt}%
 }
 
 % Appendix labels: sections render as "Appendix A", "Appendix B",
