@@ -7,30 +7,23 @@ author: |
 date: today
 date-format: "[This revision:] D MMMM YYYY"
 abstract: |
-  We study the cooling of a hot cup of coffee left undisturbed in a
-  room at constant ambient temperature. Fitting Newton's law of
-  cooling to a sample of repeated measurements yields a cooling
-  constant of $k \approx 0.024$ per minute, implying a half-cooling
-  time of roughly 29 minutes. The fit is tight, the residuals are
-  small, and a single-parameter exponential decay accommodates the
-  data over the observed range. Robustness checks vary the
-  ambient-temperature assumption and the sampling interval; the
-  central estimate is unchanged.
+  This is a self-documenting Quarto paper template. The body of the
+  paper explains how to use the qkit paper format: YAML metadata,
+  cross-references, equations, theorem environments, citations,
+  callouts, code chunks, and the in-paper Appendix. Replace this
+  abstract with your own (150--250 words covering question, data,
+  method, and main findings).
 
   \bigskip
-  \noindent\textbf{Keywords:} Newton's law of cooling, exponential
-  decay, nonlinear least squares, coffee
+  \noindent\textbf{Keywords:} keyword one, keyword two, keyword three
 
   \noindent\textbf{JEL Classification:} A00, B00, C00
 keywords:
-  - Newton's law of cooling
-  - exponential decay
-  - nonlinear least squares
-  - coffee
+  - keyword one
+  - keyword two
+  - keyword three
 thanks: |
-  We thank colleagues for helpful comments and the staff of the
-  coffee bar where the measurements were collected. Contact: see
-  \href{mailto:author.three@example.org}{author.three@example.org}.
+  We thank seminar and conference participants for helpful comments.
   Replace this acknowledgments block with your own.
 bibliography: references.bib
 
@@ -61,149 +54,211 @@ format:
 
 # Introduction {#sec-intro}
 
-A cup of coffee left on a desk cools toward room temperature.
-Empirically the cooling looks roughly exponential: the hotter the
-coffee is at a given moment, the faster it loses heat to its
-surroundings. Newton's law of cooling provides a one-parameter
-description of this behaviour. This paper fits the law to a small
-sample of coffee-cup temperature measurements and reports the
-implied cooling constant.
+This template is a worked example. Each section below demonstrates a
+Quarto feature you can use when writing your own paper; replace the
+demonstration text with your own prose as you fill in the template.
 
-The remainder of the paper is organized as follows. Section
-@sec-theory states Newton's law and derives the testable
-implication. Section @sec-data describes the measurement protocol
-and the sample. Section @sec-method explains the estimator.
-Section @sec-results reports the fit. Sections @sec-additional
-and @sec-robust discuss extensions and robustness. Section
-@sec-conc concludes.
+**Markdown basics.** Use single asterisks for *italic*, doubles for
+**bold**, triples for ***bold italic***, and backticks for
+`inline code`. Hyperlinks are inline: see the
+[Quarto documentation](https://quarto.org) for the full reference.
+
+**Cross-references.** Prefix any section heading's label with `sec-`
+(for example `# Introduction {#sec-intro}`) and reference it inline
+with `@sec-intro`. Equations use the `eq-` prefix, tables `tbl-`,
+figures `fig-`. The remainder of the paper is organized as follows.
+Section @sec-theory shows how to write theorems and labeled
+equations. Section @sec-data shows how to insert tables. Section
+@sec-method demonstrates citations and equation references. Section
+@sec-results covers Quarto callouts. Sections @sec-additional and
+@sec-robust round out the body. Section @sec-conc closes.
+Appendices @sec-app-vardesc and @sec-app-derivations demonstrate
+`\appendix`-style numbering.
+
+**Citations.** Cite a `.bib` entry with `[@example2025]` for a
+parenthetical (Doe and Roe 2025) or with `@example2025` for an
+in-text citation; the qkit paper template uses Pandoc's `citeproc`
+with Chicago author-date style by default. The bibliography renders
+at the `# References` anchor placed after the Conclusion.
 
 # Theoretical Framework {#sec-theory}
 
-Let $T(t)$ denote the temperature of the coffee at time $t$ and
-let $T_\infty$ denote the (constant) ambient temperature of the
-room. Newton's law of cooling asserts that the instantaneous rate
-of cooling is proportional to the temperature difference between
-the coffee and its surroundings,
+A labeled display equation uses the syntax
+`$$...$$ {#eq-label}`. For example,
 
 $$
-\frac{dT(t)}{dt} = -k\, \bigl(T(t) - T_\infty\bigr),
-$$ {#eq-newton}
+y_{it} = \alpha_i + \delta_t + \beta\, x_{it} + \gamma'\mathbf{Z}_{it} + \varepsilon_{it}
+$$ {#eq-baseline}
 
-with cooling constant $k > 0$. Integrating @eq-newton subject to
-the initial condition $T(0) = T_0$ yields the closed-form
-solution
+is referenced inline with `@eq-baseline`. The qkit preamble forces
+symmetric vertical space above and below every display equation, so
+the gap looks the same whether the line preceding the equation is
+short or long. See @eq-baseline above for the baseline specification.
 
-$$
-T(t) = T_\infty + (T_0 - T_\infty)\, e^{-k t}.
-$$ {#eq-solution}
+Five theorem-style environments are predefined via `amsthm`:
+`theorem`, `proposition`, `lemma`, `definition`, and `assumption`.
+Use any of them with Pandoc's fenced-div syntax. For example:
+
+::: {.assumption}
+The error term $\varepsilon_{it}$ is mean-zero and conditionally
+independent of the focal regressor $x_{it}$ given the unit fixed
+effect $\alpha_i$.
+:::
+
+::: {.proposition}
+Under the assumption above, the within-unit OLS estimator of $\beta$
+in @eq-baseline is consistent.
+:::
 
 ## Testable Predictions {#sec-theory-predictions}
 
-@eq-solution implies that the logarithm of the standardised
-temperature difference is linear in time,
-
-$$
-\log\!\bigl(T(t) - T_\infty\bigr) = \log(T_0 - T_\infty) - k\, t,
-$$ {#eq-log}
-
-which provides the empirical specification estimated below.
-
-::: {.proposition}
-Under @eq-newton, the half-cooling time of the coffee --- the
-time required for the gap $T(t) - T_\infty$ to halve --- is
-$t_{1/2} = \log 2 / k$ and is independent of the initial
-temperature $T_0$.
-:::
+Subsection headings render italic, not bold --- a deliberate qkit
+style choice that gives section headings the visual weight and
+subsection headings the contrast of italic. Section numbering carries
+a period after the digit (`1. Introduction`, `1.1 Subsection`), also
+a preamble tweak.
 
 # Data {#sec-data}
 
-## Measurement Protocol {#sec-data-protocol}
+Variable definitions are deferred to Appendix @sec-app-vardesc. This
+section shows how to insert a table via a `knitr` chunk and how to
+reference it from the prose.
 
-We prepared a single cup of brewed coffee in a standard ceramic
-mug and recorded its temperature with a digital thermocouple at
-one-minute intervals over 60 minutes. The room temperature was
-held at $T_\infty = 22^\circ$C throughout. We repeated the
-protocol on five separate days; the analysis below uses the
-average across the five runs.
+## Data Sources and Sample Construction {#sec-data-sources}
+
+Markdown bullet lists work as expected:
+
+- One bullet per line, hyphen + space at the start.
+- Sub-bullets indent four spaces.
+    - Like this nested entry.
+- Empty lines between items create a "loose" list with extra space
+  between entries.
 
 ## Variable Definitions {#sec-data-vars}
 
-The dependent variable is the temperature reading $T_t$ in
-degrees Celsius at minute $t \in \{0, 1, \ldots, 60\}$. Full
-variable definitions appear in Appendix @sec-app-vardesc.
+Numbered lists use the same syntax:
+
+1. Use `1.`, `2.`, `3.` at the start of each item.
+2. Numbering is automatic; Quarto renumbers on render.
+3. To restart numbering, leave a blank line and start a new list.
 
 ## Summary Statistics {#sec-data-summary}
 
-Table @tbl-summary reports the mean and standard deviation of
-the temperature across the five runs, at selected minutes.
+Reference Table @tbl-summary for descriptive statistics. The
+following `knitr` chunk renders a table when given real data and
+`eval: true`; it's currently a placeholder.
 
 ```{r}
 #| label: tbl-summary
-#| tbl-cap: "Summary statistics for the coffee-cup cooling sample."
+#| tbl-cap: "Summary statistics for the example panel."
 #| echo: false
 #| eval: false
 # knitr::kable(your_data_frame, booktabs = TRUE)
 ```
 
+Chunk options live in the `#| key: value` block at the top of the
+chunk. The `label:` value drives cross-references (use `tbl-` for
+tables, `fig-` for figures), `tbl-cap:` sets the caption, and
+`eval:` controls whether the code actually runs.
+
 # Methodology {#sec-method}
 
-Taking logs of @eq-solution and subtracting $T_\infty$ yields a
-specification linear in $k$. Following @example2025, we estimate
-$k$ by nonlinear least squares on the level form,
+To cite a reference, write `@key` for in-text or `[@key]` for
+parenthetical. The bibliography reads from the `bibliography:`
+YAML field --- by default `references.bib`. For example, the model
+in @eq-baseline mirrors the specification studied by @example2025.
+
+A second labeled equation lets us reference the estimator:
 
 $$
-\widehat{k} = \arg\min_{k}\, \sum_{t=0}^{60} \Bigl[T_t - T_\infty - (T_0 - T_\infty)\, e^{-k t}\Bigr]^{2}.
-$$ {#eq-nls}
+\widehat{\beta} = \arg\min_{\beta}\, \sum_{i,t} \bigl(y_{it} - X_{it}'\beta\bigr)^{2}.
+$$ {#eq-ols}
 
-Standard errors are obtained from the asymptotic covariance of
-the NLS estimator and reported in parentheses below.
+Equations @eq-baseline and @eq-ols can be referenced together in a
+single sentence, and Quarto formats the cross-reference list
+automatically.
 
 # Main Results {#sec-results}
 
-## Baseline Estimate {#sec-results-baseline}
+This section demonstrates Quarto callouts. Five variants are
+available; each renders as a tinted box with a coloured left rule.
 
-The point estimate is $\widehat{k} = 0.024$ per minute (standard
-error 0.002), implying a half-cooling time of $t_{1/2} =
-\log 2 / 0.024 \approx 29$ minutes. The mean squared residual is
-$0.6^\circ$C, suggesting that a one-parameter exponential captures
-the data well.
+::: {.callout-note}
+A `note` callout is for general asides --- context the reader might
+want but doesn't need to follow the main argument.
+:::
+
+::: {.callout-tip}
+A `tip` callout flags a practical recommendation or shortcut.
+:::
+
+::: {.callout-warning}
+A `warning` callout highlights a caveat or limitation.
+:::
+
+::: {.callout-important}
+An `important` callout draws attention to something the reader
+must not miss.
+:::
+
+::: {.callout-caution}
+A `caution` callout is the strongest emphasis variant; use it
+sparingly.
+:::
+
+## Baseline Estimates {#sec-results-baseline}
+
+Estimating @eq-baseline on the full sample yields a point estimate
+of $\widehat{\beta} = 0.12$ (standard error 0.03). Quarto knows
+that `@eq-baseline` should render as a parenthetical equation
+reference because the label was declared with the `eq-` prefix.
 
 ## Heterogeneity {#sec-results-hetero}
 
-Splitting the sample into the first and last 30 minutes yields
-nearly identical $\widehat{k}$ values, with overlapping confidence
-intervals. The cooling-constant interpretation is therefore
-stable across the observation window.
+Subgroup estimates range from 0.04 to 0.21. Inline math uses single
+dollar signs: $\widehat{\beta}_{\text{low}} = 0.04$ and
+$\widehat{\beta}_{\text{high}} = 0.21$.
 
 ## Mechanisms {#sec-results-mechanism}
 
-The estimated $\widehat{k}$ depends on heat-transfer coefficients
-at the mug-air interface (convection) and at the coffee-mug
-interface (conduction). We do not separately identify these
-channels but discuss them informally in Appendix
-@sec-app-derivations.
+Two-thirds of the headline effect operates contemporaneously; the
+remainder unfolds with a one-period lag.
 
 # Additional Analyses {#sec-additional}
 
-Allowing $T_\infty$ to vary across runs gives an alternative
-estimator that is more robust to small ambient-temperature
-fluctuations. The point estimate of $k$ is unchanged at the
-third decimal place.
+Block quotations are rendered with 1.5cm indentation on both sides
+--- a qkit preamble tweak that matches the look of standard
+working-paper templates:
+
+> Quoted material goes here. The custom `quote` environment is
+> indented an extra 1.5cm on each side relative to the body text,
+> matching a common econ/finance convention. Multiple lines stay
+> within the block as long as each starts with `>`.
+
+Footnotes use the inline syntax `^[...]`.^[Like this --- a footnote
+attached to the word "this". Footnotes render at the bottom of the
+page they appear on.]
 
 # Robustness {#sec-robust}
 
-The baseline survives standard robustness checks: trimming the
-first three minutes (when the coffee is being stirred), using
-the median across runs rather than the mean, and re-fitting on
-the log-linearised specification of @eq-log. Detailed results
-appear in the Internet Appendix.
+Code spans use single backticks (`` `code` ``); fenced code blocks
+use triple backticks with an optional language tag for syntax
+highlighting:
+
+```latex
+\textit{italic text} and \textbf{bold text}.
+```
+
+Inline math: $\widehat{\beta} \xrightarrow{p} \beta$ as
+$n \to \infty$. Display math: see @eq-baseline.
 
 # Conclusion {#sec-conc}
 
-A single cooling constant $\widehat{k} \approx 0.024$ per minute
-describes the cooling of a hot coffee cup in a constant-temperature
-room well. The fit is consistent with the predictions of Newton's
-law and with prior estimates reported in the literature.
+A paper template that documents itself: each section above
+demonstrates a different Quarto feature. When you replace the
+demonstration prose with your own analysis, the headings,
+equations, theorem environments, citations, callouts, and quotes
+will pick up the qkit styling automatically.
 
 ```{=tex}
 \newpage
@@ -227,21 +282,35 @@ law and with prior estimates reported in the literature.
 
 # Variable Definitions {#sec-app-vardesc}
 
-A formal table of every variable used in @sec-data: the
-temperature reading $T_t$ (degrees Celsius, recorded by a
-digital thermocouple), the time index $t$ (minutes since
-brewing), the ambient temperature $T_\infty$ (degrees Celsius,
-measured at the start of each run), and the initial temperature
-$T_0$ (degrees Celsius, the first reading of each run).
+The in-paper Appendix demonstrates appendix-specific numbering. The
+`\appendix` macro --- called from a raw-LaTeX block just before this
+heading --- resets the section counter and remaps `\thesection` so
+headings render as "Appendix A.", "Appendix B.", and so on. Tables,
+figures, and equations within an appendix section pick up the
+appendix letter as a prefix (A.1, A.2, B.1, ...).
+
+In a real paper, this section would carry a `tabularx` or
+`booktabs` table listing every variable used in @sec-data, with
+its definition, units, and source.
 
 # Auxiliary Derivations {#sec-app-derivations}
 
-The closed-form solution @eq-solution follows from separation of
-variables applied to @eq-newton.
+A display equation inside Appendix B renders as Equation B.1:
+
+$$
+\widehat{\beta} = (X'X)^{-1} X' y.
+$$ {#eq-app-baseline}
+
+Compare to @eq-baseline in the main text --- that one is numbered
+plainly (e.g. 1, 2, ...) while @eq-app-baseline carries the
+B-prefix.
+
+Proofs use a `.proof` div, which `amsthm` renders with an italic
+"Proof." header and a closing $\square$:
 
 ::: {.proof}
-Rearranging @eq-newton gives $dT / (T - T_\infty) = -k\, dt$.
-Integrating both sides between $0$ and $t$ yields
-$\log(T(t) - T_\infty) - \log(T_0 - T_\infty) = -k\, t$, and
-exponentiating produces @eq-solution. $\square$
+*Sketch.* Within-unit demeaning eliminates the fixed effect; the
+demeaned regressor satisfies the orthogonality condition stated in
+the assumption; OLS on the demeaned variables is therefore
+consistent. $\square$
 :::
