@@ -224,5 +224,5 @@ These are useful for adjusting layout within slides.
 
 - **Quarto documentation**: [https://quarto.org](https://quarto.org)
 - **Beamer user guide**: [https://ctan.org/pkg/beamer](https://ctan.org/pkg/beamer)
-- **qkit source**: [https://github.com/GabboCg/qkit](https://github.com/GabboCg/qkit)
+- **qkit source**: [https://github.com/gabbocg/qkit](https://github.com/gabbocg/qkit)
 - **Inspired by**: [beamer-tips](https://github.com/paulgp/beamer-tips)

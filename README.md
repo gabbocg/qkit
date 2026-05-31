@@ -1,4 +1,4 @@
-# qkit <a href="https://github.com/GabboCg/qkit"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# qkit <a href="https://github.com/gabbocg/qkit"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -15,7 +15,7 @@ for a Quarto-based workflow and extended with three more formats.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("GabboCg/qkit")
+remotes::install_github("gabbocg/qkit")
 ```
 
 You also need [Quarto](https://quarto.org/docs/get-started/) and a
@@ -172,4 +172,4 @@ qkit::install_extension(path = ".")
 
 ## Getting help
 
-If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/GabboCg/sdim/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
+If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/gabbocg/qkit/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
