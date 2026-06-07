@@ -1,5 +1,6 @@
 ^docs$
 ^README\.md$
+^LICENSE\.md$
 ^CLAUDE\.md$
 ^\.DS_Store$
 ^.*\.Rproj$
