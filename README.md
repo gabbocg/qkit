@@ -1,15 +1,18 @@
-# qkit <a href="https://github.com/gabbocg/qkit"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# qkit <img src="man/figures/logo.png" align="right" height="138" />
 
+**Author:** [Gabriel Cabrera](https://github.com/gabbocg)<br>
+**License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
+
+<!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
 
-A set of personal [Quarto](https://quarto.org) templates with RStudio integration. 
-`qkit` ships four template types — a Beamer
-presentation, an academic CV, a Quarto book project, and a minimalist
-academic paper — each with a sensible LaTeX preamble, ORCID-aware
-author handling, and a one-click *File > New Project* entry in RStudio.
+## Overview
 
-Inspired by [beamer-tips](https://github.com/paulgp/beamer-tips), adapted
-for a Quarto-based workflow and extended with three more formats.
+**qkit** is a set of personal [Quarto](https://quarto.org) templates with RStudio integration. It ships four template types — a Beamer presentation, an academic CV, a Quarto book project, and a minimalist academic paper — each with a sensible LaTeX preamble, ORCID-aware author handling, and a one-click *File > New Project* entry in RStudio.
+
+Inspired by [beamer-tips](https://github.com/paulgp/beamer-tips), adapted for a Quarto-based workflow and extended with three more formats.
 
 ## Installation
 
